@@ -1,151 +1,133 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cuestionario MultiGenio - Paso a paso</title>
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #f0f4ff;
-      margin: 0; padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .container {
-      background: white;
-      border-radius: 8px;
-      padding: 30px;
-      max-width: 400px;
-      width: 100%;
-      box-shadow: 0 0 15px rgba(0,0,0,0.15);
-      text-align: center;
-    }
-    h2 {
-      margin-bottom: 20px;
-      color: #1E40AF;
-    }
-    .question {
-      margin-bottom: 20px;
-      text-align: left;
-    }
-    label {
-      display: block;
-      margin: 10px 0;
-      cursor: pointer;
-      font-weight: 500;
-    }
-    button {
-      background: #1E40AF;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-    button:disabled {
-      background: #888;
-      cursor: not-allowed;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h2>Cuestionario MultiGenio</h2>
-    <form id="quiz-form">
-      <div id="question-container"></div>
-      <button id="next-btn" disabled>Siguiente</button>
-    </form>
-  </div>
+// App educativa "MultiGenio" con cuestionario paso a paso y diseño completo con Chatbase
+import { useState } from "react";
 
-<script>
-  const questions = [
-    {
-      text: "¿Cómo prefieres aprender nuevo contenido?",
-      options: ["Visual", "Auditivo", "Kinestésico", "Lectura/Escritura"],
-      name: "q1"
-    },
-    {
-      text: "Cuando tienes una dificultad para entender algo, ¿qué haces principalmente?",
-      options: ["Buscar ejemplos", "Pedir ayuda", "Repetir", "Tomar descansos"],
-      name: "q2"
-    },
-    {
-      text: "¿Cuál crees que es tu principal fortaleza al estudiar?",
-      options: ["Memoria", "Comprensión", "Organización", "Creatividad"],
-      name: "q3"
-    },
-    {
-      text: "¿Qué momento del día sientes que rindes mejor para estudiar?",
-      options: ["Mañana", "Tarde", "Noche", "Indiferente"],
-      name: "q4"
-    },
-    {
-      text: "¿Qué aspecto te gustaría mejorar más en tu forma de aprender?",
-      options: ["Concentración", "Memoria", "Organización", "Técnicas"],
-      name: "q5"
-    }
-  ];
+const questions = [
+  {
+    id: "q1",
+    text: "¿Qué prefieres al estudiar?",
+    options: ["Ver imágenes o videos", "Escuchar explicaciones", "Moverte o hacer cosas", "Leer y escribir"],
+  },
+  {
+    id: "q2",
+    text: "¿Te cuesta mantener la atención mucho tiempo?",
+    options: ["Sí, con frecuencia", "A veces", "No mucho"],
+  },
+];
 
-  const questionContainer = document.getElementById('question-container');
-  const nextBtn = document.getElementById('next-btn');
-  const form = document.getElementById('quiz-form');
+const detectLearningStyle = (answers) => {
+  if (answers.q1 === "Ver imágenes o videos") return "Visual";
+  if (answers.q1 === "Escuchar explicaciones") return "Auditivo";
+  if (answers.q1 === "Moverte o hacer cosas") return "Kinestésico";
+  if (answers.q1 === "Leer y escribir") return "Escrito";
+  return "Mixto";
+};
 
-  let currentQuestionIndex = 0;
-  let answers = {};
+export default function App() {
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [style, setStyle] = useState(null);
+  const [hasTDAH, setHasTDAH] = useState(false);
 
-  function showQuestion(index) {
-    nextBtn.disabled = true;
-    const q = questions[index];
-    let html = `<div class="question"><p><strong>${q.text}</strong></p>`;
-    q.options.forEach((opt, i) => {
-      html += `
-        <label>
-          <input type="radio" name="${q.name}" value="${opt}" />
-          ${opt}
-        </label>
-      `;
-    });
-    html += '</div>';
-    questionContainer.innerHTML = html;
+  const handleAnswer = (questionId, answer) => {
+    const newAnswers = { ...answers, [questionId]: answer };
+    setAnswers(newAnswers);
 
-    // Escuchar selección para activar botón
-    const inputs = questionContainer.querySelectorAll('input[type=radio]');
-    inputs.forEach(input => {
-      input.addEventListener('change', () => {
-        nextBtn.disabled = false;
-      });
-    });
+    if (questionId === "q2" && answer === "Sí, con frecuencia") setHasTDAH(true);
 
-    // Cambiar texto botón si es última pregunta
-    nextBtn.textContent = (index === questions.length - 1) ? 'Enviar' : 'Siguiente';
-  }
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-
-    // Obtener respuesta seleccionada
-    const selected = questionContainer.querySelector('input[type=radio]:checked');
-    if (!selected) return; // seguridad
-
-    answers[questions[currentQuestionIndex].name] = selected.value;
-
-    if (currentQuestionIndex < questions.length -1) {
-      currentQuestionIndex++;
-      showQuestion(currentQuestionIndex);
-      nextBtn.disabled = true;
+    if (step + 1 < questions.length) {
+      setStep(step + 1);
     } else {
-      // Cuestionario terminado: enviar a main.html con respuestas en query string
-      const query = new URLSearchParams(answers).toString();
-      window.location.href = `main.html?${query}`;
+      const detectedStyle = detectLearningStyle(newAnswers);
+      setStyle(detectedStyle);
     }
-  });
+  };
 
-  // Mostrar primera pregunta al cargar
-  showQuestion(currentQuestionIndex);
-</script>
-</body>
-</html>
+  return (
+    <div style={{ fontFamily: 'Poppins, sans-serif' }}>
+      {!style ? (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-blue-100 p-6">
+          <div className="bg-white p-8 rounded-2xl shadow-xl max-w-xl w-full">
+            <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">🎓 MultiGenio: Tu App de Aprendizaje Inteligente</h1>
+            <p className="text-lg font-semibold mb-4">{questions[step].text}</p>
+            <div className="space-y-2">
+              {questions[step].options.map((opt) => (
+                <button
+                  key={opt}
+                  onClick={() => handleAnswer(questions[step].id, opt)}
+                  className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl"
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <header style={{ backgroundColor: '#007BFF', color: 'white', padding: '1rem', textAlign: 'center' }}>
+            <h1 style={{ fontSize: '2rem' }}>MultiGenio - Aprende a tu ritmo</h1>
+          </header>
+
+          <main style={{ padding: '2rem', backgroundColor: 'white' }}>
+            <section>
+              <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Materias que puedes aprender</h2>
+              <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '1rem' }}>
+                <div>
+                  <img src="https://img.icons8.com/color/96/calculator.png" alt="Matemáticas" />
+                  <h3>Matemáticas</h3>
+                  <p>Desde sumas y divisiones hasta álgebra de 3º de ESO. Todo con juegos mentales, visuales y lógica adaptada a ti.</p>
+                </div>
+                <div>
+                  <img src="https://img.icons8.com/color/96/book.png" alt="Lengua" />
+                  <h3>Lengua</h3>
+                  <p>Domina la morfología, sintaxis y reglas ortográficas con ejemplos creativos y prácticas fáciles de recordar.</p>
+                </div>
+                <div>
+                  <img src="https://img.icons8.com/color/96/usa.png" alt="Inglés" />
+                  <h3>Inglés</h3>
+                  <p>Aprende desde A1 hasta B1: vocabulario, gramática, listening y speaking. Con apoyo visual y audios.</p>
+                </div>
+              </div>
+            </section>
+
+            {hasTDAH && (
+              <section style={{ marginTop: '2rem', padding: '1rem', backgroundColor: '#FFF3CD', borderRadius: '0.5rem' }}>
+                <h4>⚡ Recomendaciones para TDA-H</h4>
+                <p>Contenidos divididos en bloques cortos, recompensas visuales, estímulos constantes como sonido y color.</p>
+              </section>
+            )}
+
+            <section style={{ marginTop: '2rem' }}>
+              <h3>🤖 ¿Tienes dudas?</h3>
+              <p>Usa el asistente inteligente en la esquina inferior derecha.</p>
+            </section>
+
+            <section style={{ marginTop: '2rem' }}>
+              <h3>📩 Contacto</h3>
+              <form>
+                <input type="text" placeholder="Tu nombre" required style={{ display: 'block', marginBottom: '0.5rem', padding: '0.5rem' }} /><br />
+                <input type="email" placeholder="Tu correo electrónico" required style={{ display: 'block', marginBottom: '0.5rem', padding: '0.5rem' }} /><br />
+                <textarea placeholder="Tu mensaje..." rows="5" required style={{ display: 'block', marginBottom: '0.5rem', padding: '0.5rem', width: '100%' }}></textarea><br />
+                <button type="submit" style={{ backgroundColor: '#007BFF', color: 'white', padding: '0.5rem 1rem', borderRadius: '0.5rem' }}>Enviar mensaje</button>
+              </form>
+            </section>
+          </main>
+
+          <footer style={{ textAlign: 'center', padding: '1rem', backgroundColor: '#f0f0f0' }}>
+            <p>&copy; 2025 MultiGenio. Todos los derechos reservados.</p>
+          </footer>
+
+          {/* Chatbase Chatbot Embed */}
+          <script dangerouslySetInnerHTML={{
+            __html: `
+              window.chatbaseConfig = {
+                chatbotId: "frw3UKvg6MK3c9Zw-bZAu"
+              };
+            `,
+          }} />
+          <script src="https://www.chatbase.co/embed.min.js" defer></script>
+        </div>
+      )}
+    </div>
+  );
+}
