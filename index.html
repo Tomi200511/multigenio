@@ -119,85 +119,234 @@
       padding: 20px;
       margin-top: 40px;
     }
+    /* Cuestionario estilos */
+    #quiz-container {
+      background: white;
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+    #quiz-container h2 {
+      color: #337acc;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .question {
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 6px 0;
+      padding: 10px;
+      background: #4b9ce2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.3s ease;
+    }
+    .options button:hover {
+      background: #337acc;
+    }
+    /* Oculto */
+    .hidden {
+      display: none;
+    }
+    /* Resultado estilo */
+    #result-message {
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #337acc;
+    }
+    /* Recomendaciones TDAH */
+    #tdah-warning {
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: #FFF3CD;
+      border-radius: 8px;
+      color: #856404;
+      font-weight: 600;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>MultiGenio</h1>
-    <p>Aprende a tu ritmo. Brilla con tu estilo.</p>
-  </header>
 
-  <nav>
-    <a href="#que-es">¿Qué es?</a>
-    <a href="#materias">Materias</a>
-    <a href="#beneficios">Beneficios</a>
-    <a href="#contacto">Contacto</a>
-  </nav>
+  <!-- Cuestionario -->
+  <div id="quiz-container">
+    <h2>Cuestionario de estilo de aprendizaje</h2>
+    <div id="question-text" class="question"></div>
+    <div id="options" class="options"></div>
+  </div>
 
-  <section class="hero">
-    <h1>Tu tutor virtual para Matemáticas, Inglés y Lengua</h1>
-    <p>Diseñado especialmente para estudiantes con TDA o dificultades de atención. Paciencia, claridad y diversión en un solo lugar.</p>
-  </section>
+  <!-- Contenido principal oculto inicialmente -->
+  <div id="main-content" class="hidden">
+    <header>
+      <h1>MultiGenio</h1>
+      <p>Aprende a tu ritmo. Brilla con tu estilo.</p>
+    </header>
 
-  <section class="section" id="que-es">
-    <h2>¿Qué es MultiGenio?</h2>
-    <p>MultiGenio es una inteligencia artificial educativa que enseña con empatía y creatividad. Se adapta a cada estudiante con explicaciones simples, videos visuales y ejemplos divertidos. Aprender ahora es más fácil y estimulante.</p>
-  </section>
+    <nav>
+      <a href="#que-es">¿Qué es?</a>
+      <a href="#materias">Materias</a>
+      <a href="#beneficios">Beneficios</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
 
-  <section class="section" id="materias">
-    <h2>Materias que puedes aprender</h2>
-    <div class="cards">
-      <div class="card">
-        <img src="https://img.icons8.com/color/96/calculator.png" alt="Matemáticas" />
-        <h3>Matemáticas</h3>
-        <p>Desde sumas y divisiones hasta álgebra de 3º de ESO. Todo con juegos mentales, visuales y lógica adaptada a ti.</p>
+    <section class="hero">
+      <h1>Tu tutor virtual para Matemáticas, Inglés y Lengua</h1>
+      <p>Diseñado especialmente para estudiantes con TDA o dificultades de atención. Paciencia, claridad y diversión en un solo lugar.</p>
+    </section>
+
+    <section class="section" id="que-es">
+      <h2>¿Qué es MultiGenio?</h2>
+      <p>MultiGenio es una inteligencia artificial educativa que enseña con empatía y creatividad. Se adapta a cada estudiante con explicaciones simples, videos visuales y ejemplos divertidos. Aprender ahora es más fácil y estimulante.</p>
+    </section>
+
+    <section class="section" id="materias">
+      <h2>Materias que puedes aprender</h2>
+      <div class="cards">
+        <div class="card">
+          <img src="https://img.icons8.com/color/96/calculator.png" alt="Matemáticas" />
+          <h3>Matemáticas</h3>
+          <p>Desde sumas y divisiones hasta álgebra de 3º de ESO. Todo con juegos mentales, visuales y lógica adaptada a ti.</p>
+        </div>
+        <div class="card">
+          <img src="https://img.icons8.com/color/96/book.png" alt="Lengua" />
+          <h3>Lengua</h3>
+          <p>Domina la morfología, sintaxis y reglas ortográficas con ejemplos creativos y prácticas fáciles de recordar.</p>
+        </div>
+        <div class="card">
+          <img src="https://img.icons8.com/color/96/usa.png" alt="Inglés" />
+          <h3>Inglés</h3>
+          <p>Aprende desde A1 hasta B1: vocabulario, gramática, listening y speaking. Con apoyo visual y audios.</p>
+        </div>
       </div>
-      <div class="card">
-        <img src="https://img.icons8.com/color/96/book.png" alt="Lengua" />
-        <h3>Lengua</h3>
-        <p>Domina la morfología, sintaxis y reglas ortográficas con ejemplos creativos y prácticas fáciles de recordar.</p>
+    </section>
+
+    <section class="section" id="beneficios">
+      <h2>¿Por qué elegir MultiGenio?</h2>
+      <ul>
+        <li>🌟 Explicaciones adaptadas a estudiantes con TDA/TDAH</li>
+        <li>📽️ Videos, ejemplos y contenido creativo</li>
+        <li>🧠 Aprende a tu propio ritmo, sin presión</li>
+        <li>🎓 Ideal para padres, docentes y alumnos</li>
+      </ul>
+    </section>
+
+    <section class="section" id="contacto">
+      <h2>Contacto</h2>
+      <div class="contact-form">
+        <p>¿Quieres probar MultiGenio o tienes dudas? Envíanos un mensaje:</p>
+        <form>
+          <input type="text" placeholder="Tu nombre" required /><br />
+          <input type="email" placeholder="Tu correo electrónico" required /><br />
+          <textarea placeholder="Tu mensaje..." rows="5" required></textarea><br />
+          <button type="submit">Enviar mensaje</button>
+        </form>
       </div>
-      <div class="card">
-        <img src="https://img.icons8.com/color/96/usa.png" alt="Inglés" />
-        <h3>Inglés</h3>
-        <p>Aprende desde A1 hasta B1: vocabulario, gramática, listening y speaking. Con apoyo visual y audios.</p>
-      </div>
+    </section>
+
+    <div id="result-message"></div>
+    <div id="tdah-warning" class="hidden">
+      ⚠️ Si presentas indicios de TDAH, MultiGenio te ofrecerá recursos y estrategias especiales para ayudarte a mantener la concentración y aprovechar tu estilo de aprendizaje.
     </div>
-  </section>
 
-  <section class="section" id="beneficios">
-    <h2>¿Por qué elegir MultiGenio?</h2>
-    <ul>
-      <li>🌟 Explicaciones adaptadas a estudiantes con TDA/TDAH</li>
-      <li>📽️ Videos, ejemplos y contenido creativo</li>
-      <li>🧠 Aprende a tu propio ritmo, sin presión</li>
-      <li>🎓 Ideal para padres, docentes y alumnos</li>
-    </ul>
-  </section>
+    <!-- Chatbase Chatbot Embed -->
+    <script>
+      window.chatbaseConfig = {
+        chatbotId: "frw3UKvg6MK3c9Zw-bZAu"
+      };
+    </script>
+    <script src="https://www.chatbase.co/embed.min.js" defer></script>
 
-  <section class="section" id="contacto">
-    <h2>Contacto</h2>
-    <div class="contact-form">
-      <p>¿Quieres probar MultiGenio o tienes dudas? Envíanos un mensaje:</p>
-      <form>
-        <input type="text" placeholder="Tu nombre" required /><br />
-        <input type="email" placeholder="Tu correo electrónico" required /><br />
-        <textarea placeholder="Tu mensaje..." rows="5" required></textarea><br />
-        <button type="submit">Enviar mensaje</button>
-      </form>
-    </div>
-  </section>
+    <footer>
+      <p>&copy; 2025 MultiGenio. Todos los derechos reservados.</p>
+    </footer>
+  </div>
 
-  <!-- Chatbase Chatbot Embed -->
   <script>
-    window.chatbaseConfig = {
-      chatbotId: "frw3UKvg6MK3c9Zw-bZAu"
-    };
-  </script>
-  <script src="https://www.chatbase.co/embed.min.js" defer></script>
+    const quizContainer = document.getElementById('quiz-container');
+    const mainContent = document.getElementById('main-content');
+    const questionText = document.getElementById('question-text');
+    const optionsDiv = document.getElementById('options');
+    const resultMessage = document.getElementById('result-message');
+    const tdahWarning = document.getElementById('tdah-warning');
 
-  <footer>
-    <p>&copy; 2025 MultiGenio. Todos los derechos reservados.</p>
-  </footer>
+    // Preguntas del cuestionario
+    const quizQuestions = [
+      {
+        question: "¿Cómo prefieres aprender?",
+        options: [
+          { text: "Viendo imágenes, gráficos o videos", value: "visual" },
+          { text: "Escuchando explicaciones o audios", value: "auditivo" },
+          { text: "Leyendo o escribiendo textos", value: "lectura-escritura" },
+          { text: "Haciendo actividades prácticas o manipulativas", value: "kinestesico" }
+        ]
+      },
+      {
+        question: "¿Sueles tener dificultades para mantener la atención o concentración?",
+        options: [
+          { text: "Sí, frecuentemente", value: "tdah" },
+          { text: "A veces", value: "a veces" },
+          { text: "No, casi nunca", value: "no" }
+        ]
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let selectedAnswers = {};
+
+    function showQuestion() {
+      const currentQ = quizQuestions[currentQuestionIndex];
+      questionText.textContent = currentQ.question;
+      optionsDiv.innerHTML = '';
+      currentQ.options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.textContent = option.text;
+        btn.onclick = () => {
+          selectedAnswers[currentQuestionIndex] = option.value;
+          currentQuestionIndex++;
+          if(currentQuestionIndex < quizQuestions.length){
+            showQuestion();
+          } else {
+            finishQuiz();
+          }
+        };
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function finishQuiz() {
+      // Ocultar cuestionario
+      quizContainer.classList.add('hidden');
+      // Mostrar contenido principal
+      mainContent.classList.remove('hidden');
+
+      // Procesar respuestas
+      const estilo = selectedAnswers[0] || 'visual';
+      const tdahAnswer = selectedAnswers[1] || 'no';
+
+      // Mostrar mensaje resultado
+      resultMessage.textContent = `Estilo de aprendizaje detectado: ${estilo.replace('-', ' ')}.`;
+
+      if(tdahAnswer === 'tdah'){
+        tdahWarning.classList.remove('hidden');
+      } else {
+        tdahWarning.classList.add('hidden');
+      }
+    }
+
+    // Iniciar cuestionario al cargar la página
+    showQuestion();
+  </script>
 </body>
 </html>
