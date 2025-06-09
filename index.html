@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MultiGenio - Aprende a tu ritmo</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
@@ -256,6 +256,7 @@
     </section>
 
     <div id="result-message"></div>
+    <div id="study-advice" style="max-width:700px; margin: 0 auto 2rem auto; font-weight:600; color:#23527c;"></div>
     <div id="tdah-warning" class="hidden">
       ⚠️ Si presentas indicios de TDAH, MultiGenio te ofrecerá recursos y estrategias especiales para ayudarte a mantener la concentración y aprovechar tu estilo de aprendizaje.
     </div>
@@ -280,6 +281,7 @@
     const optionsDiv = document.getElementById('options');
     const resultMessage = document.getElementById('result-message');
     const tdahWarning = document.getElementById('tdah-warning');
+    const studyAdvice = document.getElementById('study-advice');
 
     // Preguntas del cuestionario
     const quizQuestions = [
@@ -298,6 +300,33 @@
           { text: "Sí, frecuentemente", value: "tdah" },
           { text: "A veces", value: "a veces" },
           { text: "No, casi nunca", value: "no" }
+        ]
+      },
+      {
+        question: "Cuando estudias, ¿qué te ayuda más a entender y recordar?",
+        options: [
+          { text: "Ver esquemas o mapas conceptuales", value: "visual" },
+          { text: "Escuchar grabaciones o explicaciones en voz alta", value: "auditivo" },
+          { text: "Tomar notas o leer textos varias veces", value: "lectura-escritura" },
+          { text: "Hacer ejercicios prácticos o moverme mientras estudio", value: "kinestesico" }
+        ]
+      },
+      {
+        question: "¿Qué actividad prefieres para aprender algo nuevo?",
+        options: [
+          { text: "Observar demostraciones visuales", value: "visual" },
+          { text: "Participar en discusiones o escuchar explicaciones", value: "auditivo" },
+          { text: "Leer libros o escribir resúmenes", value: "lectura-escritura" },
+          { text: "Experimentar y practicar directamente", value: "kinestesico" }
+        ]
+      },
+      {
+        question: "¿Cómo recuerdas mejor la información?",
+        options: [
+          { text: "Recordando imágenes y colores", value: "visual" },
+          { text: "Recordando sonidos o palabras", value: "auditivo" },
+          { text: "Recordando textos o frases escritas", value: "lectura-escritura" },
+          { text: "Recordando sensaciones y movimientos", value: "kinestesico" }
         ]
       }
     ];
@@ -331,13 +360,47 @@
       // Mostrar contenido principal
       mainContent.classList.remove('hidden');
 
-      // Procesar respuestas
-      const estilo = selectedAnswers[0] || 'visual';
-      const tdahAnswer = selectedAnswers[1] || 'no';
+      // Conteo de estilos, excepto la pregunta 2 (TDAH)
+      const styleCounts = {
+        visual: 0,
+        auditivo: 0,
+        'lectura-escritura': 0,
+        kinestesico: 0
+      };
 
-      // Mostrar mensaje resultado
-      resultMessage.textContent = `Estilo de aprendizaje detectado: ${estilo.replace('-', ' ')}.`;
+      for(let i = 0; i < quizQuestions.length; i++){
+        if(i === 1) continue; // Saltar la pregunta de TDAH
+        const ans = selectedAnswers[i];
+        if(styleCounts.hasOwnProperty(ans)){
+          styleCounts[ans]++;
+        }
+      }
 
+      // Elegir el estilo con mayor puntuación
+      let maxStyle = 'visual';
+      let maxCount = 0;
+      for(const style in styleCounts){
+        if(styleCounts[style] > maxCount){
+          maxCount = styleCounts[style];
+          maxStyle = style;
+        }
+      }
+
+      // Mostrar resultado
+      resultMessage.textContent = `Estilo de aprendizaje detectado: ${maxStyle.replace('-', ' ')}.`;
+
+      // Mostrar recomendaciones según estilo
+      const adviceByStyle = {
+        visual: "Recomendamos usar esquemas, mapas conceptuales, videos y colores para organizar tus ideas. Aprovecha imágenes y gráficos para estudiar.",
+        auditivo: "Aprende mejor con grabaciones, podcasts, explicaciones en voz alta y repitiendo la información oralmente.",
+        'lectura-escritura': "Prefiere leer textos, tomar apuntes, escribir resúmenes y usar listas para organizar la información.",
+        kinestesico: "Es ideal aprender haciendo, usando actividades prácticas, movimientos o ejercicios mientras estudias."
+      };
+
+      studyAdvice.textContent = adviceByStyle[maxStyle] || "";
+
+      // Mostrar advertencia TDAH si aplica
+      const tdahAnswer = selectedAnswers[1];
       if(tdahAnswer === 'tdah'){
         tdahWarning.classList.remove('hidden');
       } else {
