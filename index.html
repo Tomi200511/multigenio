@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MultiGenio - Aprende a tu ritmo</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -148,17 +148,17 @@
     <h2>Materias que puedes aprender</h2>
     <div class="cards">
       <div class="card">
-        <img src="https://img.icons8.com/color/96/calculator.png" alt="Matemáticas">
+        <img src="https://img.icons8.com/color/96/calculator.png" alt="Matemáticas" />
         <h3>Matemáticas</h3>
         <p>Desde sumas y divisiones hasta álgebra de 3º de ESO. Todo con juegos mentales, visuales y lógica adaptada a ti.</p>
       </div>
       <div class="card">
-        <img src="https://img.icons8.com/color/96/book.png" alt="Lengua">
+        <img src="https://img.icons8.com/color/96/book.png" alt="Lengua" />
         <h3>Lengua</h3>
         <p>Domina la morfología, sintaxis y reglas ortográficas con ejemplos creativos y prácticas fáciles de recordar.</p>
       </div>
       <div class="card">
-        <img src="https://img.icons8.com/color/96/usa.png" alt="Inglés">
+        <img src="https://img.icons8.com/color/96/usa.png" alt="Inglés" />
         <h3>Inglés</h3>
         <p>Aprende desde A1 hasta B1: vocabulario, gramática, listening y speaking. Con apoyo visual y audios.</p>
       </div>
@@ -180,46 +180,24 @@
     <div class="contact-form">
       <p>¿Quieres probar MultiGenio o tienes dudas? Envíanos un mensaje:</p>
       <form>
-        <input type="text" placeholder="Tu nombre" required><br>
-        <input type="email" placeholder="Tu correo electrónico" required><br>
-        <textarea placeholder="Tu mensaje..." rows="5" required></textarea><br>
+        <input type="text" placeholder="Tu nombre" required /><br />
+        <input type="email" placeholder="Tu correo electrónico" required /><br />
+        <textarea placeholder="Tu mensaje..." rows="5" required></textarea><br />
         <button type="submit">Enviar mensaje</button>
       </form>
     </div>
   </section>
 
+  <!-- Chatbase Chatbot Embed -->
+  <script>
+    window.chatbaseConfig = {
+      chatbotId: "frw3UKvg6MK3c9Zw-bZAu"
+    };
+  </script>
+  <script src="https://www.chatbase.co/embed.min.js" defer></script>
+
   <footer>
     <p>&copy; 2025 MultiGenio. Todos los derechos reservados.</p>
   </footer>
-
-  <!-- Código oficial Chatbase -->
-  <script>
-    (function(){
-      if(!window.chatbase || window.chatbase("getState") !== "initialized"){
-        window.chatbase = (...arguments) => {
-          if(!window.chatbase.q){ window.chatbase.q = [] }
-          window.chatbase.q.push(arguments);
-        };
-        window.chatbase = new Proxy(window.chatbase, {
-          get(target, prop){
-            if(prop === "q"){ return target.q }
-            return (...args) => target(prop, ...args);
-          }
-        });
-        const onLoad = function(){
-          const script = document.createElement("script");
-          script.src = "https://www.chatbase.co/embed.min.js";
-          script.id = "frw3UKvg6MK3c9Zw-bZAu";
-          script.domain = "www.chatbase.co";
-          document.body.appendChild(script);
-        };
-        if(document.readyState === "complete"){
-          onLoad();
-        } else {
-          window.addEventListener("load", onLoad);
-        }
-      }
-    })();
-  </script>
 </body>
 </html>
