@@ -1,121 +1,250 @@
-// App educativa "MultiGenio" con estilo juvenil, cuestionario inicial, resultados de estilo y materias adaptadas, y chatbot con IA
-
-import { useState } from "react";
-
-const questions = [
-  {
-    id: "q1",
-    text: "¿Qué prefieres al estudiar?",
-    options: ["Ver imágenes o videos", "Escuchar explicaciones", "Moverte o hacer cosas", "Leer y escribir"],
-  },
-  {
-    id: "q2",
-    text: "¿Te cuesta mantener la atención mucho tiempo?",
-    options: ["Sí, con frecuencia", "A veces", "No mucho"],
-  },
-];
-
-const detectLearningStyle = (answers) => {
-  if (answers.q1 === "Ver imágenes o videos") return "Visual";
-  if (answers.q1 === "Escuchar explicaciones") return "Auditivo";
-  if (answers.q1 === "Moverte o hacer cosas") return "Kinestésico";
-  if (answers.q1 === "Leer y escribir") return "Escrito";
-  return "Mixto";
-};
-
-export default function App() {
-  const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState({});
-  const [style, setStyle] = useState(null);
-  const [hasTDAH, setHasTDAH] = useState(false);
-  const [chat, setChat] = useState("");
-  const [response, setResponse] = useState("");
-
-  const handleAnswer = (questionId, answer) => {
-    const newAnswers = { ...answers, [questionId]: answer };
-    setAnswers(newAnswers);
-
-    if (questionId === "q2" && answer === "Sí, con frecuencia") setHasTDAH(true);
-
-    if (step + 1 < questions.length) {
-      setStep(step + 1);
-    } else {
-      const detectedStyle = detectLearningStyle(newAnswers);
-      setStyle(detectedStyle);
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MultiGenio - Aprende a tu ritmo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #c3dbf7, #a7b7e3);
+      margin: 0; padding: 20px;
+      display: flex; justify-content: center;
     }
-  };
+    .container {
+      background: white;
+      max-width: 700px;
+      width: 100%;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    h1 {
+      color: #3b82f6;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .question, .resources, .chatbot {
+      margin-top: 20px;
+    }
+    .btn-option {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      background: #3b82f6;
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .btn-option:hover {
+      background: #2563eb;
+    }
+    .btn-reset {
+      background: #ef4444;
+      margin-top: 25px;
+    }
+    h2 {
+      color: #1e40af;
+      margin-bottom: 10px;
+    }
+    p {
+      color: #333;
+      line-height: 1.4;
+    }
+    textarea {
+      width: 100%;
+      min-height: 80px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      padding: 8px;
+      font-family: 'Poppins', sans-serif;
+    }
+    button.chat-submit {
+      margin-top: 10px;
+      background: #8b5cf6;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .chat-response {
+      margin-top: 15px;
+      background: #ede9fe;
+      padding: 15px;
+      border-radius: 10px;
+      color: #5b21b6;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎓 MultiGenio: Tu App de Aprendizaje Inteligente</h1>
 
-  const renderResources = () => (
-    <div className="space-y-4 mt-6">
-      <h2 className="text-xl font-bold">Recursos según tu estilo: {style}</h2>
-      <h3 className="text-lg font-semibold">📘 Lengua</h3>
-      {style === "Visual" && <p>Mapas conceptuales de sintaxis, videos explicativos de morfología, infografías de ortografía.</p>}
-      {style === "Auditivo" && <p>Audios sobre tipos de palabras, reglas gramaticales narradas.</p>}
-      {style === "Escrito" && <p>Ejercicios escritos, resúmenes, reglas para copiar y memorizar.</p>}
-      {style === "Kinestésico" && <p>Juegos interactivos para clasificar palabras y construir oraciones.</p>}
-
-      <h3 className="text-lg font-semibold">🔢 Matemáticas</h3>
-      {style === "Visual" && <p>Esquemas de operaciones, videos de problemas visuales.</p>}
-      {style === "Auditivo" && <p>Explicaciones habladas de resolución de problemas.</p>}
-      {style === "Escrito" && <p>Listas de ejercicios resueltos paso a paso.</p>}
-      {style === "Kinestésico" && <p>Juegos para practicar sumas, restas, problemas prácticos.</p>}
-
-      <h3 className="text-lg font-semibold">🌍 Inglés (A1–B1)</h3>
-      {style === "Visual" && <p>Flashcards con imágenes, videos con subtítulos.</p>}
-      {style === "Auditivo" && <p>Podcasts, diálogos grabados.</p>}
-      {style === "Escrito" && <p>Lecturas simples, fichas de gramática.</p>}
-      {style === "Kinestésico" && <p>Juegos de vocabulario, apps con movimiento.</p>}
-
-      {hasTDAH && (
-        <div className="mt-4 p-3 bg-yellow-100 rounded">
-          <h4 className="font-bold">⚡ Recomendaciones para TDA-H</h4>
-          <p>Contenidos divididos en bloques cortos, recompensas visuales, estímulos constantes como sonido y color.</p>
-        </div>
-      )}
-
-      {/* Chatbot */}
-      <div className="mt-6">
-        <h3 className="text-lg font-bold mb-2">🤖 Pregunta al Asistente</h3>
-        <textarea
-          className="w-full p-2 border rounded"
-          placeholder="¿Qué quieres saber sobre una materia?"
-          value={chat}
-          onChange={(e) => setChat(e.target.value)}
-        />
-        <button
-          className="mt-2 bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded"
-          onClick={() => setResponse(`(Simulación IA) Respuesta a: "${chat}"`)}
-        >
-          Preguntar
-        </button>
-        {response && <p className="mt-4 bg-gray-100 p-3 rounded">{response}</p>}
-      </div>
+    <div id="quiz-container" class="question">
+      <p id="question-text"></p>
+      <div id="options-container"></div>
     </div>
-  );
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 flex flex-col items-center justify-center p-6">
-      <div className="bg-white p-8 rounded-2xl shadow-xl max-w-xl w-full">
-        <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">🎓 MultiGenio: Tu App de Aprendizaje Inteligente</h1>
-        {!style ? (
-          <div>
-            <p className="text-lg font-semibold mb-4">{questions[step].text}</p>
-            <div className="space-y-2">
-              {questions[step].options.map((opt) => (
-                <button
-                  key={opt}
-                  onClick={() => handleAnswer(questions[step].id, opt)}
-                  className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl"
-                >
-                  {opt}
-                </button>
-              ))}
-            </div>
-          </div>
-        ) : (
-          renderResources()
-        )}
+    <div id="resources-container" class="resources" style="display:none;">
+      <h2>Recursos según tu estilo: <span id="style-name"></span></h2>
+
+      <h3>📘 Lengua</h3>
+      <p id="lengua-resource"></p>
+
+      <h3>🔢 Matemáticas</h3>
+      <p id="mates-resource"></p>
+
+      <h3>🌍 Inglés (A1–B1)</h3>
+      <p id="ingles-resource"></p>
+
+      <div id="tdah-advice" style="background:#fef3c7; padding:10px; border-radius:10px; margin-top:20px; display:none;">
+        <h4>⚡ Recomendaciones para TDA-H</h4>
+        <p>Contenidos divididos en bloques cortos, recompensas visuales, estímulos constantes como sonido y color.</p>
       </div>
+
+      <button id="restart-btn" class="btn-option btn-reset">🔁 Volver a empezar</button>
     </div>
-  );
-}
+
+    <div class="chatbot" style="margin-top:40px;">
+      <h2>🤖 Pregunta al Asistente</h2>
+      <textarea id="chat-input" placeholder="¿Qué quieres saber sobre una materia?"></textarea>
+      <button id="chat-submit" class="chat-submit">Preguntar</button>
+      <div id="chat-response" class="chat-response" style="display:none;"></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        id: "q1",
+        text: "¿Qué prefieres al estudiar?",
+        options: ["Ver imágenes o videos", "Escuchar explicaciones", "Moverte o hacer cosas", "Leer y escribir"],
+      },
+      {
+        id: "q2",
+        text: "¿Te cuesta mantener la atención mucho tiempo?",
+        options: ["Sí, con frecuencia", "A veces", "No mucho"],
+      },
+    ];
+
+    let step = 0;
+    const answers = {};
+    let style = null;
+    let hasTDAH = false;
+
+    const quizContainer = document.getElementById('quiz-container');
+    const questionText = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options-container');
+    const resourcesContainer = document.getElementById('resources-container');
+    const styleNameSpan = document.getElementById('style-name');
+    const lenguaResource = document.getElementById('lengua-resource');
+    const matesResource = document.getElementById('mates-resource');
+    const inglesResource = document.getElementById('ingles-resource');
+    const tdahAdvice = document.getElementById('tdah-advice');
+    const restartBtn = document.getElementById('restart-btn');
+
+    const chatInput = document.getElementById('chat-input');
+    const chatSubmit = document.getElementById('chat-submit');
+    const chatResponse = document.getElementById('chat-response');
+
+    function detectLearningStyle(ans) {
+      if(ans.q1 === "Ver imágenes o videos") return "Visual";
+      if(ans.q1 === "Escuchar explicaciones") return "Auditivo";
+      if(ans.q1 === "Moverte o hacer cosas") return "Kinestésico";
+      if(ans.q1 === "Leer y escribir") return "Escrito";
+      return "Mixto";
+    }
+
+    function renderQuestion() {
+      questionText.textContent = questions[step].text;
+      optionsContainer.innerHTML = "";
+      questions[step].options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.classList.add('btn-option');
+        btn.textContent = opt;
+        btn.onclick = () => handleAnswer(questions[step].id, opt);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function handleAnswer(qId, answer) {
+      answers[qId] = answer;
+      if(qId === "q2" && answer === "Sí, con frecuencia") hasTDAH = true;
+
+      step++;
+      if(step < questions.length) {
+        renderQuestion();
+      } else {
+        style = detectLearningStyle(answers);
+        showResources();
+      }
+    }
+
+    function showResources() {
+      quizContainer.style.display = "none";
+      resourcesContainer.style.display = "block";
+      styleNameSpan.textContent = style;
+
+      const lenguaMap = {
+        Visual: "Mapas conceptuales de sintaxis, videos explicativos de morfología, infografías de ortografía.",
+        Auditivo: "Audios sobre tipos de palabras, reglas gramaticales narradas.",
+        Escrito: "Ejercicios escritos, resúmenes, reglas para copiar y memorizar.",
+        Kinestésico: "Juegos interactivos para clasificar palabras y construir oraciones.",
+        Mixto: "Una combinación de recursos visuales, auditivos y escritos."
+      };
+      const matesMap = {
+        Visual: "Esquemas de operaciones, videos de problemas visuales.",
+        Auditivo: "Explicaciones habladas de resolución de problemas.",
+        Escrito: "Listas de ejercicios resueltos paso a paso.",
+        Kinestésico: "Juegos para practicar sumas, restas, problemas prácticos.",
+        Mixto: "Diversos métodos para consolidar habilidades matemáticas."
+      };
+      const inglesMap = {
+        Visual: "Flashcards con imágenes, videos con subtítulos.",
+        Auditivo: "Podcasts, diálogos grabados.",
+        Escrito: "Lecturas simples, fichas de gramática.",
+        Kinestésico: "Juegos de vocabulario, apps con movimiento.",
+        Mixto: "Recursos variados para todos los estilos."
+      };
+
+      lenguaResource.textContent = lenguaMap[style] || "";
+      matesResource.textContent = matesMap[style] || "";
+      inglesResource.textContent = inglesMap[style] || "";
+
+      tdahAdvice.style.display = hasTDAH ? "block" : "none";
+    }
+
+    restartBtn.addEventListener('click', () => {
+      step = 0;
+      style = null;
+      hasTDAH = false;
+      for (const key in answers) delete answers[key];
+      resourcesContainer.style.display = "none";
+      quizContainer.style.display = "block";
+      chatResponse.style.display = "none";
+      chatInput.value = "";
+      renderQuestion();
+    });
+
+    chatSubmit.addEventListener('click', () => {
+      const question = chatInput.value.trim();
+      if(!question) return alert("Por favor escribe una pregunta.");
+      // Simulación respuesta IA
+      chatResponse.style.display = "block";
+      chatResponse.textContent = `🤖 (Simulación IA) Respuesta a: "${question}"`;
+      chatInput.value = "";
+    });
+
+    // Inicializa el cuestionario
+    renderQuestion();
+  </script>
+</body>
+</html>
