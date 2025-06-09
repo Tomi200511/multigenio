@@ -3,298 +3,149 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MultiGenio - Aprende a tu ritmo</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <title>Cuestionario MultiGenio - Paso a paso</title>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: #f9f9f9;
-      color: #333;
-    }
-    h1, h2, h3 {
-      color: #333;
+      background: #f0f4ff;
+      margin: 0; padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
     .container {
-      max-width: 900px;
-      margin: 0 auto;
       background: white;
-      padding: 20px 30px;
       border-radius: 8px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.1);
-    }
-    .cards {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-top: 20px;
-    }
-    .card {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      flex: 1 1 250px;
-      padding: 15px;
+      padding: 30px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 0 15px rgba(0,0,0,0.15);
       text-align: center;
     }
-    .card img {
-      max-width: 96px;
-      margin-bottom: 10px;
-    }
-    .contact-form {
-      margin-top: 40px;
-    }
-    .contact-form form input,
-    .contact-form form textarea {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 15px;
-      font-size: 1rem;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-    .contact-form form button {
-      background: #4a90e2;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      font-size: 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .contact-form form button:hover {
-      background: #357ABD;
-    }
-    /* Cuestionario */
-    #quiz {
-      margin: 30px 0;
-    }
-    #quiz h2 {
+    h2 {
       margin-bottom: 20px;
+      color: #1E40AF;
     }
     .question {
       margin-bottom: 20px;
+      text-align: left;
     }
     label {
       display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-    select, input[type="radio"] {
-      margin-right: 10px;
+      margin: 10px 0;
       cursor: pointer;
+      font-weight: 500;
     }
-    #results {
-      margin-top: 20px;
-      background: #eef6ff;
-      border: 1px solid #4a90e2;
-      padding: 15px;
+    button {
+      background: #1E40AF;
+      color: white;
+      border: none;
+      padding: 12px 20px;
       border-radius: 6px;
-      display: none;
+      cursor: pointer;
+      font-size: 1rem;
     }
-    footer {
-      text-align: center;
-      margin-top: 50px;
-      color: #666;
-      font-size: 0.9rem;
+    button:disabled {
+      background: #888;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
   <div class="container">
-
-    <h1>MultiGenio - Aprende a tu ritmo</h1>
-
-    <!-- Cuestionario -->
-    <section id="quiz">
-      <h2>Cuestionario de aprendizaje para personalizar tu experiencia</h2>
-      <form id="quiz-form">
-
-        <div class="question">
-          <label>1. ¿Cómo prefieres aprender nuevo contenido?</label>
-          <label><input type="radio" name="q1" value="Visual" required> A través de imágenes, gráficos y videos</label>
-          <label><input type="radio" name="q1" value="Auditivo"> Escuchando explicaciones o audios</label>
-          <label><input type="radio" name="q1" value="Kinestésico"> Haciendo ejercicios prácticos o experimentando</label>
-          <label><input type="radio" name="q1" value="Lectura/Escritura"> Leyendo y escribiendo notas</label>
-        </div>
-
-        <div class="question">
-          <label>2. Cuando tienes una dificultad para entender algo, ¿qué haces principalmente?</label>
-          <label><input type="radio" name="q2" value="Buscar ejemplos"> Busco ejemplos prácticos para entender mejor</label>
-          <label><input type="radio" name="q2" value="Pedir ayuda"> Pregunto a alguien o busco explicaciones adicionales</label>
-          <label><input type="radio" name="q2" value="Repetir"> Repito el material varias veces hasta entender</label>
-          <label><input type="radio" name="q2" value="Tomar descansos"> Me tomo pausas y vuelvo con la mente fresca</label>
-        </div>
-
-        <div class="question">
-          <label>3. ¿Cuál crees que es tu principal fortaleza al estudiar?</label>
-          <label><input type="radio" name="q3" value="Memoria"> Memorizar información rápidamente</label>
-          <label><input type="radio" name="q3" value="Comprensión"> Entender conceptos complejos con facilidad</label>
-          <label><input type="radio" name="q3" value="Organización"> Planificar y organizar bien el estudio</label>
-          <label><input type="radio" name="q3" value="Creatividad"> Buscar métodos creativos para aprender</label>
-        </div>
-
-        <div class="question">
-          <label>4. ¿Qué momento del día sientes que rindes mejor para estudiar?</label>
-          <label><input type="radio" name="q4" value="Mañana" required> Mañana</label>
-          <label><input type="radio" name="q4" value="Tarde"> Tarde</label>
-          <label><input type="radio" name="q4" value="Noche"> Noche</label>
-          <label><input type="radio" name="q4" value="Indiferente"> No tengo un momento preferido</label>
-        </div>
-
-        <div class="question">
-          <label>5. ¿Qué aspecto te gustaría mejorar más en tu forma de aprender?</label>
-          <label><input type="radio" name="q5" value="Concentración" required> Mantener mejor la concentración</label>
-          <label><input type="radio" name="q5" value="Memoria"> Mejorar la memoria</label>
-          <label><input type="radio" name="q5" value="Organización"> Organizar mejor el tiempo y tareas</label>
-          <label><input type="radio" name="q5" value="Técnicas"> Usar mejores técnicas de estudio</label>
-        </div>
-
-        <button type="submit">Enviar cuestionario</button>
-      </form>
-
-      <div id="results"></div>
-    </section>
-
-    <!-- Contenido original de MultiGenio -->
-    <section id="multiGenio">
-      <h2>Materias que puedes aprender</h2>
-      <div class="cards">
-        <div class="card">
-          <img src="https://img.icons8.com/color/96/calculator.png" alt="Matemáticas" />
-          <h3>Matemáticas</h3>
-          <p>Desde sumas y divisiones hasta álgebra de 3º de ESO. Todo con juegos mentales, visuales y lógica adaptada a ti.</p>
-        </div>
-        <div class="card">
-          <img src="https://img.icons8.com/color/96/book.png" alt="Lengua" />
-          <h3>Lengua</h3>
-          <p>Domina la morfología, sintaxis y reglas ortográficas con ejemplos creativos y prácticas fáciles de recordar.</p>
-        </div>
-        <div class="card">
-          <img src="https://img.icons8.com/color/96/usa.png" alt="Inglés" />
-          <h3>Inglés</h3>
-          <p>Aprende desde A1 hasta B1: vocabulario, gramática, listening y speaking. Con apoyo visual y audios.</p>
-        </div>
-      </div>
-
-      <div class="contact-form">
-        <p>¿Quieres probar MultiGenio o tienes dudas? Envíanos un mensaje:</p>
-        <form>
-          <input type="text" placeholder="Tu nombre" required /><br />
-          <input type="email" placeholder="Tu correo electrónico" required /><br />
-          <textarea placeholder="Tu mensaje..." rows="5" required></textarea><br />
-          <button type="submit">Enviar mensaje</button>
-        </form>
-      </div>
-    </section>
-
+    <h2>Cuestionario MultiGenio</h2>
+    <form id="quiz-form">
+      <div id="question-container"></div>
+      <button id="next-btn" disabled>Siguiente</button>
+    </form>
   </div>
 
-  <!-- Chatbase Chatbot Embed -->
-  <script>
-    window.chatbaseConfig = {
-      chatbotId: "frw3UKvg6MK3c9Zw-bZAu"
-    };
-  </script>
-  <script src="https://www.chatbase.co/embed.min.js" defer></script>
+<script>
+  const questions = [
+    {
+      text: "¿Cómo prefieres aprender nuevo contenido?",
+      options: ["Visual", "Auditivo", "Kinestésico", "Lectura/Escritura"],
+      name: "q1"
+    },
+    {
+      text: "Cuando tienes una dificultad para entender algo, ¿qué haces principalmente?",
+      options: ["Buscar ejemplos", "Pedir ayuda", "Repetir", "Tomar descansos"],
+      name: "q2"
+    },
+    {
+      text: "¿Cuál crees que es tu principal fortaleza al estudiar?",
+      options: ["Memoria", "Comprensión", "Organización", "Creatividad"],
+      name: "q3"
+    },
+    {
+      text: "¿Qué momento del día sientes que rindes mejor para estudiar?",
+      options: ["Mañana", "Tarde", "Noche", "Indiferente"],
+      name: "q4"
+    },
+    {
+      text: "¿Qué aspecto te gustaría mejorar más en tu forma de aprender?",
+      options: ["Concentración", "Memoria", "Organización", "Técnicas"],
+      name: "q5"
+    }
+  ];
 
-  <footer>
-    <p>&copy; 2025 MultiGenio. Todos los derechos reservados.</p>
-  </footer>
+  const questionContainer = document.getElementById('question-container');
+  const nextBtn = document.getElementById('next-btn');
+  const form = document.getElementById('quiz-form');
 
-  <script>
-    const form = document.getElementById('quiz-form');
-    const resultsDiv = document.getElementById('results');
+  let currentQuestionIndex = 0;
+  let answers = {};
 
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      // Leer respuestas
-      const formData = new FormData(form);
-      const answers = {};
-      for (const [key, value] of formData.entries()) {
-        answers[key] = value;
-      }
-
-      // Análisis simple para demo (puedes reemplazar con IA)
-      let learningStyle = answers.q1;
-      let difficultyHandling = answers.q2;
-      let strength = answers.q3;
-      let bestTime = answers.q4;
-      let wantToImprove = answers.q5;
-
-      let message = `<h3>Resultado personalizado</h3>`;
-      message += `<p><strong>Estilo de aprendizaje preferido:</strong> ${learningStyle}</p>`;
-      message += `<p><strong>Manejo de dificultades:</strong> ${difficultyHandling}</p>`;
-      message += `<p><strong>Fortaleza principal:</strong> ${strength}</p>`;
-      message += `<p><strong>Mejor momento para estudiar:</strong> ${bestTime}</p>`;
-      message += `<p><strong>Aspecto a mejorar:</strong> ${wantToImprove}</p>`;
-
-      // Consejos básicos según respuesta para ejemplo
-      message += `<h4>Recomendaciones:</h4><ul>`;
-
-      if(learningStyle === 'Visual') {
-        message += `<li>Usa mapas mentales y videos para facilitar tu aprendizaje.</li>`;
-      } else if(learningStyle === 'Auditivo') {
-        message += `<li>Escucha podcasts o graba tus apuntes para repasarlos.</li>`;
-      } else if(learningStyle === 'Kinestésico') {
-        message += `<li>Realiza actividades prácticas y experimenta con juegos educativos.</li>`;
-      } else if(learningStyle === 'Lectura/Escritura') {
-        message += `<li>Haz resúmenes escritos y lee en voz alta para retener mejor.</li>`;
-      }
-
-      if(wantToImprove === 'Concentración') {
-        message += `<li>Prueba técnicas como la técnica Pomodoro para mejorar tu concentración.</li>`;
-      } else if(wantToImprove === 'Memoria') {
-        message += `<li>Usa mnemotecnias y repite en voz alta para reforzar la memoria.</li>`;
-      } else if(wantToImprove === 'Organización') {
-        message += `<li>Planifica tu tiempo con agendas o apps para no dispersarte.</li>`;
-      } else if(wantToImprove === 'Técnicas') {
-        message += `<li>Investiga diferentes métodos de estudio y elige los que más te convengan.</li>`;
-      }
-
-      message += `</ul>`;
-
-      resultsDiv.innerHTML = message;
-      resultsDiv.style.display = 'block';
-
-      // Opcional: desplazar vista al resultado
-      resultsDiv.scrollIntoView({ behavior: 'smooth' });
+  function showQuestion(index) {
+    nextBtn.disabled = true;
+    const q = questions[index];
+    let html = `<div class="question"><p><strong>${q.text}</strong></p>`;
+    q.options.forEach((opt, i) => {
+      html += `
+        <label>
+          <input type="radio" name="${q.name}" value="${opt}" />
+          ${opt}
+        </label>
+      `;
     });
-  </script>
+    html += '</div>';
+    questionContainer.innerHTML = html;
 
-  <!-- Código oficial Chatbase (dejas como estaba) -->
-  <script>
-    (function(){
-      if(!window.chatbase || window.chatbase("getState") !== "initialized"){
-        window.chatbase = (...arguments) => {
-          if(!window.chatbase.q){ window.chatbase.q = [] }
-          window.chatbase.q.push(arguments);
-        };
-        window.chatbase = new Proxy(window.chatbase, {
-          get(target, prop){
-            if(prop === "q"){ return target.q }
-            return (...args) => target(prop, ...args);
-          }
-        });
-        const onLoad = function(){
-          const script = document.createElement("script");
-          script.src = "https://www.chatbase.co/embed.min.js";
-          script.id = "frw3UKvg6MK3c9Zw-bZAu";
-          script.domain = "www.chatbase.co";
-          document.body.appendChild(script);
-        };
-        if(document.readyState === "complete"){
-          onLoad();
-        } else {
-          window.addEventListener("load", onLoad);
-        }
-      }
-    })();
-  </script>
+    // Escuchar selección para activar botón
+    const inputs = questionContainer.querySelectorAll('input[type=radio]');
+    inputs.forEach(input => {
+      input.addEventListener('change', () => {
+        nextBtn.disabled = false;
+      });
+    });
+
+    // Cambiar texto botón si es última pregunta
+    nextBtn.textContent = (index === questions.length - 1) ? 'Enviar' : 'Siguiente';
+  }
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+
+    // Obtener respuesta seleccionada
+    const selected = questionContainer.querySelector('input[type=radio]:checked');
+    if (!selected) return; // seguridad
+
+    answers[questions[currentQuestionIndex].name] = selected.value;
+
+    if (currentQuestionIndex < questions.length -1) {
+      currentQuestionIndex++;
+      showQuestion(currentQuestionIndex);
+      nextBtn.disabled = true;
+    } else {
+      // Cuestionario terminado: enviar a main.html con respuestas en query string
+      const query = new URLSearchParams(answers).toString();
+      window.location.href = `main.html?${query}`;
+    }
+  });
+
+  // Mostrar primera pregunta al cargar
+  showQuestion(currentQuestionIndex);
+</script>
 </body>
 </html>
