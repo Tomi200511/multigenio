@@ -8,274 +8,398 @@
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #a8edea, #fed6e3);
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-    }
-    .container {
-      background: white;
-      max-width: 600px;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+      margin: 0; padding: 20px;
+      display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh;
     }
     h1 {
-      color: #4a90e2;
+      color: #2c3e50;
+      margin-bottom: 20px;
       text-align: center;
-      margin-bottom: 25px;
     }
-    #quiz-container, #resources-container {
+    #quiz-container, #resources, #main-app {
+      background: white;
+      border-radius: 12px;
+      padding: 25px 30px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       margin-bottom: 20px;
     }
-    #question-text {
+    .question {
       font-weight: 600;
       font-size: 1.2rem;
       margin-bottom: 15px;
     }
-    #options-container button {
+    .options button {
       display: block;
       width: 100%;
-      padding: 12px 20px;
-      margin-bottom: 10px;
-      border: none;
-      background-color: #4a90e2;
-      color: white;
-      font-weight: 600;
-      font-size: 1rem;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    #options-container button:hover {
-      background-color: #357ABD;
-    }
-    #resources-container h2 {
-      color: #333;
-      margin-bottom: 15px;
-    }
-    #resources-container p {
-      margin-bottom: 10px;
-      font-size: 1rem;
-      color: #555;
-    }
-    #tdah-advice {
-      background-color: #fff3cd;
-      padding: 15px;
-      border-radius: 10px;
-      border: 1px solid #ffeeba;
-      margin-top: 15px;
-      font-weight: 600;
-      color: #856404;
-    }
-    #restart-btn {
-      background-color: #e94e77;
+      padding: 12px 0;
+      margin: 8px 0;
+      background-color: #2980b9;
       color: white;
       border: none;
-      padding: 12px 25px;
-      border-radius: 10px;
+      border-radius: 8px;
+      font-size: 1rem;
       cursor: pointer;
-      font-weight: 700;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.25s ease;
+    }
+    .options button:hover {
+      background-color: #1c5980;
+    }
+    #restart-btn, #access-btn {
       margin-top: 20px;
-      width: 100%;
+      padding: 12px 25px;
+      font-size: 1rem;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: none;
+      transition: background-color 0.25s ease;
     }
-    #restart-btn:hover {
-      background-color: #c93a5d;
+    #restart-btn:hover, #access-btn:hover {
+      background-color: #1e8449;
     }
-    /* Chatbot */
-    #chat-container {
+    h2, h3 {
+      color: #34495e;
+    }
+    p {
+      color: #555;
+      line-height: 1.4;
+    }
+    .tdah-warning {
+      margin-top: 15px;
+      padding: 12px;
+      background-color: #f9e79f;
+      border-radius: 10px;
+      font-weight: 600;
+      color: #b7950b;
+    }
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+    .card {
+      background: #f0f6fc;
+      border-radius: 12px;
+      padding: 15px;
+      flex: 1 1 180px;
+      max-width: 180px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .card img {
+      width: 80px;
+      margin-bottom: 10px;
+    }
+    .chatbot-section {
       margin-top: 30px;
     }
-    #chat-input {
+    textarea {
       width: 100%;
-      padding: 12px 15px;
+      padding: 10px;
       font-size: 1rem;
-      border-radius: 10px;
+      border-radius: 8px;
       border: 1px solid #ccc;
       resize: vertical;
-      margin-bottom: 10px;
-      box-sizing: border-box;
     }
-    #chat-submit {
-      background-color: #4a90e2;
+    button.send-chat {
+      margin-top: 10px;
+      background-color: #2980b9;
       color: white;
       border: none;
-      padding: 12px 25px;
-      border-radius: 10px;
+      padding: 10px 20px;
+      border-radius: 8px;
       cursor: pointer;
-      font-weight: 700;
-      width: 100%;
-      transition: background-color 0.3s ease;
+      font-size: 1rem;
     }
-    #chat-submit:hover {
-      background-color: #357ABD;
+    button.send-chat:hover {
+      background-color: #1c5980;
     }
     #chat-response {
       margin-top: 15px;
-      background-color: #f0f4f8;
-      padding: 15px;
+      background: #e3f2fd;
+      padding: 12px;
       border-radius: 10px;
-      font-style: italic;
-      color: #333;
-      display: none;
+      min-height: 80px;
+      white-space: pre-wrap;
+      color: #1b2838;
+    }
+    footer {
+      margin-top: auto;
+      padding: 15px 0;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🎓 MultiGenio: Tu App de Aprendizaje Inteligente</h1>
+  <h1>🎓 MultiGenio: Tu App de Aprendizaje Inteligente</h1>
 
-    <!-- Cuestionario -->
-    <div id="quiz-container">
-      <p id="question-text"></p>
-      <div id="options-container"></div>
-    </div>
+  <!-- Cuestionario -->
+  <div id="quiz-container"></div>
 
-    <!-- Recursos adaptados -->
-    <div id="resources-container" style="display:none;">
-      <h2>Recursos según tu estilo: <span id="style-name"></span></h2>
-      <p><strong>📘 Lengua:</strong> <span id="lengua-resource"></span></p>
-      <p><strong>🔢 Matemáticas:</strong> <span id="mates-resource"></span></p>
-      <p><strong>🌍 Inglés (A1–B1):</strong> <span id="ingles-resource"></span></p>
-      <div id="tdah-advice" style="display:none;">
-        ⚡ <strong>Recomendaciones para TDA-H:</strong> Contenidos divididos en bloques cortos, recompensas visuales, estímulos constantes como sonido y color.
+  <!-- Recursos según estilo -->
+  <div id="resources" style="display:none;"></div>
+
+  <!-- Botones -->
+  <button id="restart-btn">Reiniciar cuestionario</button>
+  <button id="access-btn">Acceder a MultiGenio</button>
+
+  <!-- Página principal con materias y chatbot -->
+  <div id="main-app" style="display:none;">
+    <h2>Materias que puedes aprender</h2>
+    <div class="cards">
+      <div class="card">
+        <img src="https://img.icons8.com/color/96/calculator.png" alt="Matemáticas" />
+        <h3>Matemáticas</h3>
+        <p>Desde sumas y divisiones hasta álgebra de 3º de ESO. Todo con juegos mentales, visuales y lógica adaptada a ti.</p>
       </div>
-      <button id="restart-btn">🔄 Volver a empezar</button>
+      <div class="card">
+        <img src="https://img.icons8.com/color/96/book.png" alt="Lengua" />
+        <h3>Lengua</h3>
+        <p>Domina la morfología, sintaxis y reglas ortográficas con ejemplos creativos y prácticas fáciles de recordar.</p>
+      </div>
+      <div class="card">
+        <img src="https://img.icons8.com/color/96/usa.png" alt="Inglés" />
+        <h3>Inglés</h3>
+        <p>Aprende desde A1 hasta B1: vocabulario, gramática, listening y speaking. Con apoyo visual y audios.</p>
+      </div>
     </div>
 
-    <!-- Chatbot -->
-    <div id="chat-container">
-      <textarea id="chat-input" rows="3" placeholder="¿Qué quieres saber sobre una materia?"></textarea>
-      <button id="chat-submit">Preguntar</button>
+    <div class="chatbot-section">
+      <h3>🤖 Analiza tus dificultades y virtudes</h3>
+      <textarea id="chat-input" placeholder="Escribe aquí tus dudas, dificultades o reflexiones..." rows="4"></textarea>
+      <button class="send-chat" id="send-chat-btn">Enviar</button>
       <div id="chat-response"></div>
     </div>
   </div>
 
+  <footer>
+    <p>&copy; 2025 MultiGenio. Todos los derechos reservados.</p>
+  </footer>
+
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+      // Preguntas más profundas para detectar virtudes/dificultades/hábitos
       const questions = [
         {
           id: "q1",
-          text: "¿Qué prefieres al estudiar?",
-          options: ["Ver imágenes o videos", "Escuchar explicaciones", "Moverte o hacer cosas", "Leer y escribir"],
+          text: "Cuando estudias, ¿qué método te ayuda más a entender un tema complicado?",
+          options: [
+            "Ver esquemas o imágenes que expliquen el contenido",
+            "Escuchar explicaciones o discusiones sobre el tema",
+            "Hacer actividades prácticas o ejercicios relacionados",
+            "Leer y tomar apuntes detallados"
+          ]
         },
         {
           id: "q2",
-          text: "¿Te cuesta mantener la atención mucho tiempo?",
-          options: ["Sí, con frecuencia", "A veces", "No mucho"],
+          text: "¿Con qué frecuencia sientes que te distraes durante el estudio?",
+          options: [
+            "Muy frecuentemente, me cuesta concentrarme",
+            "A veces me distraigo, pero vuelvo rápido",
+            "Rara vez me distraigo"
+          ]
         },
+        {
+          id: "q3",
+          text: "Cuando enfrentas un problema difícil, ¿qué haces normalmente?",
+          options: [
+            "Busco ayuda y explicaciones adicionales",
+            "Intento resolverlo solo/a varias veces",
+            "Prefiero hacer otras actividades y volver más tarde",
+            "Anoto dudas para consultarlas después"
+          ]
+        },
+        {
+          id: "q4",
+          text: "¿Cómo describirías tu nivel de motivación para aprender?",
+          options: [
+            "Alta: me gusta descubrir cosas nuevas y mejorar",
+            "Variable: depende del tema y el momento",
+            "Baja: me cuesta encontrar ganas para estudiar"
+          ]
+        },
+        {
+          id: "q5",
+          text: "¿Tienes dificultades para organizar tu tiempo de estudio?",
+          options: [
+            "Sí, siempre me cuesta planificar y cumplir horarios",
+            "A veces, pero intento mejorar",
+            "No, suelo ser organizado/a"
+          ]
+        }
       ];
 
       let step = 0;
-      const answers = {};
+      let answers = {};
       let style = null;
       let hasTDAH = false;
 
-      const quizContainer = document.getElementById('quiz-container');
-      const questionText = document.getElementById('question-text');
-      const optionsContainer = document.getElementById('options-container');
-      const resourcesContainer = document.getElementById('resources-container');
-      const styleNameSpan = document.getElementById('style-name');
-      const lenguaResource = document.getElementById('lengua-resource');
-      const matesResource = document.getElementById('mates-resource');
-      const inglesResource = document.getElementById('ingles-resource');
-      const tdahAdvice = document.getElementById('tdah-advice');
-      const restartBtn = document.getElementById('restart-btn');
+      const quizContainer = document.getElementById("quiz-container");
+      const resourcesContainer = document.getElementById("resources");
+      const restartBtn = document.getElementById("restart-btn");
+      const accessBtn = document.getElementById("access-btn");
+      const mainApp = document.getElementById("main-app");
 
-      const chatInput = document.getElementById('chat-input');
-      const chatSubmit = document.getElementById('chat-submit');
-      const chatResponse = document.getElementById('chat-response');
+      function detectLearningStyle(answers) {
+        // Simple detección basada en la primera pregunta
+        const answer = answers["q1"];
+        if (!answer) return "No detectado";
 
-      function detectLearningStyle(ans) {
-        if(ans.q1 === "Ver imágenes o videos") return "Visual";
-        if(ans.q1 === "Escuchar explicaciones") return "Auditivo";
-        if(ans.q1 === "Moverte o hacer cosas") return "Kinestésico";
-        if(ans.q1 === "Leer y escribir") return "Escrito";
-        return "Mixto";
+        if (answer.includes("esquemas") || answer.includes("imágenes")) return "Visual";
+        if (answer.includes("Escuchar")) return "Auditivo";
+        if (answer.includes("prácticas")) return "Kinestésico";
+        if (answer.includes("Leer")) return "Escrito";
+
+        return "General";
+      }
+
+      function analyzeDifficulties(answers) {
+        // Detecta TDAH y otras dificultades básicas con preguntas específicas
+        if (answers["q2"] === "Muy frecuentemente, me cuesta concentrarme") hasTDAH = true;
+        else hasTDAH = false;
+
+        // Puedes añadir más análisis según respuestas, aquí solo un ejemplo simple
       }
 
       function renderQuestion() {
-        questionText.textContent = questions[step].text;
-        optionsContainer.innerHTML = "";
-        questions[step].options.forEach(opt => {
-          const btn = document.createElement('button');
-          btn.classList.add('btn-option');
-          btn.textContent = opt;
-          btn.onclick = () => handleAnswer(questions[step].id, opt);
-          optionsContainer.appendChild(btn);
-        });
-      }
+        quizContainer.innerHTML = "";
 
-      function handleAnswer(qId, answer) {
-        answers[qId] = answer;
-        if(qId === "q2" && answer === "Sí, con frecuencia") hasTDAH = true;
-
-        step++;
-        if(step < questions.length) {
-          renderQuestion();
-        } else {
+        if (step >= questions.length) {
           style = detectLearningStyle(answers);
+          analyzeDifficulties(answers);
           showResources();
+          return;
         }
+
+        const q = questions[step];
+        const questionEl = document.createElement("div");
+        questionEl.className = "question";
+        questionEl.textContent = `${step + 1}. ${q.text}`;
+
+        const optionsEl = document.createElement("div");
+        optionsEl.className = "options";
+
+        q.options.forEach(opt => {
+          const btn = document.createElement("button");
+          btn.textContent = opt;
+          btn.addEventListener("click", () => {
+            answers[q.id] = opt;
+            step++;
+            renderQuestion();
+          });
+          optionsEl.appendChild(btn);
+        });
+
+        quizContainer.appendChild(questionEl);
+        quizContainer.appendChild(optionsEl);
       }
 
       function showResources() {
         quizContainer.style.display = "none";
         resourcesContainer.style.display = "block";
-        styleNameSpan.textContent = style;
+        restartBtn.style.display = "inline-block";
+        accessBtn.style.display = "inline-block";
 
-        const lenguaMap = {
-          Visual: "Mapas conceptuales de sintaxis, videos explicativos de morfología, infografías de ortografía.",
-          Auditivo: "Audios sobre tipos de palabras, reglas gramaticales narradas.",
-          Escrito: "Ejercicios escritos, resúmenes, reglas para copiar y memorizar.",
-          Kinestésico: "Juegos interactivos para clasificar palabras y construir oraciones.",
-          Mixto: "Una combinación de recursos visuales, auditivos y escritos."
-        };
-        const matesMap = {
-          Visual: "Esquemas de operaciones, videos de problemas visuales.",
-          Auditivo: "Explicaciones habladas de resolución de problemas.",
-          Escrito: "Listas de ejercicios resueltos paso a paso.",
-          Kinestésico: "Juegos para practicar sumas, restas, problemas prácticos.",
-          Mixto: "Diversos métodos para consolidar habilidades matemáticas."
-        };
-        const inglesMap = {
-          Visual: "Flashcards con imágenes, videos con subtítulos.",
-          Auditivo: "Podcasts, diálogos grabados.",
-          Escrito: "Lecturas simples, fichas de gramática.",
-          Kinestésico: "Juegos de vocabulario, apps con movimiento.",
-          Mixto: "Recursos variados para todos los estilos."
-        };
+        let html = `
+          <h2>Recursos personalizados según tu estilo: <strong>${style}</strong></h2>
 
-        lenguaResource.textContent = lenguaMap[style] || "";
-        matesResource.textContent = matesMap[style] || "";
-        inglesResource.textContent = inglesMap[style] || "";
+          <h3>Lengua</h3>
+          ${style === "Visual" ? "<p>Mapas conceptuales y videos explicativos.</p>" : ""}
+          ${style === "Auditivo" ? "<p>Audios y podcasts para reforzar conceptos.</p>" : ""}
+          ${style === "Escrito" ? "<p>Ejercicios y resúmenes escritos.</p>" : ""}
+          ${style === "Kinestésico" ? "<p>Actividades prácticas y juegos interactivos.</p>" : ""}
 
-        tdahAdvice.style.display = hasTDAH ? "block" : "none";
+          <h3>Matemáticas</h3>
+          ${style === "Visual" ? "<p>Esquemas y videos con problemas visuales.</p>" : ""}
+          ${style === "Auditivo" ? "<p>Explicaciones habladas y discusiones.</p>" : ""}
+          ${style === "Escrito" ? "<p>Listas de ejercicios paso a paso.</p>" : ""}
+          ${style === "Kinestésico" ? "<p>Juegos para practicar y entender conceptos.</p>" : ""}
+
+          <h3>Inglés (A1–B1)</h3>
+          ${style === "Visual" ? "<p>Flashcards y videos con subtítulos.</p>" : ""}
+          ${style === "Auditivo" ? "<p>Podcasts y diálogos grabados.</p>" : ""}
+          ${style === "Escrito" ? "<p>Lecturas simples y fichas de gramática.</p>" : ""}
+          ${style === "Kinestésico" ? "<p>Juegos y apps interactivas.</p>" : ""}
+        `;
+
+        if (hasTDAH) {
+          html += `
+            <div class="tdah-warning">
+              ⚡ <strong>Recomendaciones para TDA-H:</strong> Contenidos divididos en bloques cortos, recompensas visuales, estímulos constantes con sonidos y colores.
+            </div>
+          `;
+        }
+
+        resourcesContainer.innerHTML = html;
       }
 
-      restartBtn.addEventListener('click', () => {
+      restartBtn.addEventListener("click", () => {
         step = 0;
+        answers = {};
         style = null;
         hasTDAH = false;
-        for (const key in answers) delete answers[key];
-        resourcesContainer.style.display = "none";
         quizContainer.style.display = "block";
-        chatResponse.style.display = "none";
-        chatInput.value = "";
+        resourcesContainer.style.display = "none";
+        restartBtn.style.display = "none";
+        accessBtn.style.display = "none";
+        mainApp.style.display = "none";
         renderQuestion();
       });
 
-      chatSubmit.addEventListener('click', () => {
-        const question = chatInput.value.trim();
-        if(!question) return alert("Por favor escribe una pregunta.");
-        chatResponse.style.display = "block";
-        chatResponse.textContent = `🤖 (Simulación IA) Respuesta a: "${question}"`;
-        chatInput.value = "";
+      accessBtn.addEventListener("click", () => {
+        quizContainer.style.display = "none";
+        resourcesContainer.style.display = "none";
+        restartBtn.style.display = "none";
+        accessBtn.style.display = "none";
+        mainApp.style.display = "block";
       });
 
-      // Iniciar la primera pregunta
+      // Chatbot lógico simple sin preguntas por materia
+      const chatInput = document.getElementById("chat-input");
+      const sendChatBtn = document.getElementById("send-chat-btn");
+      const chatResponse = document.getElementById("chat-response");
+
+      sendChatBtn.addEventListener("click", () => {
+        const userText = chatInput.value.trim();
+        if (!userText) {
+          chatResponse.textContent = "Por favor, escribe algo para que pueda ayudarte.";
+          return;
+        }
+
+        chatResponse.textContent = "Analizando tu mensaje...";
+
+        setTimeout(() => {
+          let reply = "Gracias por compartir. Recuerda que tus respuestas al cuestionario me ayudan a entender mejor tus necesidades.";
+
+          // Algunas respuestas simples para analizar dificultades o motivación
+          if (userText.match(/(difícil|complicado|no entiendo|me cuesta)/i)) {
+            reply = "Parece que tienes dificultades con algunos temas. Intenta dividir el estudio en partes pequeñas y usar materiales visuales o prácticos.";
+          } else if (userText.match(/(motivado|me gusta|interesante)/i)) {
+            reply = "¡Excelente! Mantener la motivación es clave para un aprendizaje efectivo. Aprovecha esa energía para seguir mejorando.";
+          } else if (userText.match(/(distraído|despisto|no concentrado)/i)) {
+            reply = "Para mejorar la concentración, te recomiendo estudiar en bloques cortos con descansos y reducir distracciones.";
+          } else if (userText.match(/(TDAH|tda-h|atención)/i)) {
+            reply = "Recuerda que para TDA-H es útil alternar actividades y usar recursos con estímulos visuales y auditivos.";
+          } else if (userText.match(/(ayuda|soporte|problema)/i)) {
+            reply = "Estoy aquí para ayudarte. Puedes contarme qué te resulta más complicado y buscaré recursos adaptados para ti.";
+          }
+
+          chatResponse.textContent = reply;
+          chatInput.value = "";
+          chatInput.focus();
+        }, 1200);
+      });
+
       renderQuestion();
     });
   </script>
