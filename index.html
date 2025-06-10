@@ -3,289 +3,563 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MultiGenio - Aprende a tu ritmo</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <title>MultiGenio - Aprende a tu ritmo con IA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
+    * {
       margin: 0;
       padding: 0;
-      background: #f0f4f8;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: #333;
+      line-height: 1.6;
     }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
     header {
-      background: #4b9ce2;
-      color: white;
-      padding: 30px;
-      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     }
-    nav {
-      background: #337acc;
+    
+    .header-content {
       display: flex;
-      justify-content: center;
-      padding: 10px;
+      justify-content: space-between;
+      align-items: center;
     }
+    
+    .logo {
+      font-size: 2em;
+      font-weight: 700;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    nav {
+      display: flex;
+      gap: 30px;
+    }
+    
     nav a {
       color: white;
-      margin: 0 15px;
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 10px 15px;
+      border-radius: 25px;
     }
+    
+    nav a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    
     .hero {
-      padding: 60px 20px;
       text-align: center;
-      background: linear-gradient(to right, #e0f7fa, #ffffff);
+      padding: 80px 0;
+      color: white;
     }
+    
     .hero h1 {
-      font-size: 2.8em;
-      margin-bottom: 10px;
+      font-size: 3.5em;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
+    
     .hero p {
+      font-size: 1.3em;
+      margin-bottom: 40px;
+      opacity: 0.9;
+    }
+    
+    .cta-button {
+      background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+      color: white;
+      padding: 15px 40px;
+      border: none;
+      border-radius: 50px;
       font-size: 1.2em;
-      color: #555;
-      max-width: 600px;
-      margin: 0 auto;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
     }
+    
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(255, 107, 107, 0.4);
+    }
+    
     .section {
-      padding: 50px 20px;
-      max-width: 1100px;
-      margin: 0 auto;
+      background: white;
+      margin: 40px 0;
+      padding: 60px 0;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
+    
     .section h2 {
       text-align: center;
-      color: #337acc;
-      margin-bottom: 20px;
+      font-size: 2.5em;
+      color: #333;
+      margin-bottom: 50px;
+      position: relative;
     }
-    .cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 30px;
+    
+    .section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      border-radius: 2px;
     }
-    .card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      padding: 25px;
-      width: 300px;
+    
+    /* Descripción extendida */
+    .description-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+    
+    .feature-card {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding: 30px;
+      border-radius: 15px;
       text-align: center;
       transition: transform 0.3s ease;
     }
-    .card:hover {
+    
+    .feature-card:hover {
       transform: translateY(-5px);
     }
-    .clickable-card {
+    
+    .feature-icon {
+      font-size: 3em;
+      margin-bottom: 20px;
+    }
+    
+    .feature-card h3 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 1.4em;
+    }
+    
+    .feature-card p {
+      color: #666;
+      line-height: 1.8;
+    }
+    
+    /* Sistema de progreso */
+    .progress-container {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      margin: 20px 0;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .progress-bar {
+      background: #e0e0e0;
+      height: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      transition: width 0.5s ease;
+      border-radius: 10px;
+    }
+    
+    .progress-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-weight: 600;
+      font-size: 0.9em;
+    }
+    
+    .achievements {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .achievement {
+      background: linear-gradient(45deg, #ffd700, #ffed4a);
+      color: #333;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.9em;
+      font-weight: 600;
+      box-shadow: 0 3px 10px rgba(255, 215, 0, 0.3);
+    }
+    
+    /* Juegos interactivos */
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+    
+    .game-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 15px;
       cursor: pointer;
+      transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
     }
-    .clickable-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    
+    .game-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
     }
-    .card-overlay {
+    
+    .game-card:hover::before {
+      left: 100%;
+    }
+    
+    .game-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+    }
+    
+    .game-icon {
+      font-size: 2.5em;
+      margin-bottom: 15px;
+    }
+    
+    .game-card h3 {
+      margin-bottom: 10px;
+      font-size: 1.3em;
+    }
+    
+    .game-card p {
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+    
+    /* Materias clickeables */
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+    
+    .subject-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    .subject-card::before {
+      content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(75, 156, 226, 0.9);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: linear-gradient(135deg, #667eea, #764ba2);
       opacity: 0;
       transition: opacity 0.3s ease;
-      font-weight: 600;
     }
-    .clickable-card:hover .card-overlay {
-      opacity: 1;
+    
+    .subject-card:hover::before {
+      opacity: 0.1;
     }
-    /* Estilos para las páginas de asignaturas */
-    .subject-page {
-      display: none;
+    
+    .subject-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
     }
-    .subject-page.active {
-      display: block;
-    }
-    .back-button {
-      background: #337acc;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
+    
+    .subject-icon {
+      font-size: 4em;
       margin-bottom: 20px;
-      font-size: 1em;
-      transition: background 0.3s ease;
+      position: relative;
+      z-index: 1;
     }
-    .back-button:hover {
-      background: #2565a3;
-    }
-    .topic-list {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      margin: 20px 0;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-    .topic-item {
-      background: #f8f9fa;
-      margin: 10px 0;
-      padding: 15px;
-      border-radius: 8px;
-      border-left: 4px solid #4b9ce2;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .topic-item:hover {
-      background: #e9ecef;
-      transform: translateX(5px);
-    }
-    .topic-title {
-      font-weight: 600;
-      color: #337acc;
-      margin-bottom: 5px;
-    }
-    .topic-description {
-      color: #666;
-      font-size: 0.9em;
-    }
-    .level-badge {
-      display: inline-block;
-      background: #4b9ce2;
-      color: white;
-      padding: 4px 8px;
-      border-radius: 12px;
-      font-size: 0.8em;
-      margin-left: 10px;
-    }
-    .card img {
-      width: 60px;
+    
+    .subject-card h3 {
+      font-size: 1.8em;
       margin-bottom: 15px;
+      color: #333;
+      position: relative;
+      z-index: 1;
     }
-    ul {
-      list-style-type: none;
-      padding-left: 0;
+    
+    .subject-card p {
+      color: #666;
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
     }
-    ul li {
-      margin: 10px 0;
-      font-size: 1.1em;
+    
+    
+    /* Modal de juego */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      backdrop-filter: blur(5px);
     }
-    .contact-form {
-      text-align: center;
+    
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 40px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 600px;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
     }
-    .contact-form input,
-    .contact-form textarea {
-      width: 80%;
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 1em;
-    }
-    .contact-form button {
-      background: #4b9ce2;
-      color: white;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 8px;
+    
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      font-size: 28px;
+      font-weight: bold;
       cursor: pointer;
-      font-size: 1em;
-      transition: background 0.3s ease;
+      color: #aaa;
+      transition: color 0.3s ease;
     }
-    .contact-form button:hover {
-      background: #337acc;
+    
+    .close:hover {
+      color: #333;
     }
-    footer {
-      background: #4b9ce2;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      margin-top: 40px;
-    }
-    /* Cuestionario estilos */
-    #quiz-container {
-      background: white;
-      max-width: 500px;
-      margin: 40px auto;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    }
-    #quiz-container h2 {
-      color: #337acc;
-      margin-bottom: 20px;
+    
+    .quiz-question {
+      font-size: 1.3em;
+      margin-bottom: 30px;
+      color: #333;
       text-align: center;
     }
-    .question {
-      margin-bottom: 20px;
-      font-weight: 600;
-      font-size: 1.1em;
-    }
-    .options {
+    
+    .quiz-options {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 15px;
     }
-    .options button {
-      width: 100%;
-      padding: 12px;
-      background: #4b9ce2;
-      color: white;
-      border: none;
-      border-radius: 8px;
+    
+    .quiz-option {
+      background: #f8f9fa;
+      border: 2px solid #e9ecef;
+      padding: 15px;
+      border-radius: 10px;
       cursor: pointer;
-      font-size: 1em;
-      transition: background 0.3s ease;
+      transition: all 0.3s ease;
       text-align: left;
     }
-    .options button:hover {
-      background: #337acc;
+    
+    .quiz-option:hover {
+      background: #e9ecef;
+      border-color: #667eea;
     }
-    /* Oculto */
+    
+    .quiz-option.correct {
+      background: #d4edda;
+      border-color: #28a745;
+      color: #155724;
+    }
+    
+    .quiz-option.incorrect {
+      background: #f8d7da;
+      border-color: #dc3545;
+      color: #721c24;
+    }
+    
+    .game-score {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: 600;
+      color: #667eea;
+    }
+    
     .hidden {
       display: none;
     }
-    /* Resultado estilo */
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5em;
+      }
+      
+      .header-content {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      nav {
+        gap: 15px;
+      }
+      
+      .description-grid,
+      .game-grid,
+      .subjects-grid,
+      .reviews-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Animaciones */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-in {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    /* Cuestionario inicial */
+    #quiz-container {
+      background: white;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    }
+    
+    #quiz-container h2 {
+      color: #333;
+      margin-bottom: 30px;
+      text-align: center;
+      font-size: 2em;
+    }
+    
+    .question {
+      margin-bottom: 30px;
+      font-weight: 600;
+      font-size: 1.2em;
+      color: #333;
+    }
+    
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .options button {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.3s ease;
+      text-align: left;
+    }
+    
+    .options button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    
     #result-message {
       font-weight: bold;
       text-align: center;
-      margin-bottom: 1.5rem;
-      color: #337acc;
-      font-size: 1.2em;
+      margin: 30px 0;
+      color: #667eea;
+      font-size: 1.3em;
     }
-    /* Recomendaciones TDAH */
+    
+    #study-advice {
+      max-width: 700px;
+      margin: 0 auto 30px auto;
+      font-weight: 500;
+      color: #333;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 15px;
+      text-align: center;
+      border-left: 5px solid #667eea;
+    }
+    
     #tdah-warning {
-      margin-top: 2rem;
-      padding: 1rem;
-      background-color: #FFF3CD;
-      border-radius: 8px;
+      margin-top: 30px;
+      padding: 20px;
+      background: linear-gradient(135deg, #fff3cd, #fce4a6);
+      border-radius: 15px;
       color: #856404;
       font-weight: 600;
       max-width: 700px;
       margin-left: auto;
       margin-right: auto;
-    }
-    #study-advice {
-      max-width: 700px;
-      margin: 0 auto 2rem auto;
-      font-weight: 600;
-      color: #23527c;
-      padding: 1rem;
-      background: #f8f9fa;
-      border-radius: 8px;
-      text-align: center;
+      border-left: 5px solid #ffc107;
     }
   </style>
 </head>
 <body>
-
-  <!-- Cuestionario -->
+  <!-- Cuestionario Inicial -->
   <div id="quiz-container">
-    <h2>Cuestionario de estilo de aprendizaje</h2>
+    <h2>🎯 Descubre tu Estilo de Aprendizaje</h2>
     <div id="question-text" class="question"></div>
     <div id="options" class="options"></div>
   </div>
@@ -297,66 +571,194 @@
       <p>Aprende a tu ritmo. Brilla con tu estilo.</p>
     </header>
 
-    <nav>
-      <a href="#que-es">¿Qué es?</a>
-      <a href="#materias">Materias</a>
-      <a href="#beneficios">Beneficios</a>
-      <a href="#contacto">Contacto</a>
-    </nav>
+   <!-- Contenido Principal -->
+  <div id="main-content" class="hidden">
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">🧠 MultiGenio</div>
+          <nav>
+            <a href="#inicio">Inicio</a>
+            <a href="#que-es">¿Qué es?</a>
+            <a href="#progreso">Mi Progreso</a>
+            <a href="#materias">Materias</a>
+            <a href="#juegos">Juegos</a>
+            <a href="#reseñas">Reseñas</a>
+          </nav>
+        </div>
+      </div>
+    </header>
 
-    <section class="hero">
-      <h1>Tu tutor virtual para Matemáticas, Inglés y Lengua</h1>
-      <p>Diseñado especialmente para estudiantes con TDA o dificultades de atención. Paciencia, claridad y diversión en un solo lugar.</p>
+    <section id="inicio" class="hero">
+      <div class="container">
+        <h1>Aprende con Inteligencia Artificial</h1>
+        <p>La primera plataforma educativa que se adapta completamente a tu estilo de aprendizaje y necesidades específicas</p>
+        <button class="cta-button" onclick="scrollToSection('que-es')">Descubre Cómo Funciona</button>
+      </div>
     </section>
 
-    <div id="result-message"></div>
-    <div id="study-advice"></div>
-    <div id="tdah-warning" class="hidden">
-      ⚠️ Si presentas indicios de TDAH, MultiGenio te ofrecerá recursos y estrategias especiales para ayudarte a mantener la concentración y aprovechar tu estilo de aprendizaje.
-    </div>
+    <section id="que-es" class="section">
+      <div class="container">
+        <h2>🚀 ¿Qué es MultiGenio?</h2>
+        
+        <div style="text-align: center; margin-bottom: 50px;">
+          <p style="font-size: 1.3em; color: #666; max-width: 800px; margin: 0 auto; line-height: 1.8;">
+            MultiGenio es una plataforma educativa revolucionaria que utiliza <strong>Inteligencia Artificial avanzada</strong> para crear experiencias de aprendizaje completamente personalizadas. Especialmente diseñada para estudiantes con TDAH, dificultades de atención o diferentes estilos de aprendizaje.
+          </p>
+        </div>
 
-    <section class="section" id="que-es">
-      <h2>¿Qué es MultiGenio?</h2>
-      <img src="https://img.icons8.com/clouds/100/000000/online-support.png" alt="Estudio interactivo" />
-      <p><strong>MultiGenio</strong> es una plataforma educativa inteligente diseñada para ofrecer una experiencia de aprendizaje personalizada, especialmente pensada para estudiantes con <strong>TDAH</strong>, dificultades de atención o estilos de aprendizaje diversos. Utiliza inteligencia artificial para adaptar los contenidos a las necesidades específicas de cada alumno, haciendo del estudio una actividad más accesible, estimulante y eficaz.</p>
-
-    <h2>📋 Cuestionario Inicial</h2>
-    <img src="https://img.icons8.com/color/96/questions.png" alt="Cuestionario" />
-    <p>Antes de comenzar, MultiGenio realiza un cuestionario interactivo de 5 preguntas que identifica el estilo de aprendizaje predominante del estudiante:</p>
-    <ul>
-      <li>👁️ Visual</li>
-      <li>👂 Auditivo</li>
-      <li>✍️ Lectura/Escritura</li>
-      <li>🏃 Kinestésico</li>
-    </ul>
-    <p>Según las respuestas y si se detectan señales compatibles con TDAH, la plataforma adapta la forma de presentar los contenidos para maximizar la atención y comprensión.</p>
+        <div class="description-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3>IA Adaptativa</h3>
+            <p>Nuestro sistema de IA analiza tu estilo de aprendizaje mediante un cuestionario inicial de 5 preguntas y algoritmos de machine learning que evalúan tu progreso en tiempo real. La IA ajusta automáticamente el contenido, ritmo y metodología según tus necesidades específicas.</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Seguimiento Inteligente</h3>
+            <p>Sistema de tracking avanzado que monitorea tu progreso, identifica patrones de aprendizaje, detecta dificultades antes de que se conviertan en problemas y sugiere estrategias personalizadas para optimizar tu rendimiento académico.</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Personalización Total</h3>
+            <p>Contenido adaptado a 4 estilos de aprendizaje: Visual (esquemas, gráficos), Auditivo (podcasts, explicaciones), Lectura/Escritura (textos, resúmenes) y Kinestésico (actividades prácticas, movimiento).</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">🧩</div>
+            <h3>Materiales Diversos</h3>
+            <p>Más de 1000 recursos: videos interactivos, juegos educativos, simuladores, realidad aumentada, podcasts, mapas mentales, ejercicios gamificados, y contenido multimedia adaptado a cada estilo de aprendizaje.</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">🎮</div>
+            <h3>Gamificación Avanzada</h3>
+            <p>Sistema de puntos, logros, desafíos diarios, competencias amigables, avatares personalizables y recompensas virtuales que mantienen la motivación y hacen del aprendizaje una experiencia divertida y adictiva.</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">🧠</div>
+            <h3>Especialización TDAH</h3>
+            <p>Técnicas específicas para TDAH: sesiones cortas (15-20 min), descansos programados, recordatorios visuales, técnicas de mindfulness, ejercicios de concentración y estrategias para mantener la atención y reducir la hiperactividad.</p>
+          </div>
+        </div>
+      </div>
     </section>
-   
-    <section class="section" id="materias">
-      <h2>Materias que puedes aprender</h2>
-      <div class="cards">
-        <div class="card clickable-card" onclick="showSubject('matematicas')">
-          <img src="https://img.icons8.com/color/96/calculator.png" alt="Matemáticas" />
-          <h3>Matemáticas</h3>
-          <p>Desde sumas y divisiones hasta álgebra de 3º de ESO. Todo con juegos mentales, visuales y lógica adaptada a ti.</p>
-          <div class="card-overlay">
-            <span>¡Haz clic para empezar!</span>
+
+    <section id="progreso" class="section">
+      <div class="container">
+        <h2>📈 Tu Progreso Personal</h2>
+        
+        <div id="result-message"></div>
+        <div id="study-advice"></div>
+        <div id="tdah-warning" class="hidden"></div>
+        
+        <div class="progress-container">
+          <div class="progress-header">
+            <h3>Progreso General</h3>
+            <span id="overall-progress">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="overall-progress-bar" style="width: 0%"></div>
+            <div class="progress-text" id="overall-progress-text">0% Completado</div>
           </div>
         </div>
-        <div class="card clickable-card" onclick="showSubject('lengua')">
-          <img src="https://img.icons8.com/color/96/book.png" alt="Lengua" />
-          <h3>Lengua</h3>
-          <p>Domina la morfología, sintaxis y reglas ortográficas con ejemplos creativos y prácticas fáciles de recordar.</p>
-          <div class="card-overlay">
-            <span>¡Haz clic para empezar!</span>
+        
+        <div class="progress-container">
+          <div class="progress-header">
+            <h3>📊 Matemáticas</h3>
+            <span id="math-progress">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="math-progress-bar" style="width: 0%"></div>
+            <div class="progress-text" id="math-progress-text">0% Completado</div>
           </div>
         </div>
-        <div class="card clickable-card" onclick="showSubject('ingles')">
-          <img src="https://img.icons8.com/color/96/usa.png" alt="Inglés" />
-          <h3>Inglés</h3>
-          <p>Aprende desde A1 hasta B1: vocabulario, gramática, listening y speaking. Con apoyo visual y audios.</p>
-          <div class="card-overlay">
-            <span>¡Haz clic para empezar!</span>
+        
+        <div class="progress-container">
+          <div class="progress-header">
+            <h3>📚 Lengua</h3>
+            <span id="lengua-progress">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="lengua-progress-bar" style="width: 0%"></div>
+            <div class="progress-text" id="lengua-progress-text">0% Completado</div>
+          </div>
+        </div>
+        
+        <div class="progress-container">
+          <div class="progress-header">
+            <h3>🇬🇧 Inglés</h3>
+            <span id="english-progress">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="english-progress-bar" style="width: 0%"></div>
+            <div class="progress-text" id="english-progress-text">0% Completado</div>
+          </div>
+        </div>
+        
+        <div class="achievements">
+          <div class="achievement">🌟 Primer Día Completado</div>
+          <div class="achievement">🔥 Racha de 3 Días</div>
+          <div class="achievement">🎯 10 Ejercicios Perfectos</div>
+          <div class="achievement">🏆 Nivel Principiante</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="materias" class="section">
+      <div class="container">
+        <h2>📚 Nuestras Materias</h2>
+        <div class="subjects-grid">
+          <div class="subject-card" onclick="startSubject('matematicas')">
+            <div class="subject-icon">📊</div>
+            <h3>Matemáticas</h3>
+            <p>Desde operaciones básicas hasta álgebra de 3º ESO. Métodos visuales, auditivos y kinestésicos para que entiendas cada concepto a tu ritmo. Incluye calculadora científica virtual y simuladores gráficos.</p>
+          </div>
+          
+          <div class="subject-card" onclick="startSubject('lengua')">
+            <div class="subject-icon">📖</div>
+            <h3>Lengua Española</h3>
+            <p>Ortografía, gramática, sintaxis y literatura. Con mapas mentales, ejercicios interactivos, análisis de textos y herramientas de escritura creativa. Incluye corrector ortográfico inteligente.</p>
+          </div>
+          
+          <div class="subject-card" onclick="startSubject('ingles')">
+            <div class="subject-icon">🇬🇧</div>
+            <h3>English</h3>
+            <p>De A1 a B1 con pronunciación perfecta. Listening interactivo, speaking con IA, vocabulario gamificado y gramática visual. Incluye reconocimiento de voz y conversaciones simuladas.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="juegos" class="section">
+      <div class="container">
+        <h2>🎮 Juegos Educativos</h2>
+        <div class="game-grid">
+          <div class="game-card" onclick="openGame('math-quiz')">
+            <div class="game-icon">🔢</div>
+            <h3>Desafío Matemático</h3>
+            <p>Resuelve problemas matemáticos en tiempo limitado. Adapta la dificultad según tu nivel y estilo de aprendizaje.</p>
+          </div>
+          
+          <div class="game-card" onclick="openGame('word-game')">
+            <div class="game-icon">🔤</div>
+            <h3>Cazador de Palabras</h3>
+            <p>Encuentra palabras ocultas, mejora tu vocabulario y ortografía de forma divertida.</p>
+          </div>
+          
+          <div class="game-card" onclick="openGame('english-adventure')">
+            <div class="game-icon">🗣️</div>
+            <h3>Aventura en Inglés</h3>
+            <p>Vive aventuras épicas mientras practicas inglés. Listening, speaking y vocabulario en un solo juego.</p>
+          </div>
+          
+          <div class="game-card" onclick="openGame('memory-challenge')">
+            <div class="game-icon">🧩</div>
+            <h3>Desafío de Memoria</h3>
+            <p>Juegos específicos para mejorar la concentración y memoria, especialmente útiles para estudiantes con TDAH.</p>
           </div>
         </div>
       </div>
