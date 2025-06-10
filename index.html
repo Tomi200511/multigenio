@@ -76,6 +76,92 @@
     .card:hover {
       transform: translateY(-5px);
     }
+    .clickable-card {
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .clickable-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+    .card-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(75, 156, 226, 0.9);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      font-weight: 600;
+    }
+    .clickable-card:hover .card-overlay {
+      opacity: 1;
+    }
+    /* Estilos para las páginas de asignaturas */
+    .subject-page {
+      display: none;
+    }
+    .subject-page.active {
+      display: block;
+    }
+    .back-button {
+      background: #337acc;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      font-size: 1em;
+      transition: background 0.3s ease;
+    }
+    .back-button:hover {
+      background: #2565a3;
+    }
+    .topic-list {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .topic-item {
+      background: #f8f9fa;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #4b9ce2;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .topic-item:hover {
+      background: #e9ecef;
+      transform: translateX(5px);
+    }
+    .topic-title {
+      font-weight: 600;
+      color: #337acc;
+      margin-bottom: 5px;
+    }
+    .topic-description {
+      color: #666;
+      font-size: 0.9em;
+    }
+    .level-badge {
+      display: inline-block;
+      background: #4b9ce2;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.8em;
+      margin-left: 10px;
+    }
     .card img {
       width: 60px;
       margin-bottom: 15px;
@@ -249,20 +335,29 @@
     <section class="section" id="materias">
       <h2>Materias que puedes aprender</h2>
       <div class="cards">
-        <div class="card">
+        <div class="card clickable-card" onclick="showSubject('matematicas')">
           <img src="https://img.icons8.com/color/96/calculator.png" alt="Matemáticas" />
           <h3>Matemáticas</h3>
           <p>Desde sumas y divisiones hasta álgebra de 3º de ESO. Todo con juegos mentales, visuales y lógica adaptada a ti.</p>
+          <div class="card-overlay">
+            <span>¡Haz clic para empezar!</span>
+          </div>
         </div>
-        <div class="card">
+        <div class="card clickable-card" onclick="showSubject('lengua')">
           <img src="https://img.icons8.com/color/96/book.png" alt="Lengua" />
           <h3>Lengua</h3>
           <p>Domina la morfología, sintaxis y reglas ortográficas con ejemplos creativos y prácticas fáciles de recordar.</p>
+          <div class="card-overlay">
+            <span>¡Haz clic para empezar!</span>
+          </div>
         </div>
-        <div class="card">
+        <div class="card clickable-card" onclick="showSubject('ingles')">
           <img src="https://img.icons8.com/color/96/usa.png" alt="Inglés" />
           <h3>Inglés</h3>
           <p>Aprende desde A1 hasta B1: vocabulario, gramática, listening y speaking. Con apoyo visual y audios.</p>
+          <div class="card-overlay">
+            <span>¡Haz clic para empezar!</span>
+          </div>
         </div>
       </div>
     </section>
@@ -301,6 +396,133 @@
     <footer>
       <p>&copy; 2025 MultiGenio. Todos los derechos reservados.</p>
     </footer>
+  </div>
+
+  <!-- Páginas de asignaturas -->
+  <div id="matematicas-page" class="subject-page">
+    <div class="section">
+      <button class="back-button" onclick="showMainContent()">← Volver al inicio</button>
+      <h1 style="text-align: center; color: #337acc;">📊 Matemáticas</h1>
+      <div id="math-personalized-intro"></div>
+      
+      <div class="topic-list">
+        <h2>Temario por niveles</h2>
+        
+        <div class="topic-item" onclick="alert('Próximamente: Lección interactiva sobre operaciones básicas')">
+          <div class="topic-title">Operaciones Básicas <span class="level-badge">Primaria</span></div>
+          <div class="topic-description">Suma, resta, multiplicación y división. Problemas prácticos del día a día.</div>
+        </div>
+        
+        <div class="topic-item" onclick="alert('Próximamente: Lección interactiva sobre fracciones')">
+          <div class="topic-title">Fracciones y Decimales <span class="level-badge">6º Primaria</span></div>
+          <div class="topic-description">Conceptos, operaciones y equivalencias. Con ejemplos visuales.</div>
+        </div>
+        
+        <div class="topic-item" onclick="alert('Próximamente: Lección interactiva sobre porcentajes')">
+          <div class="topic-title">Porcentajes <span class="level-badge">1º ESO</span></div>
+          <div class="topic-description">Cálculo de porcentajes, aumentos y descuentos.</div>
+        </div>
+        
+        <div class="topic-item" onclick="alert('Próximamente: Lección interactiva sobre ecuaciones')">
+          <div class="topic-title">Ecuaciones de Primer Grado <span class="level-badge">2º ESO</span></div>
+          <div class="topic-description">Resolución paso a paso con métodos visuales.</div>
+        </div>
+        
+        <div class="topic-item" onclick="alert('Próximamente: Lección interactiva sobre sistemas')">
+          <div class="topic-title">Sistemas de Ecuaciones <span class="level-badge">3º ESO</span></div>
+          <div class="topic-description">Métodos de sustitución, igualación y reducción.</div>
+        </div>
+        
+        <div class="topic-item" onclick="alert('Próximamente: Lección interactiva sobre geometría')">
+          <div class="topic-title">Geometría Básica <span class="level-badge">1º-2º ESO</span></div>
+          <div class="topic-description">Áreas, perímetros y volúmenes de figuras básicas.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="lengua-page" class="subject-page">
+    <div class="section">
+      <button class="back-button" onclick="showMainContent()">← Volver al inicio</button>
+      <h1 style="text-align: center; color: #337acc;">📚 Lengua Española</h1>
+      <div id="lengua-personalized-intro"></div>
+      
+      <div class="topic-list">
+        <h2>Temario por niveles</h2>
+        
+        <div class="topic-item" onclick="alert('Próximamente: Lección interactiva sobre ortografía')">
+          <div class="topic-title">Ortografía Básica <span class="level-badge">Primaria</span></div>
+          <div class="topic-description">Acentuación, uso de b/v, g/j, h. Con ejercicios prácticos.</div>
+        </div>
+        
+        <div class="topic-item" onclick="alert('Próximamente: Lección interactiva sobre morfología')">
+          <div class="topic-title">Morfología <span class="level-badge">1º ESO</span></div>
+          <div class="topic-description">Categorías gramaticales: sustantivos, adjetivos, verbos, etc.</div>
+        </div>
+        
+        <div class="topic-item" onclick="alert('Próximamente: Lección interactiva sobre sintaxis básica')">
+          <div class="topic-title">Sintaxis - Oración Simple <span class="level-badge">2º ESO</span></div>
+          <div class="topic-description">Sujeto, predicado y complementos básicos.</div>
+        </div>
+        
+        <div class="topic-item" onclick="alert('Próximamente: Lección interactiva sobre sintaxis avanzada')">
+          <div class="topic-title">Sintaxis - Oración Compuesta <span class="level-badge">3º ESO</span></div>
+          <div class="topic-description">Oraciones coordinadas y subordinadas.</div>
+        </div>
+        
+        <div class="topic-item" onclick="alert('Próximamente: Lección interactiva sobre literatura')">
+          <div class="topic-title">Literatura Española <span class="level-badge">2º-3º ESO</span></div>
+          <div class="topic-description">Géneros literarios, métrica y autores principales.</div>
+        </div>
+        
+        <div class="topic-item" onclick="alert('Próximamente: Lección interactiva sobre expresión escrita')">
+          <div class="topic-title">Expresión Escrita <span class="level-badge">Todos</span></div>
+          <div class="topic-description">Técnicas de redacción, tipos de texto y coherencia.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="ingles-page" class="subject-page">
+    <div class="section">
+      <button class="back-button" onclick="showMainContent()">← Volver al inicio</button>
+      <h1 style="text-align: center; color: #337acc;">🇬🇧 English</h1>
+      <div id="ingles-personalized-intro"></div>
+      
+      <div class="topic-list">
+        <h2>Temario por niveles</h2>
+        
+        <div class="topic-item" onclick="alert('Coming soon: Interactive lesson on basic vocabulary')">
+          <div class="topic-title">Basic Vocabulary <span class="level-badge">A1</span></div>
+          <div class="topic-description">Numbers, colors, family, daily routines. Con apoyo visual.</div>
+        </div>
+        
+        <div class="topic-item" onclick="alert('Coming soon: Interactive lesson on present tense')">
+          <div class="topic-title">Present Simple & Continuous <span class="level-badge">A1-A2</span></div>
+          <div class="topic-description">Tiempos verbales básicos con ejemplos prácticos.</div>
+        </div>
+        
+        <div class="topic-item" onclick="alert('Coming soon: Interactive lesson on past tense')">
+          <div class="topic-title">Past Simple & Past Continuous <span class="level-badge">A2</span></div>
+          <div class="topic-description">Narración en pasado, verbos regulares e irregulares.</div>
+        </div>
+        
+        <div class="topic-item" onclick="alert('Coming soon: Interactive lesson on future tense')">
+          <div class="topic-title">Future Tenses <span class="level-badge">A2-B1</span></div>
+          <div class="topic-description">Will, going to, present continuous for future.</div>
+        </div>
+        
+        <div class="topic-item" onclick="alert('Coming soon: Interactive lesson on conditionals')">
+          <div class="topic-title">Conditionals <span class="level-badge">B1</span></div>
+          <div class="topic-description">First, second and third conditional sentences.</div>
+        </div>
+        
+        <div class="topic-item" onclick="alert('Coming soon: Interactive listening practice')">
+          <div class="topic-title">Listening & Speaking <span class="level-badge">A1-B1</span></div>
+          <div class="topic-description">Ejercicios de comprensión auditiva y pronunciación.</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -362,6 +584,7 @@
 
     let currentQuestionIndex = 0;
     let selectedAnswers = {};
+    let userLearningStyle = 'visual'; // Variable global para almacenar el estilo
 
     function showQuestion() {
       console.log('Mostrando pregunta:', currentQuestionIndex); // Debug
@@ -444,6 +667,9 @@
 
       resultMessage.textContent = `🎯 Tu estilo de aprendizaje detectado: ${styleNames[maxStyle]}`;
       studyAdvice.textContent = adviceByStyle[maxStyle] || "";
+      
+      // Guardar el estilo de aprendizaje globalmente
+      userLearningStyle = maxStyle;
 
       // Mostrar advertencia TDAH si aplica
       const tdahAnswer = selectedAnswers[1]; // La pregunta TDAH está en el índice 1
@@ -457,6 +683,59 @@
       console.log('Página cargada, iniciando cuestionario'); // Debug
       showQuestion();
     });
+
+    // Funciones para navegación entre páginas
+    function showSubject(subject) {
+      // Ocultar contenido principal
+      document.getElementById('main-content').style.display = 'none';
+      
+      // Mostrar página de la asignatura
+      document.getElementById(subject + '-page').classList.add('active');
+      
+      // Personalizar introducción según el estilo de aprendizaje
+      personalizeSubjectIntro(subject);
+    }
+
+    function showMainContent() {
+      // Ocultar todas las páginas de asignaturas
+      document.querySelectorAll('.subject-page').forEach(page => {
+        page.classList.remove('active');
+      });
+      
+      // Mostrar contenido principal
+      document.getElementById('main-content').style.display = 'block';
+    }
+
+    function personalizeSubjectIntro(subject) {
+      const introElement = document.getElementById(subject + '-personalized-intro');
+      if (!introElement) return;
+
+      const personalizedIntros = {
+        matematicas: {
+          visual: "🎨 Como eres una persona con estilo visual, hemos preparado esquemas, gráficos y representaciones visuales para cada tema de matemáticas. ¡Verás las matemáticas de una forma completamente nueva!",
+          auditivo: "🔊 Perfecto para tu estilo auditivo: cada lección incluye explicaciones paso a paso, podcasts matemáticos y ejercicios que puedes resolver 'hablando' contigo mismo.",
+          'lectura-escritura': "📝 Ideal para tu estilo de lectura/escritura: encontrarás resúmenes detallados, ejercicios escritos y la posibilidad de tomar notas estructuradas en cada tema.",
+          kinestesico: "🏃 ¡Matemáticas en movimiento! Hemos diseñado actividades prácticas, manipulativas y ejercicios que puedes resolver moviéndote o usando objetos físicos."
+        },
+        lengua: {
+          visual: "🎨 Tu aprendizaje visual te ayudará con mapas mentales, esquemas de sintaxis y representaciones gráficas de las reglas gramaticales.",
+          auditivo: "🔊 Perfecto para tu estilo: lecturas en voz alta, ejercicios de dictado, y técnicas de memorización con ritmo y sonidos.",
+          'lectura-escritura': "📝 En tu elemento: análisis de textos, ejercicios de escritura creativa y técnicas de estudio basadas en la lectura comprensiva.",
+          kinestesico: "🏃 Lengua activa: dramatizaciones, juegos de roles y ejercicios donde puedas moverte mientras aprendes gramática y literatura."
+        },
+        ingles: {
+          visual: "🎨 Visual English: flashcards, mind maps, videos y material gráfico para aprender vocabulario y gramática de forma visual.",
+          auditivo: "🔊 Perfect for you: listening exercises, pronunciation practice, songs and audio materials to improve your English naturally.",
+          'lectura-escritura': "📝 Reading & Writing focus: textos graduados, ejercicios de escritura y técnicas de estudio basadas en la lectura en inglés.",
+          kinestesico: "🏃 Active English: role-plays, interactive games y actividades prácticas para aprender inglés moviéndote y experimentando."
+        }
+      };
+
+      const intro = personalizedIntros[subject] && personalizedIntros[subject][userLearningStyle];
+      if (intro) {
+        introElement.innerHTML = `<div style="background: #e8f4f8; padding: 20px; border-radius: 10px; margin-bottom: 20px; border-left: 5px solid #4b9ce2;"><strong>Personalizado para ti:</strong><br>${intro}</div>`;
+      }
+    }
   </script>
 </body>
 </html>
