@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MultiGenio - Aprende a tu ritmo</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
@@ -208,26 +209,9 @@
 
     <section class="section" id="que-es">
       <h2>¿Qué es MultiGenio?</h2>
-      <img src="https://img.icons8.com/clouds/100/000000/online-support.png" alt="Estudio interactivo" />
-    <p><strong>MultiGenio</strong> es una plataforma educativa inteligente diseñada para ofrecer una experiencia de aprendizaje personalizada, ideal para estudiantes con <strong>TDAH</strong> u otros estilos de aprendizaje. Su IA adapta los contenidos a cada necesidad.</p>
+      <p>MultiGenio es una inteligencia artificial educativa que enseña con empatía y creatividad. Se adapta a cada estudiante con explicaciones simples, videos visuales y ejemplos divertidos. Aprender ahora es más fácil y estimulante.</p>
+    </section>
 
-    <h2>📋 Cuestionario Inicial</h2>
-    <img src="https://img.icons8.com/color/96/questions.png" alt="Cuestionario" />
-    <p>MultiGenio comienza con un test interactivo de 5 preguntas para identificar tu estilo de aprendizaje: <em>visual, auditivo, kinestésico o lectura/escritura</em>. A partir de esto, personaliza toda tu experiencia.</p>
-
-    <h2>📚 Temario Adaptado</h2>
-    <img src="https://img.icons8.com/color/96/classroom.png" alt="Asignaturas" />
-    <p><strong>Lengua:</strong> Ortografía visual, sintaxis interactiva, juegos de morfología.<br>
-    <strong>Matemáticas:</strong> Operaciones visuales, juegos lógicos, retos paso a paso.<br>
-    <strong>Inglés:</strong> Vocabulario ilustrado, listening adaptado, audios y fichas B1.</p>
-
-    <h2>🔄 Aprendizaje Flexible y Dinámico</h2>
-    <p>La IA analiza tu progreso, repite temas difíciles con enfoques nuevos y te motiva con animaciones y recompensas.</p>
-
-    <h2>💬 Acompañamiento</h2>
-    <img src="https://img.icons8.com/color/96/chatbot.png" alt="Soporte virtual" />
-    <p>Padres y docentes acceden a informes de avance. Además, un chatbot inteligente ayuda en todo momento.</p>
-  </div>
     <section class="section" id="materias">
       <h2>Materias que puedes aprender</h2>
       <div class="cards">
@@ -377,6 +361,9 @@
       // Mostrar contenido principal
       mainContent.classList.remove('hidden');
 
+      // Procesar respuestas
+      const estilo = selectedAnswers[0] || 'visual';
+      const tdahAnswer = selectedAnswers[1] || 'no';
       // Conteo de estilos, excepto la pregunta 2 (TDAH)
       const styleCounts = {
         visual: 0,
@@ -414,6 +401,8 @@
         kinestesico: "Es ideal aprender haciendo, usando actividades prácticas, movimientos o ejercicios mientras estudias."
       };
 
+      // Mostrar mensaje resultado
+      resultMessage.textContent = `Estilo de aprendizaje detectado: ${estilo.replace('-', ' ')}.`;
       studyAdvice.textContent = adviceByStyle[maxStyle] || "";
 
       // Mostrar advertencia TDAH si aplica
