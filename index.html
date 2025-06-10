@@ -1274,121 +1274,893 @@
     }
 
     // --- Contenido de Lecciones Dinámicas (para diferentes tipos de material) ---
-    // NOTA: Para videos y audios, he usado URLs de ejemplo de W3Schools.
-    // Para imágenes, he usado placeholders. DEBES REEMPLAZAR ESTOS CON TUS PROPIOS ARCHIVOS.
     const topicContents = {
       matematicas: {
         'operaciones-basicas': {
-          visual: "<p>Mira este **video explicativo** animado sobre sumas y restas:</p><video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4' poster='https://via.placeholder.com/600x400?text=Video+Matemáticas+Visual'></video><p>Y este **diagrama** para visualizarlo:</p><img src='https://via.placeholder.com/600x300?text=Diagrama+Sumas+y+Restas' alt='Diagrama de sumas'>",
-          auditivo: "<p>Escucha la **explicación detallada** de cómo sumar y restar:</p><audio controls src='https://www.w3schools.com/html/horse.mp3'></audio><p>Presta atención a cada paso, ¡puedes repetirlo cuantas veces quieras!</p>",
-          'lectura-escritura': "<p>Lee el **resumen completo** sobre las operaciones básicas y luego escribe tus propias notas:</p><p>La **suma** es la operación fundamental de combinar dos o más números para obtener un total. Se representa con el signo más (+). Por ejemplo, 2 + 3 = 5. La **resta** es la operación inversa de la suma, donde se quita una cantidad de otra para encontrar la diferencia. Se representa con el signo menos (-). Por ejemplo, 5 - 2 = 3. La **multiplicación** es la suma repetida de un número, mientras que la **division** es la operación de repartir una cantidad en partes iguales.</p><textarea rows='8' cols='60' placeholder='Toma tus propias notas o crea un resumen aquí...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>¡Resuelve problemas interactivos! **Arrastra y suelta** los números en el lugar correcto para completar las sumas. ¡Siente las matemáticas!</p><div class='interactive-game-placeholder'>Aquí iría un juego interactivo de arrastrar y soltar números para sumar/restar. (Simulado)</div><button onclick='simulateGameCompletion(\"matematicas\", \"operaciones-basicas\")'>Simular Completar Juego</button>"
+          visual: `
+            <h3>Operaciones Básicas: Suma y Resta Visualmente</h3>
+            <p>Mira este **video explicativo** animado sobre sumas y restas. Observa cómo los números se combinan y se separan, haciendo que las operaciones sean más intuitivas.</p>
+            <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4' poster='https://via.placeholder.com/600x400?text=Video+Matemáticas+Visual'></video>
+            <p>Y aquí tienes un **diagrama de barras** para visualizar la adición y sustracción. Cada barra representa una cantidad, y su unión o separación ilustra la operación.</p>
+            <img src='https://via.placeholder.com/600x300?text=Diagrama+Barras+Sumas+y+Restas' alt='Diagrama de barras para sumas y restas' style='max-width: 80%;'>
+            <p><strong>Ejercicio Visual:</strong> Observa las siguientes imágenes y escribe la operación matemática que representan.</p>
+            <img src='https://via.placeholder.com/400x200?text=Ejercicio+Visual+1' alt='Ejercicio visual de sumas'>
+            <textarea rows='2' cols='60' placeholder='Tu respuesta para el ejercicio 1...' style='width: 100%;'></textarea><br>
+            <img src='https://via.placeholder.com/400x200?text=Ejercicio+Visual+2' alt='Ejercicio visual de restas'>
+            <textarea rows='2' cols='60' placeholder='Tu respuesta para el ejercicio 2...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"operaciones-basicas\")'>Completar lección</button>
+          `,
+          auditivo: `
+            <h3>Operaciones Básicas: Escucha y Comprende</h3>
+            <p>Escucha con atención esta **explicación detallada** de cómo se realizan las sumas y restas. Intenta visualizar los números mientras escuchas. Puedes cerrar los ojos y concentrarte en el sonido.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'></audio>
+            <p><strong>Ejercicio Auditivo:</strong> A continuación, escucharás varios problemas narrados. Escribe la solución de cada uno.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'></audio>
+            <textarea rows='3' cols='60' placeholder='Escribe las soluciones a los problemas escuchados aquí...' style='width: 100%;'></textarea>
+            <p><strong>Reto Auditivo:</strong> Repite en voz alta las reglas de la suma y la resta después de escucharlas para afianzar el conocimiento.</p>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"operaciones-basicas\")'>Completar lección</button>
+          `,
+          'lectura-escritura': `
+            <h3>Operaciones Básicas: Lee, Escribe y Domina</h3>
+            <p>Lee el siguiente **documento con la teoría completa** sobre las operaciones básicas (suma, resta, multiplicación y división). Presta especial atención a las definiciones y ejemplos.</p>
+            <p>La **suma** es la operación fundamental de combinar dos o más números (sumandos) para obtener un total (suma). Se representa con el signo más (+). Por ejemplo, 2 + 3 = 5.</p>
+            <p>La **resta** es la operación inversa de la suma, donde se quita una cantidad (sustraendo) de otra (minuendo) para encontrar la diferencia. Se representa con el signo menos (-). Por ejemplo, 5 - 2 = 3.</p>
+            <p>La **multiplicación** es la suma repetida de un número. Por ejemplo, 3 x 4 significa sumar 3 cuatro veces (3+3+3+3 = 12). Se representa con (x) o (*).</p>
+            <p>La **división** es la operación de repartir una cantidad en partes iguales. Por ejemplo, 10 ÷ 2 = 5, significa que 10 se puede dividir en 2 grupos de 5. Se representa con (÷) o (/).</p>
+            <p><strong>Ejercicio Escrito:</strong> Resuelve los siguientes problemas y explica tus pasos. No olvides tomar notas.</p>
+            <ol>
+                <li>Un autobús sale con 15 pasajeros y suben 8 más. ¿Cuántos pasajeros hay ahora?</li>
+                <li>Tienes 25 euros y gastas 12 en un libro. ¿Cuánto dinero te queda?</li>
+                <li>Si cada caja tiene 6 manzanas y tienes 4 cajas, ¿cuántas manzanas tienes en total?</li>
+                <li>Tienes 20 caramelos y quieres repartirlos entre 5 amigos por igual. ¿Cuántos caramelos recibe cada uno?</li>
+            </ol>
+            <textarea rows='10' cols='60' placeholder='Toma tus propias notas, resuelve los ejercicios y explica tus razonamientos aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"operaciones-basicas\")'>Completar lección</button>
+          `,
+          kinestesico: `
+            <h3>Operaciones Básicas: Aprende Haciendo</h3>
+            <p>¡Es hora de poner las manos en la masa! Resuelve problemas interactivos donde **arrastrarás y soltarás** los números en el lugar correcto para completar las sumas y restas. ¡Siente las matemáticas mientras las creas!</p>
+            <div class='interactive-game-placeholder'>
+              <p>Aquí iría un juego interactivo de arrastrar y soltar números para sumar/restar.</p>
+              <p><em>Imagina que tienes "fichas" con números que puedes mover a casillas para resolver:</em></p>
+              <p>[ ] + [ ] = 5</p>
+              <p>8 - [ ] = 3</p>
+            </div>
+            <p><strong>Actividad Práctica:</strong> Usa objetos reales (legos, monedas, lápices) para representar las sumas y restas que se te piden. Por ejemplo, junta 3 lápices y 2 lápices para entender 3+2.</p>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"operaciones-basicas\")'>Simular Completar Juego (¡Imagina que lo jugaste y lo completaste!)</button>
+          `
         },
         'fracciones': {
-          visual: "<p>Aprende fracciones con estas **imágenes y gráficos de tartas** interactivas:</p><img src='https://via.placeholder.com/600x400?text=Fracciones+Visual' alt='Fracciones visual'>",
-          auditivo: "<p>Escucha la **explicación de fracciones** y sus operaciones, ideal para memorizar con el sonido:</p><audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'></audio>",
-          'lectura-escritura': "<p>Lee la **teoría de fracciones** y resuelve problemas escritos para fijar conceptos:</p><p>Una fracción es un número que representa una parte de un todo, dividido en partes iguales. Está compuesta por un numerador (parte superior) y un denominador (parte inferior)...</p><textarea rows='8' cols='60' placeholder='Crea ejemplos o un resumen de fracciones aquí...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>Juega al **rompecabezas de fracciones** para entenderlas mejor manipulando las piezas:</p><div class='interactive-game-placeholder'>Juego interactivo de construcción de fracciones. (Simulado)</div><button onclick='simulateGameCompletion(\"matematicas\", \"fracciones\")'>Simular Completar Juego</button>"
+          visual: `
+            <h3>Fracciones y Decimales: Conéctate con lo Visual</h3>
+            <p>Aprende fracciones y decimales con estas **imágenes y gráficos de tartas interactivas**. Visualiza cómo se divide el todo en partes y cómo se representan los decimales en una recta numérica.</p>
+            <img src='https://via.placeholder.com/600x400?text=Fracciones+y+Decimales+Visual' alt='Fracciones visual con tartas y recta numérica'>
+            <p><strong>Video Explicativo:</strong> Mira cómo las fracciones se transforman en decimales y viceversa.</p>
+            <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4'></video>
+            <p><strong>Ejercicio Visual:</strong> ¿Qué fracción representa la parte coloreada?</p>
+            <img src='https://via.placeholder.com/300x200?text=Ejercicio+Fraccion+1' alt='Ejercicio de identificar fracción'>
+            <textarea rows='2' cols='60' placeholder='Tu respuesta...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"fracciones\")'>Completar lección</button>
+          `,
+          auditivo: `
+            <h3>Fracciones y Decimales: Escucha y Razona</h3>
+            <p>Escucha la **explicación de fracciones y decimales** y sus operaciones. Intenta escuchar cómo se relacionan los conceptos y cómo se pronuncian correctamente.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'></audio>
+            <p><strong>Podcast Educativo:</strong> Un episodio sobre la importancia de las fracciones en la vida diaria.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'></audio>
+            <p><strong>Ejercicio Auditivo:</strong> Escucha los problemas y calcula las respuestas. Luego, repite en voz alta las soluciones.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'></audio>
+            <textarea rows='3' cols='60' placeholder='Escribe tus soluciones aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"fracciones\")'>Completar lección</button>
+          `,
+          'lectura-escritura': `
+            <h3>Fracciones y Decimales: Aprende Leyendo y Escribiendo</h3>
+            <p>Lee la **teoría completa de fracciones y decimales**. Presta atención a las definiciones, propiedades y cómo se realizan las operaciones básicas con ellos. Toma notas y subraya lo importante.</p>
+            <p>Una **fracción** es un número que representa una parte de un todo dividido en partes iguales. Está compuesta por un **numerador** (la parte de arriba, que indica cuántas partes se toman) y un **denominador** (la parte de abajo, que indica en cuántas partes se divide el todo).</p>
+            <p>Un **número decimal** es una forma de representar números no enteros, es decir, números que tienen una parte entera y una parte fraccionaria. Se separan por una coma o un punto (ej: 3,14).</p>
+            <p><strong>Ejercicio Escrito:</strong> Resuelve los siguientes ejercicios. Escribe cada paso de tu solución.</p>
+            <ol>
+                <li>Convertir 3/4 a decimal.</li>
+                <li>Convertir 0.75 a fracción.</li>
+                <li>Calcular 1/2 + 1/4.</li>
+                <li>Calcular 1.5 * 2.3.</li>
+            </ol>
+            <textarea rows='10' cols='60' placeholder='Toma tus propias notas, resuelve y explica aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"fracciones\")'>Completar lección</button>
+          `,
+          kinestesico: `
+            <h3>Fracciones y Decimales: Manos a la Obra</h3>
+            <p>¡Juega al **rompecabezas de fracciones**! Tendrás que arrastrar piezas para formar fracciones completas y luego convertirlas a decimales. ¡Siente cómo las partes encajan para formar el todo!</p>
+            <div class='interactive-game-placeholder'>
+              <p>Juego interactivo de construcción de fracciones y conversión a decimales.</p>
+              <p><em>Imagina que arrastras 3 piezas de 1/4 para formar 3/4 y luego escribes 0.75.</em></p>
+            </div>
+            <p><strong>Actividad Práctica:</strong> Usa una naranja o una pizza de juguete para dividirla en partes iguales y representar fracciones. Corta la naranja en 4, quita una parte y visualiza 3/4.</p>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"fracciones\")'>Simular Completar Juego</button>
+          `
         },
         'porcentajes': {
-          visual: "<p>Visualiza cómo funcionan los porcentajes con **infografías y barras de progreso**:</p><img src='https://via.placeholder.com/600x400?text=Porcentajes+Visual' alt='Porcentajes visual'>",
-          auditivo: "<p>Escucha la **lógica detrás de los porcentajes** y ejemplos prácticos hablados:</p><audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'></audio>",
-          'lectura-escritura': "<p>Domina el **cálculo de porcentajes** leyendo y resolviendo problemas paso a paso:</p><p>Para calcular un porcentaje de una cantidad, se multiplica la cantidad por el porcentaje y se divide entre 100...</p><textarea rows='8' cols='60' placeholder='Escribe tus propias fórmulas y ejemplos de porcentajes...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>Aplica descuentos y aumentos en una **simulación interactiva** de compras:</p><div class='interactive-game-placeholder'>Juego interactivo de cálculo de porcentajes. (Simulado)</div><button onclick='simulateGameCompletion(\"matematicas\", \"porcentajes\")'>Simular Completar Juego</button>"
+          visual: `
+            <h3>Porcentajes: Infografías y Gráficos Claros</h3>
+            <p>Visualiza cómo funcionan los porcentajes con **infografías y barras de progreso**. Entenderás de un vistazo qué significa un 25% o un 75%.</p>
+            <img src='https://via.placeholder.com/600x400?text=Infografia+Porcentajes' alt='Infografía de porcentajes'>
+            <p><strong>Video:</strong> Ejemplos reales de porcentajes en la vida cotidiana (descuentos, impuestos).</p>
+            <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4'></video>
+            <p><strong>Ejercicio Visual:</strong> ¿Qué porcentaje representa la parte sombreada?</p>
+            <img src='https://via.placeholder.com/300x200?text=Ejercicio+Porcentaje+1' alt='Ejercicio visual de porcentaje'>
+            <textarea rows='2' cols='60' placeholder='Tu respuesta...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"porcentajes\")'>Completar lección</button>
+          `,
+          auditivo: `
+            <h3>Porcentajes: Escucha la Lógica</h3>
+            <p>Escucha la **lógica detrás de los porcentajes** y ejemplos prácticos hablados. Se te guiará paso a paso para calcular aumentos, descuentos y partes de un todo.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3'></audio>
+            <p><strong>Actividad Auditiva:</strong> Escucha los siguientes escenarios de compra y venta, y calcula mentalmente los porcentajes o descuentos.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'></audio>
+            <textarea rows='3' cols='60' placeholder='Tus cálculos y respuestas aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"porcentajes\")'>Completar lección</button>
+          `,
+          'lectura-escritura': `
+            <h3>Porcentajes: Calcula y Explica</h3>
+            <p>Domina el **cálculo de porcentajes** leyendo y resolviendo problemas paso a paso. Se te proporcionarán fórmulas y ejemplos detallados.</p>
+            <p>Para calcular un porcentaje de una cantidad, se multiplica la cantidad por el porcentaje y se divide entre 100. Por ejemplo, el 20% de 50 es (20 * 50) / 100 = 10.</p>
+            <p>Para calcular un aumento porcentual, se suma el porcentaje de la cantidad original a la cantidad original. Para un descuento, se resta.</p>
+            <p><strong>Ejercicio Escrito:</strong> Resuelve los siguientes problemas, mostrando todos tus pasos.</p>
+            <ol>
+                <li>¿Cuál es el 15% de 300?</li>
+                <li>Un artículo que cuesta 80€ tiene un 25% de descuento. ¿Cuál es el precio final?</li>
+                <li>Si el precio de la gasolina subió un 5% y antes costaba 1.50€/litro, ¿cuánto cuesta ahora?</li>
+            </ol>
+            <textarea rows='10' cols='60' placeholder='Escribe tus propias fórmulas, cálculos y ejemplos de porcentajes aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"porcentajes\")'>Completar lección</button>
+          `,
+          kinestesico: `
+            <h3>Porcentajes: Simula y Aplica</h3>
+            <p>Aplica descuentos y aumentos en una **simulación interactiva de compras**. Serás el cajero y calcularás los precios finales, manejando dinero virtual. ¡Aprende mientras \"vendes\"!</p>
+            <div class='interactive-game-placeholder'>
+              <p>Juego interactivo de cálculo de porcentajes en un escenario de tienda.</p>
+              <p><em>Imagina que arrastras el botón de \"20% descuento\" al precio de un producto.</em></p>
+            </div>
+            <p><strong>Actividad Práctica:</strong> Usa billetes de juguete o papel para representar diferentes cantidades y calcula los porcentajes manualmente, quitando o añadiendo billetes.</p>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"porcentajes\")'>Simular Completar Juego</button>
+          `
         },
         'ecuaciones': {
-          visual: "<p>Observa cómo se balancean las ecuaciones con un **simulador de balanza**:</p><img src='https://via.placeholder.com/600x400?text=Ecuaciones+Visual' alt='Ecuaciones visual'>",
-          auditivo: "<p>Escucha una guía **paso a paso** para resolver ecuaciones de primer grado:</p><audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'></audio>",
-          'lectura-escritura': "<p>Sigue los **ejemplos resueltos** y practica escribiendo tus propias soluciones:</p><p>Una ecuación de primer grado es una igualdad matemática que tiene una o más incógnitas elevadas a la primera potencia...</p><textarea rows='8' cols='60' placeholder='Resuelve ecuaciones paso a paso aquí...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>Mueve términos y resuelve ecuaciones con un **juego de \"resolver la X\"**:</p><div class='interactive-game-placeholder'>Juego interactivo de ecuaciones. (Simulado)</div><button onclick='simulateGameCompletion(\"matematicas\", \"ecuaciones\")'>Simular Completar Juego</button>"
+          visual: `
+            <h3>Ecuaciones de Primer Grado: Balance Visual</h3>
+            <p>Observa cómo se balancean las ecuaciones con un **simulador de balanza**. Cada lado de la ecuación es un platillo, y al mover elementos, verás cómo se mantiene o se rompe el equilibrio.</p>
+            <img src='https://via.placeholder.com/600x400?text=Ecuaciones+Balanza+Visual' alt='Simulador de balanza para ecuaciones'>
+            <p><strong>Video Animado:</strong> Un profesor explica las ecuaciones usando animaciones que te ayudarán a entender el concepto de incógnita.</p>
+            <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4'></video>
+            <p><strong>Ejercicio Visual:</strong> Completa los diagramas de flujo para resolver la ecuación paso a paso.</p>
+            <img src='https://via.placeholder.com/400x300?text=Diagrama+Flujo+Ecuaciones' alt='Diagrama de flujo de ecuaciones'>
+            <textarea rows='3' cols='60' placeholder='Completa el diagrama con tus pasos...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"ecuaciones\")'>Completar lección</button>
+          `,
+          auditivo: `
+            <h3>Ecuaciones de Primer Grado: Guía Auditiva</h3>
+            <p>Escucha una **guía paso a paso para resolver ecuaciones** de primer grado. Presta atención a las instrucciones y a la lógica detrás de cada operación. Puedes repetirlo para interiorizar los pasos.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3'></audio>
+            <p><strong>Podcast:</strong> Un episodio sobre "La historia de la X" en las matemáticas y cómo se usan las ecuaciones.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'></audio>
+            <p><strong>Ejercicio Auditivo:</strong> Se te dictará una ecuación y deberás resolverla y decir la solución en voz alta.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'></audio>
+            <textarea rows='3' cols='60' placeholder='Escribe la solución y explica tus pasos aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"ecuaciones\")'>Completar lección</button>
+          `,
+          'lectura-escritura': `
+            <h3>Ecuaciones de Primer Grado: Resuelve Escribiendo</h3>
+            <p>Sigue los **ejemplos resueltos** de ecuaciones de primer grado y practica escribiendo tus propias soluciones. La teoría y la práctica se unen para que domines el tema.</p>
+            <p>Una **ecuación de primer grado** es una igualdad matemática que tiene una o más incógnitas (generalmente representadas por 'x') elevadas a la primera potencia. El objetivo es encontrar el valor de la incógnita.</p>
+            <p><strong>Pasos para resolver:</strong></p>
+            <ol>
+                <li>Agrupar los términos con la incógnita en un lado y los números en el otro.</li>
+                <li>Realizar las operaciones de suma o resta.</li>
+                <li>Despejar la incógnita dividiendo por el coeficiente que la acompaña.</li>
+            </ol>
+            <p><strong>Ejemplo:</strong> 2x + 5 = 15</p>
+            <p>2x = 15 - 5</p>
+            <p>2x = 10</p>
+            <p>x = 10 / 2</p>
+            <p>x = 5</p>
+            <p><strong>Ejercicios Escritos:</strong> Resuelve las siguientes ecuaciones, mostrando todos los pasos.</p>
+            <ol>
+                <li>3x - 7 = 8</li>
+                <li>5 + x = 12</li>
+                <li>4x = 20</li>
+            </ol>
+            <textarea rows='10' cols='60' placeholder='Resuelve las ecuaciones paso a paso aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"ecuaciones\")'>Completar lección</button>
+          `,
+          kinestesico: `
+            <h3>Ecuaciones de Primer Grado: El Juego de la X</h3>
+            <p>¡Mueve términos y resuelve ecuaciones con un **juego de \"resolver la X\"**! Arrastra los números y las incógnitas de un lado a otro para despejar la 'X'. ¡Siente la balanza moverse a tu favor!</p>
+            <div class='interactive-game-placeholder'>
+              <p>Juego interactivo donde arrastras términos para resolver ecuaciones.</p>
+              <p><em>Imagina que arrastras el '-5' de un lado a otro, cambiando a '+5'.</em></p>
+            </div>
+            <p><strong>Actividad Práctica:</strong> Usa fichas de dos colores (uno para números, otro para incógnitas) para representar la ecuación en tu mesa. Mueve las fichas físicamente para entender cómo se despeja la 'X'.</p>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"ecuaciones\")'>Simular Completar Juego</button>
+          `
         },
         'sistemas': {
-          visual: "<p>Visualiza las soluciones de sistemas de ecuaciones con **gráficas interactivas**:</p><img src='https://via.placeholder.com/600x400?text=Sistemas+Visual' alt='Sistemas visual'>",
-          auditivo: "<p>Escucha la **explicación de los métodos** (sustitución, igualación, reducción) para sistemas de ecuaciones:</p><audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'></audio>",
-          'lectura-escritura': "<p>Estudia los **métodos para resolver sistemas** y practica con ejercicios escritos:</p><p>Un sistema de ecuaciones es un conjunto de dos o más ecuaciones con varias incógnitas...</p><textarea rows='8' cols='60' placeholder='Resuelve sistemas de ecuaciones aquí...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>Usa un **simulador interactivo** para practicar la resolución de sistemas de ecuaciones:</p><div class='interactive-game-placeholder'>Juego interactivo de sistemas de ecuaciones. (Simulado)</div><button onclick='simulateGameCompletion(\"matematicas\", \"sistemas\")'>Simular Completar Juego</button>"
+          visual: `
+            <h3>Sistemas de Ecuaciones: Gráficas que Aclaran</h3>
+            <p>Visualiza las soluciones de sistemas de ecuaciones con **gráficas interactivas**. Observa cómo dos líneas se cruzan en un punto, que es la solución al sistema. ¡Verás las matemáticas cobrar vida!</p>
+            <img src='https://via.placeholder.com/600x400?text=Sistemas+Graficas+Visual' alt='Gráficas de sistemas de ecuaciones'>
+            <p><strong>Video Explicativo:</strong> Animaciones que muestran cómo los métodos de sustitución, igualación y reducción funcionan paso a paso.</p>
+            <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4'></video>
+            <p><strong>Ejercicio Visual:</strong> Identifica la solución del sistema observando la gráfica.</p>
+            <img src='https://via.placeholder.com/400x300?text=Ejercicio+Sistema+Visual' alt='Ejercicio de identificar solución de sistema'>
+            <textarea rows='2' cols='60' placeholder='Cuál es la solución (X,Y)?' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"sistemas\")'>Completar lección</button>
+          `,
+          auditivo: `
+            <h3>Sistemas de Ecuaciones: Escucha los Métodos</h3>
+            <p>Escucha la **explicación de los métodos** (sustitución, igualación y reducción) para sistemas de ecuaciones. Concéntrate en la secuencia de pasos de cada método.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'></audio>
+            <p><strong>Guía en Audio:</strong> Una descripción auditiva de cuándo es mejor usar cada método de resolución de sistemas.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'></audio>
+            <p><strong>Ejercicio Auditivo:</strong> Se te dictará un sistema. Escucha atentamente y elige el mejor método para resolverlo, luego da la solución.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'></audio>
+            <textarea rows='3' cols='60' placeholder='Tu solución y método elegido...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"sistemas\")'>Completar lección</button>
+          `,
+          'lectura-escritura': `
+            <h3>Sistemas de Ecuaciones: Resuelve y Documenta</h3>
+            <p>Estudia los **métodos para resolver sistemas de ecuaciones** y practica con ejercicios escritos. Documenta cada paso detalladamente para consolidar tu aprendizaje.</p>
+            <p>Un **sistema de ecuaciones** es un conjunto de dos o más ecuaciones con varias incógnitas, donde buscamos los valores de las incógnitas que satisfacen todas las ecuaciones simultáneamente.</p>
+            <p><strong>Métodos principales:</strong></p>
+            <ul>
+                <li><strong>Sustitución:</strong> Despejar una incógnita de una ecuación y sustituirla en la otra.</li>
+                <li><strong>Igualación:</strong> Despejar la misma incógnita de ambas ecuaciones e igualar las expresiones.</li>
+                <li><strong>Reducción:</strong> Multiplicar las ecuaciones por números para que, al sumarlas o restarlas, se elimine una incógnita.</li>
+            </ul>
+            <p><strong>Ejercicio Escrito:</strong> Resuelve el siguiente sistema por el método que prefieras, mostrando todos los pasos.</p>
+            <p>x + y = 5</p>
+            <p>2x - y = 1</p>
+            <textarea rows='10' cols='60' placeholder='Resuelve el sistema paso a paso aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"sistemas\")'>Completar lección</button>
+          `,
+          kinestesico: `
+            <h3>Sistemas de Ecuaciones: Un simulador de Juego</h3>
+            <p>Usa un **simulador interactivo** para practicar la resolución de sistemas de ecuaciones. Podrás arrastrar y soltar ecuaciones, combinar términos y ver los resultados en tiempo real.</p>
+            <div class='interactive-game-placeholder'>
+              <p>Juego interactivo de resolución de sistemas, donde manipulas las ecuaciones.</p>
+              <p><em>Imagina un juego donde arrastras 'x' y 'y' para eliminarlas o sustituirlas.</em></p>
+            </div>
+            <p><strong>Actividad Práctica:</strong> Crea tus propias ecuaciones con bloques o fichas y "resuelve" el sistema moviendo los bloques hasta encontrar la solución.</p>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"sistemas\")'>Simular Completar Juego</button>
+          `
         },
         'geometria': {
-          visual: "<p>Explora las figuras geométricas con **modelos 3D interactivos** y diagramas:</p><img src='https://via.placeholder.com/600x400?text=Geometria+Visual' alt='Geometria visual'>",
-          auditivo: "<p>Escucha las **descripciones y propiedades** de las figuras geométricas básicas:</p><audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3'></audio>",
-          'lectura-escritura': "<p>Aprende las **fórmulas de área, perímetro y volumen** escribiéndolas y aplicándolas en problemas:</p><p>El área de un cuadrado es lado x lado. El perímetro es 4 x lado...</p><textarea rows='8' cols='60' placeholder='Dibuja y anota las fórmulas de geometría aquí...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>Construye figuras geométricas con **piezas virtuales** y calcula sus propiedades:</p><div class='interactive-game-placeholder'>Juego interactivo de construcción geométrica. (Simulado)</div><button onclick='simulateGameCompletion(\"matematicas\", \"geometria\")'>Simular Completar Juego</button>"
+          visual: `
+            <h3>Geometría Básica: Formas y Medidas en Acción</h3>
+            <p>Explora las figuras geométricas con **modelos 3D interactivos** y diagramas. Rota las figuras, observa sus caras, aristas y vértices para una comprensión espacial completa.</p>
+            <img src='https://via.placeholder.com/600x400?text=Geometria+3D+Visual' alt='Modelos 3D de figuras geométricas'>
+            <p><strong>Video Tutorial:</strong> Cómo calcular áreas y perímetros de cuadrados, círculos y triángulos, con animaciones que muestran las fórmulas.</p>
+            <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4'></video>
+            <p><strong>Ejercicio Visual:</strong> Dibuja la figura que se te pide y anota sus propiedades.</p>
+            <img src='https://via.placeholder.com/400x300?text=Dibuja+un+Círculo' alt='Espacio para dibujar'>
+            <textarea rows='3' cols='60' placeholder='Dibuja y anota las propiedades aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"geometria\")'>Completar lección</button>
+          `,
+          auditivo: `
+            <h3>Geometría Básica: Descripciones Auditivas</h3>
+            <p>Escucha las **descripciones y propiedades** de las figuras geométricas básicas. Cierra los ojos y trata de visualizar la figura mientras escuchas sus características.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3'></audio>
+            <p><strong>Actividad Auditiva:</strong> Se te describirá una figura. Intenta identificarla solo por la descripción y luego escribe su nombre y sus fórmulas.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'></audio>
+            <textarea rows='3' cols='60' placeholder='Identifica la figura y escribe sus fórmulas...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"geometria\")'>Completar lección</button>
+          `,
+          'lectura-escritura': `
+            <h3>Geometría Básica: Fórmulas y Problemas Escritos</h3>
+            <p>Aprende las **fórmulas de área, perímetro y volumen** escribiéndolas y aplicándolas en problemas. Lee la teoría y resuelve ejercicios para dominar la geometría.</p>
+            <p><strong>Fórmulas clave:</strong></p>
+            <ul>
+                <li><strong>Cuadrado:</strong> Área = lado * lado; Perímetro = 4 * lado</li>
+                <li><strong>Rectángulo:</strong> Área = base * altura; Perímetro = 2 * (base + altura)</li>
+                <li><strong>Círculo:</strong> Área = π * radio²; Perímetro (Circunferencia) = 2 * π * radio</li>
+                <li><strong>Triángulo:</strong> Área = (base * altura) / 2</li>
+            </ul>
+            <p><strong>Ejercicio Escrito:</strong> Calcula el área y el perímetro de las siguientes figuras, mostrando tus operaciones.</p>
+            <ol>
+                <li>Un cuadrado con lado 5 cm.</li>
+                <li>Un rectángulo con base 8 cm y altura 3 cm.</li>
+                <li>Un círculo con radio 4 cm (usa π = 3.14).</li>
+            </ol>
+            <textarea rows='10' cols='60' placeholder='Dibuja y anota las fórmulas de geometría aquí y resuelve los problemas...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"geometria\")'>Completar lección</button>
+          `,
+          kinestesico: `
+            <h3>Geometría Básica: Construye y Mide</h3>
+            <p>Construye figuras geométricas con **piezas virtuales** (o reales si tienes a mano) y calcula sus propiedades. ¡Siente la forma de un cubo al manipular sus partes!</p>
+            <div class='interactive-game-placeholder'>
+              <p>Juego interactivo de construcción geométrica donde arrastras y unes formas.</p>
+              <p><em>Imagina que unes 6 cuadrados para formar un cubo y luego calculas su volumen.</em></p>
+            </div>
+            <p><strong>Actividad Práctica:</strong> Usa papel y tijeras para construir tus propias figuras 2D y 3D (cuadrados, cubos, cilindros). Mide sus lados y calcula sus áreas y volúmenes.</p>
+            <button onclick='simulateGameCompletion(\"matematicas\", \"geometria\")'>Simular Completar Juego</button>
+          `
         }
       },
       lengua: {
         'ortografia-basica': {
-          visual: "<p>Observa los **mapas mentales** de reglas ortográficas y usa colores para recordar:</p><img src='https://via.placeholder.com/600x400?text=Ortografia+Visual' alt='Mapa mental ortografía'>",
-          auditivo: "<p>Escucha un **dictado** y compruébalo, mejorando tu oído ortográfico:</p><audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'></audio><p>Luego, compara con el texto correcto.</p>",
-          'lectura-escritura': "<p>Practica con **ejercicios de rellenar huecos** y corrige tus errores en texto:</p><p>El _(gato/jjato)_ corre rápido por el _(campo/cambpo)_.</p><textarea rows='5' cols='60' placeholder='Escribe tu respuesta aquí...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>Juego de **ordenar letras** para formar palabras correctas. ¡Siente la palabra mientras la construyes!</p><div class='interactive-game-placeholder'>Juego interactivo de ortografía: arrastra letras. (Simulado)</div><button onclick='simulateGameCompletion(\"lengua\", \"ortografia-basica\")'>Simular Completar Juego</button>"
+          visual: `
+            <h3>Ortografía Básica: Mapas Mentales y Colores</h3>
+            <p>Observa los **mapas mentales de reglas ortográficas** y usa colores para recordar las normas de acentuación, la B/V, G/J, y H. ¡Un vistazo y lo recordarás todo!</p>
+            <img src='https://via.placeholder.com/600x400?text=Mapa+Mental+Ortografía' alt='Mapa mental de ortografía'>
+            <p><strong>Video Animado:</strong> Animaciones que explican cuándo usar 'h' o 'b'/'v' con ejemplos gráficos.</p>
+            <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4'></video>
+            <p><strong>Ejercicio Visual:</strong> Identifica los errores ortográficos en este texto y subráyalos mentalmente.</p>
+            <img src='https://via.placeholder.com/500x250?text=Texto+con+Errores+Ortográficos' alt='Texto con errores'>
+            <textarea rows='3' cols='60' placeholder='Escribe las palabras corregidas aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"lengua\", \"ortografia-basica\")'>Completar lección</button>
+          `,
+          auditivo: `
+            <h3>Ortografía Básica: Dictados y Sonidos</h3>
+            <p>Escucha un **dictado** y compruébalo, mejorando tu oído ortográfico. Repite las palabras difíciles en voz alta.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'></audio>
+            <p><strong>Ejercicios de Pronunciación:</strong> Escucha pares de palabras que suenan similar pero se escriben diferente (ej: 'hola' vs 'ola', 'vaca' vs 'baca') y distínguelas.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'></audio>
+            <p><strong>Actividad Auditiva:</strong> Escucha esta lista de palabras y escribe solo aquellas que lleven tilde. Luego verifica la ortografía.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'></audio>
+            <textarea rows='3' cols='60' placeholder='Escribe las palabras con tilde aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"lengua\", \"ortografia-basica\")'>Completar lección</button>
+          `,
+          'lectura-escritura': `
+            <h3>Ortografía Básica: Reglas y Ejercicios Escritos</h3>
+            <p>Lee las **reglas ortográficas fundamentales** (acentuación, uso de B/V, G/J, H, R/RR) y practica con ejercicios de rellenar huecos. Corrige tus errores en texto para afianzar el aprendizaje.</p>
+            <p><strong>Reglas de acentuación:</strong> Las palabras agudas llevan tilde si terminan en vocal, N o S. Las llanas si NO terminan en vocal, N o S. Las esdrújulas y sobresdrújulas SIEMPRE llevan tilde.</p>
+            <p><strong>Uso de B y V:</strong> Se escribe B antes de L o R (ej: blanco, brazo). Se escribe V después de N o D (ej: inventar, advertir).</p>
+            <p><strong>Ejercicios Escritos:</strong> Completa las siguientes oraciones con la letra correcta (b/v, g/j, h) o pon tilde donde corresponda.</p>
+            <ol>
+                <li>El _(b/v)olumen del li_(b/v)ro es _(b/v)ajo.</li>
+                <li>Mi _(h)ermano _(g/j)uega en el _(g/j)imnasio.</li>
+                <li>Este es un ar_ol.</li>
+                <li>Ella camina rapido.</li>
+            </ol>
+            <textarea rows='10' cols='60' placeholder='Resuelve los ejercicios y explica las reglas aplicadas aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"lengua\", \"ortografia-basica\")'>Completar lección</button>
+          `,
+          kinestesico: `
+            <h3>Ortografía Básica: Juego de Ordenar Letras</h3>
+            <p>¡Juego de **ordenar letras** para formar palabras correctas! Arrastra las letras para construir la palabra con la ortografía adecuada. ¡Siente la palabra mientras la construyes y la colocas en su lugar!</p>
+            <div class='interactive-game-placeholder'>
+              <p>Juego interactivo de ortografía: arrastra letras para formar palabras.</p>
+              <p><em>Imagina que tienes las letras "o", "l", "h", "a" y las arrastras para formar "hola".</em></p>
+            </div>
+            <p><strong>Actividad Práctica:</strong> Usa imanes con letras o tarjetas para formar palabras. Corrige la ortografía moviendo físicamente las letras equivocadas y reemplazándolas.</p>
+            <button onclick='simulateGameCompletion(\"lengua\", \"ortografia-basica\")'>Simular Completar Juego</button>
+          `
         },
         'morfologia': {
-          visual: "<p>Identifica las categorías gramaticales con **diagramas de flujo y colores**:</p><img src='https://via.placeholder.com/600x400?text=Morfologia+Visual' alt='Morfologia visual'>",
-          auditivo: "<p>Escucha **ejemplos y explicaciones de las categorías gramaticales**:</p><audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'></audio>",
-          'lectura-escritura': "<p>Analiza y clasifica palabras en este **ejercicio escrito**:</p><p>Indica la categoría gramatical de cada palabra: 'La casa azul es grande'</p><textarea rows='5' cols='60' placeholder='Analiza aquí...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>**Clasifica palabras** arrastrándolas a su categoría correcta en un juego interactivo:</p><div class='interactive-game-placeholder'>Juego interactivo de clasificación morfológica. (Simulado)</div><button onclick='simulateGameCompletion(\"lengua\", \"morfologia\")'>Simular Completar Juego</button>"
+          visual: `
+            <h3>Morfología: Diagramas y Categorías con Color</h3>
+            <p>Identifica las categorías gramaticales con **diagramas de flujo y colores**. Asocia cada tipo de palabra (sustantivo, adjetivo, verbo) con un color y una estructura visual para recordarlo fácilmente.</p>
+            <img src='https://via.placeholder.com/600x400?text=Diagrama+Morfologia' alt='Diagrama de morfología'>
+            <p><strong>Video Explicativo:</strong> Un video animado que descompone oraciones en sus componentes morfológicos, mostrando cada palabra con su función.</p>
+            <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4'></video>
+            <p><strong>Ejercicio Visual:</strong> Observa la oración y subraya mentalmente (o dibuja círculos alrededor) de los sustantivos de azul, los verbos de rojo, etc.</p>
+            <p><em>"El perro **corre** felizmente en el **parque**."</em></p>
+            <textarea rows='3' cols='60' placeholder='Clasifica las palabras destacadas aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"lengua\", \"morfologia\")'>Completar lección</button>
+          `,
+          auditivo: `
+            <h3>Morfología: Escucha y Clasifica</h3>
+            <p>Escucha **ejemplos y explicaciones de las categorías gramaticales**. Presta atención a cómo suenan las palabras según su función en la oración.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'></audio>
+            <p><strong>Podcast:</strong> Un episodio sobre la evolución de las palabras y cómo cambiaron sus formas a lo largo del tiempo.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3'></audio>
+            <p><strong>Ejercicio Auditivo:</strong> Escucha esta lista de palabras. Para cada una, di en voz alta si es un sustantivo, adjetivo o verbo.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'></audio>
+            <textarea rows='3' cols='60' placeholder='Escribe tu clasificación aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"lengua\", \"morfologia\")'>Completar lección</button>
+          `,
+          'lectura-escritura': `
+            <h3>Morfología: Define y Analiza Escrito</h3>
+            <p>Analiza y clasifica palabras en este **ejercicio escrito**. Define cada categoría gramatical y luego aplica tus conocimientos para identificarla en oraciones.</p>
+            <p>Las **categorías gramaticales** (o clases de palabras) son grupos en los que se clasifican las palabras de una lengua según su función y propiedades.</p>
+            <ul>
+                <li>**Sustantivo:** Nombra personas, animales, cosas, ideas (ej: mesa, Juan, amor).</li>
+                <li>**Verbo:** Expresa acciones, estados o procesos (ej: correr, ser, existir).</li>
+                <li>**Adjetivo:** Califica al sustantivo (ej: grande, bonita, rojo).</li>
+                <li>**Adverbio:** Modifica a un verbo, un adjetivo o a otro adverbio (ej: rápidamente, muy, aquí).</li>
+                <li>**Determinante:** Acompaña al sustantivo para especificarlo (ej: el, una, mi).</li>
+                <li>**Pronombre:** Sustituye al sustantivo (ej: yo, él, este).</li>
+            </ul>
+            <p><strong>Ejercicio Escrito:</strong> Identifica la categoría gramatical de cada palabra en la siguiente oración.</p>
+            <p><em>"La pequeña niña jugaba alegremente en el jardín."</em></p>
+            <textarea rows='10' cols='60' placeholder='Analiza cada palabra aquí (ej: La: determinante, pequeña: adjetivo...)' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"lengua\", \"morfologia\")'>Completar lección</button>
+          `,
+          kinestesico: `
+            <h3>Morfología: Clasifica y Mueve</h3>
+            <p>**Clasifica palabras** arrastrándolas a su categoría correcta en un juego interactivo. ¡Siente cómo cada palabra encuentra su lugar en la estructura de la oración!</p>
+            <div class='interactive-game-placeholder'>
+              <p>Juego interactivo de clasificación morfológica: arrastra palabras a sus categorías.</p>
+              <p><em>Imagina que arrastras la palabra "correr" a la caja "Verbos".</em></p>
+            </div>
+            <p><strong>Actividad Práctica:</strong> Escribe diferentes palabras en tarjetas de colores (un color por categoría). Mezcla las tarjetas y luego sepáralas en montones según su categoría gramatical. ¡Hazlo rápido!</p>
+            <button onclick='simulateGameCompletion(\"lengua\", \"morfologia\")'>Simular Completar Juego</button>
+          `
         },
         'sintaxis-simple': {
-          visual: "<p>Entiende la estructura de la oración con **esquemas de análisis sintáctico** visuales:</p><img src='https://via.placeholder.com/600x400?text=Sintaxis+Visual' alt='Sintaxis visual'>",
-          auditivo: "<p>Escucha el **análisis de oraciones simples** explicado paso a paso:</p><audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'></audio>",
-          'lectura-escritura': "<p>Practica el **análisis sintáctico** de oraciones simples escribiendo sus componentes:</p><p>Analiza la siguiente oración: 'El perro ladra mucho'.</p><textarea rows='8' cols='60' placeholder='Escribe tu análisis aquí...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>**Construye oraciones** arrastrando los componentes (sujeto, predicado, complementos) a su lugar:</p><div class='interactive-game-placeholder'>Juego interactivo de construcción sintáctica. (Simulado)</div><button onclick='simulateGameCompletion(\"lengua\", \"sintaxis-simple\")'>Simular Completar Juego</button>"
+          visual: `
+            <h3>Sintaxis - Oración Simple: Esquemas y Estructuras</h3>
+            <p>Entiende la estructura de la oración con **esquemas de análisis sintáctico visuales**. Cada elemento (sujeto, predicado, complementos) tendrá su propio espacio y conexión visual.</p>
+            <img src='https://via.placeholder.com/600x400?text=Esquema+Sintaxis+Simple' alt='Esquema de sintaxis simple'>
+            <p><strong>Video Animado:</strong> Animaciones que descomponen oraciones y muestran cómo se relacionan el sujeto y el predicado.</p>
+            <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4'></video>
+            <p><strong>Ejercicio Visual:</strong> Dibuja el esquema de la oración y rellena los componentes.</p>
+            <p><em>"Los niños felices juegan en el parque."</em></p>
+            <textarea rows='5' cols='60' placeholder='Dibuja el esquema de la oración y clasifica aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"lengua\", \"sintaxis-simple\")'>Completar lección</button>
+          `,
+          auditivo: `
+            <h3>Sintaxis - Oración Simple: Análisis Auditivo</h3>
+            <p>Escucha el **análisis de oraciones simples** explicado paso a paso. Se te dictarán oraciones y se te guiará para identificar el sujeto, el predicado y sus complementos.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'></audio>
+            <p><strong>Actividad Auditiva:</strong> Escucha esta oración y di en voz alta cuál es el sujeto y cuál el predicado.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'></audio>
+            <textarea rows='3' cols='60' placeholder='Escribe tu análisis auditivo aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"lengua\", \"sintaxis-simple\")'>Completar lección</button>
+          `,
+          'lectura-escritura': `
+            <h3>Sintaxis - Oración Simple: Analiza por Escrito</h3>
+            <p>Practica el **análisis sintáctico** de oraciones simples escribiendo sus componentes. Lee las definiciones de sujeto, predicado y complementos, y aplica la teoría.</p>
+            <p>La **oración simple** es aquella que tiene un solo verbo en forma personal. Sus dos partes principales son el **Sujeto** (quien realiza o de quien se dice algo) y el **Predicado** (lo que hace o se dice del sujeto).</p>
+            <p><strong>Complementos del predicado:</strong></p>
+            <ul>
+                <li>**Objeto Directo (OD):** Qué o a quién.</li>
+                <li>**Objeto Indirecto (OI):** A quién o para quién.</li>
+                <li>**Complemento Circunstancial (CC):** Cómo, cuándo, dónde, cuánto, etc.</li>
+            </ul>
+            <p><strong>Ejercicios Escritos:</strong> Analiza sintácticamente las siguientes oraciones, identificando sujeto, predicado y complementos.</p>
+            <ol>
+                <li>María compró un libro ayer.</li>
+                <li>Los pájaros cantan en el árbol.</li>
+                <li>Juan dio flores a su madre.</li>
+            </ol>
+            <textarea rows='10' cols='60' placeholder='Analiza cada oración paso a paso aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"lengua\", \"sintaxis-simple\")'>Completar lección</button>
+          `,
+          kinestesico: `
+            <h3>Sintaxis - Oración Simple: Construye Oraciones</h3>
+            <p>**Construye oraciones** arrastrando los componentes (sujeto, predicado, complementos) a su lugar en un juego interactivo. ¡Siente cómo se forma una oración al unir sus partes!</p>
+            <div class='interactive-game-placeholder'>
+              <p>Juego interactivo de construcción sintáctica: arrastra cajas de palabras para formar oraciones correctas.</p>
+              <p><em>Imagina que arrastras "El perro" a la caja de "Sujeto", y "ladra mucho" a la caja de "Predicado".</em></p>
+            </div>
+            <p><strong>Actividad Práctica:</strong> Escribe en tarjetas diferentes palabras (sustantivos, verbos, adjetivos, etc.). Luego, juega a construir oraciones variadas, moviendo las tarjetas para cambiar el orden o añadir complementos.</p>
+            <button onclick='simulateGameCompletion(\"lengua\", \"sintaxis-simple\")'>Simular Completar Juego</button>
+          `
         },
         'sintaxis-compuesta': {
-          visual: "<p>Visualiza los tipos de oraciones compuestas con **diagramas de subordinación y coordinación**:</p><img src='https://via.placeholder.com/600x400?text=Sintaxis+Compuesta+Visual' alt='Sintaxis compuesta visual'>",
-          auditivo: "<p>Escucha **ejemplos y explicaciones de oraciones coordinadas y subordinadas**:</p><audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'></audio>",
-          'lectura-escritura': "<p>**Clasifica y analiza** oraciones compuestas en este ejercicio escrito:</p><p>Clasifica la oración: 'Estudiaré cuando tenga tiempo'.</p><textarea rows='8' cols='60' placeholder='Escribe tu análisis aquí...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>**Une oraciones simples** para formar compuestas en un juego interactivo:</p><div class='interactive-game-placeholder'>Juego interactivo de unión de oraciones. (Simulado)</div><button onclick='simulateGameCompletion(\"lengua\", \"sintaxis-compuesta\")'>Simular Completar Juego</button>"
+          visual: `
+            <h3>Sintaxis - Oración Compuesta: Mapas y Redes</h3>
+            <p>Visualiza los tipos de oraciones compuestas con **diagramas de subordinación y coordinación** y redes de relaciones entre proposiciones. Entenderás la complejidad de las frases de un vistazo.</p>
+            <img src='https://via.placeholder.com/600x400?text=Mapa+Sintaxis+Compuesta' alt='Mapa de sintaxis compuesta'>
+            <p><strong>Video:</strong> Animaciones que explican las oraciones coordinadas (copulativas, disyuntivas, adversativas) y subordinadas (sustantivas, adjetivas, adverbiales).</p>
+            <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4'></video>
+            <p><strong>Ejercicio Visual:</strong> Observa la oración y dibuja las "cajas" para cada proposición y las flechas para indicar su relación.</p>
+            <p><em>"Estudiaré mucho para que apruebe el examen."</em></p>
+            <textarea rows='5' cols='60' placeholder='Dibuja el esquema y clasifica las proposiciones aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"lengua\", \"sintaxis-compuesta\")'>Completar lección</button>
+          `,
+          auditivo: `
+            <h3>Sintaxis - Oración Compuesta: Explicaciones Auditivas</h3>
+            <p>Escucha **ejemplos y explicaciones de oraciones coordinadas y subordinadas**. Presta atención a las conjunciones y a cómo cada proposición se relaciona con la otra.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'></audio>
+            <p><strong>Podcast:</strong> Un episodio que explora la importancia de las oraciones compuestas para la riqueza del lenguaje.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'></audio>
+            <p><strong>Ejercicio Auditivo:</strong> Escucha esta oración. ¿Es coordinada o subordinada? ¿De qué tipo?</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3'></audio>
+            <textarea rows='3' cols='60' placeholder='Escribe tu clasificación y justificación aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"lengua\", \"sintaxis-compuesta\")'>Completar lección</button>
+          `,
+          'lectura-escritura': `
+            <h3>Sintaxis - Oración Compuesta: Clasifica y Analiza</h3>
+            <p>**Clasifica y analiza** oraciones compuestas en este ejercicio escrito. Lee las definiciones de coordinación y subordinación, y aplica las reglas para desglosar la estructura compleja de las frases.</p>
+            <p>La **oración compuesta** tiene dos o más verbos, lo que significa que está formada por dos o más proposiciones.</p>
+            <ul>
+                <li>**Oraciones coordinadas:** Proposiciones que son sintácticamente independientes entre sí, unidas por conjunciones (y, o, pero...).</li>
+                <li>**Oraciones subordinadas:** Proposiciones que dependen sintácticamente de una principal (sustantivas, adjetivas, adverbiales).</li>
+            </ul>
+            <p><strong>Ejercicios Escritos:</strong> Clasifica y analiza las siguientes oraciones compuestas.</p>
+            <ol>
+                <li>Ella canta y él baila.</li>
+                <li>No sé si vendrá mañana.</li>
+                <li>Fuimos al parque que está cerca de casa.</li>
+            </ol>
+            <textarea rows='10' cols='60' placeholder='Analiza cada oración, identificando el tipo de proposición y su función...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"lengua\", \"sintaxis-compuesta\")'>Completar lección</button>
+          `,
+          kinestesico: `
+            <h3>Sintaxis - Oración Compuesta: Une y Relaciona</h3>
+            <p>**Une oraciones simples** para formar compuestas en un juego interactivo. Arrastra las proposiciones y los nexos (conjunciones) para construir oraciones complejas. ¡Siente cómo las ideas se conectan!</p>
+            <div class='interactive-game-placeholder'>
+              <p>Juego interactivo de unión de oraciones: arrastra proposiciones y nexos.</p>
+              <p><em>Imagina que arrastras "Pedro estudia" y "Juan trabaja" y los unes con "y".</em></p>
+            </div>
+            <p><strong>Actividad Práctica:</strong> Escribe diferentes oraciones simples en tarjetas separadas. Luego, únelas con tarjetas de conjunciones (y, o, porque, si) para crear oraciones compuestas. Explica en voz alta por qué las uniste así.</p>
+            <button onclick='simulateGameCompletion(\"lengua\", \"sintaxis-compuesta\")'>Simular Completar Juego</button>
+          `
         },
         'literatura': {
-          visual: "<p>Explora los **géneros literarios** con infografías y líneas de tiempo visuales:</p><img src='https://via.placeholder.com/600x400?text=Literatura+Visual' alt='Literatura visual'>",
-          auditivo: "<p>Escucha **fragmentos de obras clásicas** y comentarios sobre los autores:</p><audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'></audio>",
-          'lectura-escritura': "<p>Lee y **analiza textos literarios** y responde preguntas sobre ellos:</p><p>Lee el poema 'La primavera' de Antonio Machado y comenta su métrica.</p><textarea rows='8' cols='60' placeholder='Escribe tu análisis literario aquí...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>**Arrastra autores a sus obras** correspondientes en un juego de memoria literaria:</p><div class='interactive-game-placeholder'>Juego interactivo de literatura. (Simulado)</div><button onclick='simulateGameCompletion(\"lengua\", \"literatura\")'>Simular Completar Juego</button>"
+          visual: `
+            <h3>Literatura Española: Líneas de Tiempo y Portadas</h3>
+            <p>Explora los **géneros literarios con infografías y líneas de tiempo visuales**. Viaja a través de la historia de la literatura española y reconoce a los autores por sus retratos y las portadas de sus obras.</p>
+            <img src='https://via.placeholder.com/600x400?text=Linea+Tiempo+Literatura' alt='Línea de tiempo de la literatura'>
+            <p><strong>Video:</strong> Documental corto sobre la vida y obra de Miguel de Cervantes.</p>
+            <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4'></video>
+            <p><strong>Ejercicio Visual:</strong> Une con flechas (mentalmente) el autor con su obra más famosa viendo sus imágenes.</p>
+            <img src='https://via.placeholder.com/500x300?text=Autores+y+Obras' alt='Autores y obras'>
+            <textarea rows='3' cols='60' placeholder='Escribe las parejas (Autor - Obra) aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"lengua\", \"literatura\")'>Completar lección</button>
+          `,
+          auditivo: `
+            <h3>Literatura Española: Escucha Fragmentos y Comentarios</h3>
+            <p>Escucha **fragmentos de obras clásicas** y comentarios sobre los autores. Cierra los ojos y sumérgete en el sonido de la poesía y la prosa española.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'></audio>
+            <p><strong>Audiolibro:</strong> Fragmento de un clásico de la literatura española, ideal para familiarizarte con el ritmo y la musicalidad del idioma.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'></audio>
+            <p><strong>Ejercicio Auditivo:</strong> Escucha este fragmento y di en voz alta a qué género literario pertenece y quién podría ser el autor.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'></audio>
+            <textarea rows='3' cols='60' placeholder='Escribe tus conclusiones aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"lengua\", \"literatura\")'>Completar lección</button>
+          `,
+          'lectura-escritura': `
+            <h3>Literatura Española: Analiza Textos y Escribe Comentarios</h3>
+            <p>Lee y **analiza textos literarios** y responde preguntas sobre ellos. Aprende sobre los géneros literarios, la métrica y las figuras retóricas a través de la lectura y la escritura de tus propios comentarios.</p>
+            <p><strong>Géneros Literarios:</strong></p>
+            <ul>
+                <li>**Lírica:** Expresa sentimientos y emociones (poesía).</li>
+                <li>**Narrativa:** Cuenta una historia (novela, cuento).</li>
+                <li>**Dramática:** Destinada a ser representada (teatro).</li>
+            </ul>
+            <p><strong>Ejemplo de Texto (para analizar):</strong></p>
+            <p><em>"Veleta del alma, / ¿dónde el viento te lleva? / Ni Norte ni Sur, / solo la pena."</em> (Fragmento poético)</p>
+            <p><strong>Ejercicio Escrito:</strong> Lee el fragmento y comenta a qué género pertenece, qué tema aborda y qué emociones transmite.</p>
+            <textarea rows='10' cols='60' placeholder='Escribe tu análisis literario aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"lengua\", \"literatura\")'>Completar lección</button>
+          `,
+          kinestesico: `
+            <h3>Literatura Española: Juego de Autores y Obras</h3>
+            <p>**Arrastra autores a sus obras** correspondientes en un juego de memoria literaria. ¡Siente la conexión entre el creador y su creación al unirlos!</p>
+            <div class='interactive-game-placeholder'>
+              <p>Juego interactivo de arrastrar y soltar: empareja autores con sus obras.</p>
+              <p><em>Imagina que arrastras "Cervantes" a "El Quijote".</em></p>
+            </div>
+            <p><strong>Actividad Práctica:</strong> Crea tarjetas con nombres de autores y otras con títulos de obras. Revuélvelas y luego empareja las tarjetas físicamente. Puedes cronometrarte para hacerlo más dinámico.</p>
+            <button onclick='simulateGameCompletion(\"lengua\", \"literatura\")'>Simular Completar Juego</button>
+          `
         },
         'expresion-escrita': {
-          visual: "<p>Organiza tus ideas con **mapas conceptuales para la escritura**:</p><img src='https://via.placeholder.com/600x400?text=Expresion+Escrita+Visual' alt='Expresion escrita visual'>",
-          auditivo: "<p>Escucha **consejos para mejorar la redacción** y la coherencia de textos:</p><audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3'></audio>",
-          'lectura-escritura': "<p>Practica diferentes **tipos de texto** (narrativo, descriptivo, expositivo) con ejercicios de redacción:</p><p>Escribe un párrafo descriptivo sobre tu lugar favorito.</p><textarea rows='8' cols='60' placeholder='Empieza a escribir aquí...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>**Reorganiza párrafos** y oraciones para mejorar la fluidez y coherencia de un texto:</p><div class='interactive-game-placeholder'>Juego interactivo de coherencia textual. (Simulado)</div><button onclick='simulateGameCompletion(\"lengua\", \"expresion-escrita\")'>Simular Completar Juego</button>"
+          visual: `
+            <h3>Expresión Escrita: Mapas Conceptuales para Redacción</h3>
+            <p>Organiza tus ideas con **mapas conceptuales para la escritura**. Antes de empezar a redactar, visualiza la estructura de tu texto, las ideas principales y secundarias, y la coherencia de tus argumentos.</p>
+            <img src='https://via.placeholder.com/600x400?text=Mapa+Conceptual+Redacción' alt='Mapa conceptual para redacción'>
+            <p><strong>Video Tutorial:</strong> Cómo planificar un escrito con un esquema visual, desde la idea principal hasta los detalles.</p>
+            <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4'></video>
+            <p><strong>Ejercicio Visual:</strong> Completa el siguiente mapa conceptual para planificar un texto descriptivo sobre "Mi Lugar Favorito".</p>
+            <img src='https://via.placeholder.com/400x300?text=Esquema+Descriptivo' alt='Esquema para texto descriptivo'>
+            <textarea rows='5' cols='60' placeholder='Completa el esquema con tus ideas...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"lengua\", \"expresion-escrita\")'>Completar lección</button>
+          `,
+          auditivo: `
+            <h3>Expresión Escrita: Consejos Auditivos para Mejorar</h3>
+            <p>Escucha **consejos para mejorar la redacción** y la coherencia de textos. Aprende a modular tu voz al leer lo que escribes, para detectar errores de ritmo o sentido.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'></audio>
+            <p><strong>Podcast:</strong> Un episodio sobre la importancia de la voz narrativa y cómo usarla en tus escritos.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'></audio>
+            <p><strong>Ejercicio Auditivo:</strong> Escucha este párrafo y luego intenta reescribirlo para mejorar su fluidez y claridad.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3'></audio>
+            <textarea rows='5' cols='60' placeholder='Reescribe el párrafo aquí...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"lengua\", \"expresion-escrita\")'>Completar lección</button>
+          `,
+          'lectura-escritura': `
+            <h3>Expresión Escrita: Redacta y Revisa</h3>
+            <p>Practica diferentes **tipos de texto** (narrativo, descriptivo, expositivo) con ejercicios de redacción. Lee ejemplos, escribe tus propios textos y revisa la gramática y el estilo.</p>
+            <p><strong>Tipos de texto:</strong></p>
+            <ul>
+                <li>**Narrativo:** Cuenta una historia (cuentos, novelas).</li>
+                <li>**Descriptivo:** Detalla características de algo o alguien.</li>
+                <li>**Expositivo:** Presenta información de forma clara y objetiva.</li>
+                <li>**Argumentativo:** Defiende una opinión con razones.</li>
+            </ul>
+            <p><strong>Ejercicio Escrito:</strong> Escribe un párrafo descriptivo sobre tu lugar favorito. Incluye al menos 5 adjetivos y 2 adverbios.</p>
+            <textarea rows='10' cols='60' placeholder='Empieza a escribir aquí tu párrafo descriptivo...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"lengua\", \"expresion-escrita\")'>Completar lección</button>
+          `,
+          kinestesico: `
+            <h3>Expresión Escrita: Reorganiza y Construye</h3>
+            <p>**Reorganiza párrafos** y oraciones para mejorar la fluidez y coherencia de un texto en un juego interactivo. ¡Siente cómo un texto mejora al mover sus partes!</p>
+            <div class='interactive-game-placeholder'>
+              <p>Juego interactivo de coherencia textual: arrastra bloques de texto para ordenar un párrafo.</p>
+              <p><em>Imagina que tienes frases desordenadas y las arrastras para que el texto tenga sentido.</em></p>
+            </div>
+            <p><strong>Actividad Práctica:</strong> Escribe frases o párrafos en tarjetas separadas. Mézclalas y luego ordénalas físicamente en tu mesa para construir un texto coherente. Lee el resultado en voz alta.</p>
+            <button onclick='simulateGameCompletion(\"lengua\", \"expresion-escrita\")'>Simular Completar Juego</button>
+          `
         }
       },
       ingles: {
         'basic-vocabulary': {
-          visual: "<p>Learn new words with **interactive flashcards** and picture dictionaries:</p><img src='https://via.placeholder.com/600x400?text=English+Vocabulary+Visual' alt='English vocabulary visual'>",
-          auditivo: "<p>Listen and **repeat the pronunciation** of basic vocabulary:</p><audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'></audio>",
-          'lectura-escritura': "<p>Read and **write definitions and example sentences** for new words:</p><p>A **dog** is a domesticated carnivorous mammal...</p><textarea rows='5' cols='60' placeholder='Write your own sentence with the word dog...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>**Match words to pictures** in a fun drag-and-drop game:</p><div class='interactive-game-placeholder'>Interactive vocabulary matching game. (Simulated)</div><button onclick='simulateGameCompletion(\"ingles\", \"basic-vocabulary\")'>Simular Completar Juego</button>"
+          visual: `
+            <h3>Basic Vocabulary: Flashcards and Picture Dictionaries</h3>
+            <p>Learn new words with **interactive flashcards** and picture dictionaries. See the word, its meaning, and an image to create a strong visual connection. Repeat the words as you see them!</p>
+            <img src='https://via.placeholder.com/600x400?text=Flashcards+Vocabulary' alt='English flashcards'>
+            <p><strong>Video:</strong> Animated vocabulary lessons for common objects and actions.</p>
+            <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4'></video>
+            <p><strong>Visual Exercise:</strong> Look at the picture and write the English word.</p>
+            <img src='https://via.placeholder.com/300x200?text=Apple' alt='Picture of an apple'>
+            <textarea rows='2' cols='60' placeholder='Write the word here...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"ingles\", \"basic-vocabulary\")'>Complete lesson</button>
+          `,
+          auditivo: `
+            <h3>Basic Vocabulary: Listen and Repeat</h3>
+            <p>Listen and **repeat the pronunciation** of basic vocabulary. Focus on the sound of each word and try to imitate it perfectly. Use headphones for best results!</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'></audio>
+            <p><strong>Audio Exercise:</strong> You will hear a word. Say it out loud and then write it down.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'></audio>
+            <textarea rows='3' cols='60' placeholder='Write the words you hear...' style='width: 100%;'></textarea>
+            <p><strong>Pronunciation Challenge:</strong> Record yourself saying the words and compare them to the native speaker.</p>
+            <button onclick='simulateGameCompletion(\"ingles\", \"basic-vocabulary\")'>Complete lesson</button>
+          `,
+          'lectura-escritura': `
+            <h3>Basic Vocabulary: Read and Write Definitions</h3>
+            <p>Read and **write definitions and example sentences** for new words. Create your own vocabulary lists and review them regularly. Pay attention to spelling!</p>
+            <p>A **dog** is a domesticated carnivorous mammal that typically has a long snout, an acute sense of smell, and a barking, howling, or whining voice. It is widely kept as a pet or for work purposes.</p>
+            <p>A **cat** is a small domesticated carnivorous mammal with soft fur, a short snout, and retractable claws. It is widely kept as a pet or for catching mice and other vermin.</p>
+            <p><strong>Writing Exercise:</strong> Write a definition and an example sentence for the following words:</p>
+            <ul>
+                <li>House</li>
+                <li>Book</li>
+                <li>Tree</li>
+            </ul>
+            <textarea rows='10' cols='60' placeholder='Write your definitions and sentences here...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"ingles\", \"basic-vocabulary\")'>Complete lesson</button>
+          `,
+          kinestesico: `
+            <h3>Basic Vocabulary: Match and Move</h3>
+            <p>**Match words to pictures** in a fun drag-and-drop game. Feel the connection as you physically (virtually) unite the word with its image. ¡Learn by doing!</p>
+            <div class='interactive-game-placeholder'>
+              <p>Interactive vocabulary matching game: drag words to their corresponding images.</p>
+              <p><em>Imagine you drag the word "apple" to a picture of an apple.</em></p>
+            </div>
+            <p><strong>Practical Activity:</strong> Use physical flashcards. Write the word on one side and draw the picture on the other. Then, play a matching game with yourself or a friend.</p>
+            <button onclick='simulateGameCompletion(\"ingles\", \"basic-vocabulary\")'>Simulate Game Completion</button>
+          `
         },
         'present-tenses': {
-          visual: "<p>Understand present tenses with **timeline diagrams and examples**:</p><img src='https://via.placeholder.com/600x400?text=Present+Tenses+Visual' alt='Present tenses visual'>",
-          auditivo: "<p>Listen to **conversations using present simple and continuous** to hear them in context:</p><audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'></audio>",
-          'lectura-escritura': "<p>Fill in the blanks and correct sentences to practice **present tenses in writing**:</p><p>She (go) _____ to school every day.</p><textarea rows='5' cols='60' placeholder='Write your answers here...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>**Form sentences** by ordering words correctly in present tenses:</p><div class='interactive-game-placeholder'>Interactive sentence builder for present tenses. (Simulated)</div><button onclick='simulateGameCompletion(\"ingles\", \"present-tenses\")'>Simular Completar Juego</button>"
+          visual: `
+            <h3>Present Simple & Continuous: Timelines and Actions</h3>
+            <p>Understand present tenses with **timeline diagrams and action examples**. See when each tense is used for habits, facts, or ongoing actions right now.</p>
+            <img src='https://via.placeholder.com/600x400?text=Present+Tenses+Timeline' alt='Present tenses timeline'>
+            <p><strong>Video Tutorial:</strong> Animated explanations of verb conjugations in present simple and continuous.</p>
+            <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4'></video>
+            <p><strong>Visual Exercise:</strong> Look at the images and decide if it's Present Simple or Present Continuous.</p>
+            <img src='https://via.placeholder.com/300x200?text=Man+Reading+Daily' alt='Man reading a book daily'>
+            <textarea rows='2' cols='60' placeholder='Present Simple or Continuous?' style='width: 100%;'></textarea><br>
+            <img src='https://via.placeholder.com/300x200?text=Woman+Currently+Running' alt='Woman currently running'>
+            <textarea rows='2' cols='60' placeholder='Present Simple or Continuous?' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"ingles\", \"present-tenses\")'>Complete lesson</button>
+          `,
+          auditivo: `
+            <h3>Present Simple & Continuous: Listen to Context</h3>
+            <p>Listen to **conversations using present simple and continuous** to hear them in context. Pay attention to the adverbs of frequency and time expressions.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'></audio>
+            <p><strong>Dialogue Practice:</strong> Listen to a dialogue and then record yourself playing one of the characters.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'></audio>
+            <textarea rows='3' cols='60' placeholder='What did you understand from the dialogue?' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"ingles\", \"present-tenses\")'>Complete lesson</button>
+          `,
+          'lectura-escritura': `
+            <h3>Present Simple & Continuous: Fill the Gaps and Write</h3>
+            <p>Fill in the blanks and correct sentences to practice **present tenses in writing**. Read the grammar rules carefully and apply them in your exercises.</p>
+            <p><strong>Present Simple:</strong> Used for habits, routines, facts. (e.g., *She **works** every day.*)</p>
+            <p><strong>Present Continuous:</strong> Used for actions happening now, temporary actions. (e.g., *He **is working** right now.*)</p>
+            <p><strong>Writing Exercise:</strong> Complete the sentences with the correct form of the verb in brackets (Present Simple or Present Continuous).</p>
+            <ol>
+                <li>She (go) _____ to school every day.</li>
+                <li>They (play) _____ football now.</li>
+                <li>I usually (read) _____ books in the evening.</li>
+                <li>Look! The baby (sleep) _____.</li>
+            </ol>
+            <textarea rows='10' cols='60' placeholder='Write your answers here...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"ingles\", \"present-tenses\")'>Complete lesson</button>
+          `,
+          kinestesico: `
+            <h3>Present Simple & Continuous: Form Sentences Actively</h3>
+            <p>**Form sentences** by ordering words correctly in present tenses. Drag and drop words to build grammatically correct sentences. Feel the structure!</p>
+            <div class='interactive-game-placeholder'>
+              <p>Interactive sentence builder for present tenses: drag words to form sentences.</p>
+              <p><em>Imagine you drag "She" then "is" then "reading" then "a book".</em></p>
+            </div>
+            <p><strong>Practical Activity:</strong> Use word cards with verbs and adverbs. Physically arrange them to form sentences in Present Simple or Present Continuous. Act out the sentences!</p>
+            <button onclick='simulateGameCompletion(\"ingles\", \"present-tenses\")'>Simulate Game Completion</button>
+          `
         },
         'past-tenses': {
-          visual: "<p>See how past events connect with **visual narratives** and comics:</p><img src='https://via.placeholder.com/600x400?text=Past+Tenses+Visual' alt='Past tenses visual'>",
-          auditivo: "<p>Listen to **stories told in past simple and continuous** and answer comprehension questions:</p><audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'></audio>",
-          'lectura-escritura': "<p>Read short stories and **rewrite them using past tenses**:</p><p>Yesterday, I (walk) _____ to the park...</p><textarea rows='5' cols='60' placeholder='Rewrite the story in past tense...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>**Role-play conversations** about past events to practice speaking in past tenses:</p><div class='interactive-game-placeholder'>Interactive role-play for past tenses. (Simulated)</div><button onclick='simulateGameCompletion(\"ingles\", \"past-tenses\")'>Simular Completar Juego</button>"
+          visual: `
+            <h3>Past Simple & Past Continuous: Visual Narratives</h3>
+            <p>See how past events connect with **visual narratives and comics**. Understand the sequence of actions and simultaneous events through illustrations.</p>
+            <img src='https://via.placeholder.com/600x400?text=Past+Tenses+Comics' alt='Past tenses comics'>
+            <p><strong>Video:</strong> Short film illustrating the use of past simple for completed actions and past continuous for ongoing actions.</p>
+            <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4'></video>
+            <p><strong>Visual Exercise:</strong> Describe the story in the pictures using past tenses.</p>
+            <img src='https://via.placeholder.com/500x250?text=Story+Sequence+1' alt='Story sequence 1'>
+            <textarea rows='5' cols='60' placeholder='Describe the story in English using past tenses...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"ingles\", \"past-tenses\")'>Complete lesson</button>
+          `,
+          auditivo: `
+            <h3>Past Simple & Past Continuous: Listen to Stories</h3>
+            <p>Listen to **stories told in past simple and continuous** and answer comprehension questions. Pay attention to how the tenses are used to describe the flow of events.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'></audio>
+            <p><strong>Audio Story:</strong> A detective story where you have to follow the events using past tenses.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3'></audio>
+            <p><strong>Exercise:</strong> What was the main character doing when the event happened? Explain based on the audio.</p>
+            <textarea rows='3' cols='60' placeholder='Your explanation here...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"ingles\", \"past-tenses\")'>Complete lesson</button>
+          `,
+          'lectura-escritura': `
+            <h3>Past Simple & Past Continuous: Rewrite and Narrate</h3>
+            <p>Read short stories and **rewrite them using past tenses**. Practice conjugating regular and irregular verbs. Pay attention to the time expressions.</p>
+            <p><strong>Past Simple:</strong> For completed actions in the past. (e.g., *I **went** to the park yesterday.*)</p>
+            <p><strong>Past Continuous:</strong> For ongoing actions in the past, often interrupted by another action. (e.g., *I **was walking** when it started to rain.*)</p>
+            <p><strong>Writing Exercise:</strong> Rewrite the following sentences using the correct past tense (Simple or Continuous).</p>
+            <ol>
+                <li>I (watch) _____ TV when she (call) _____.</li>
+                <li>They (live) _____ in London for five years.</li>
+                <li>While he (sleep) _____, the phone (ring) _____.</li>
+            </ol>
+            <textarea rows='10' cols='60' placeholder='Rewrite the story in past tense here...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"ingles\", \"past-tenses\")'>Complete lesson</button>
+          `,
+          kinestesico: `
+            <h3>Past Simple & Past Continuous: Role-Play and Act</h3>
+            <p>**Role-play conversations** about past events to practice speaking in past tenses. Act out different scenarios, describing what happened and what you were doing. Get moving and talking!</p>
+            <div class='interactive-game-placeholder'>
+              <p>Interactive role-play for past tenses: simulate a conversation about a past event.</p>
+              <p><em>Imagine you are telling a story about your weekend, using past simple and continuous.</em></p>
+            </div>
+            <p><strong>Practical Activity:</strong> Describe your morning routine using actions. First, do the action, then say the sentence in English using past simple.</p>
+            <button onclick='simulateGameCompletion(\"ingles\", \"past-tenses\")'>Simulate Game Completion</button>
+          `
         },
         'future-tenses': {
-          visual: "<p>Visualize future plans with **calendars and planning diagrams**:</p><img src='https://via.placeholder.com/600x400?text=Future+Tenses+Visual' alt='Future tenses visual'>",
-          auditivo: "<p>Listen to **dialogues about future plans and predictions**:</p><audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'></audio>",
-          'lectura-escritura': "<p>Write about your **future plans and predictions** using 'will', 'going to', etc.:</p><p>Next year, I (travel) _____ to Spain.</p><textarea rows='5' cols='60' placeholder='Describe your future plans...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>**Plan a virtual trip** by choosing activities and forming sentences in future tenses:</p><div class='interactive-game-placeholder'>Interactive future planning game. (Simulated)</div><button onclick='simulateGameCompletion(\"ingles\", \"future-tenses\")'>Simular Completar Juego</button>"
+          visual: `
+            <h3>Future Tenses: Calendars and Planning Diagrams</h3>
+            <p>Visualize future plans with **calendars and planning diagrams**. See the difference between planned actions, predictions, and spontaneous decisions through clear visuals.</p>
+            <img src='https://via.placeholder.com/600x400?text=Future+Plans+Visual' alt='Future plans visual'>
+            <p><strong>Video:</strong> Explanations and examples of 'will', 'going to', and present continuous for future, with visual cues.</p>
+            <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4'></video>
+            <p><strong>Visual Exercise:</strong> Create a short comic strip about your plans for next week, using different future tenses.</p>
+            <img src='https://via.placeholder.com/500x250?text=Future+Comic+Strip' alt='Comic strip for future plans'>
+            <textarea rows='5' cols='60' placeholder='Write captions for your comic strip using future tenses...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"ingles\", \"future-tenses\")'>Complete lesson</button>
+          `,
+          auditivo: `
+            <h3>Future Tenses: Listen to Plans and Predictions</h3>
+            <p>Listen to **dialogues about future plans and predictions**. Pay attention to how native speakers use different future forms naturally.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'></audio>
+            <p><strong>Audio Exercise:</strong> Listen to a weather forecast and write down the predictions for the week.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'></audio>
+            <textarea rows='3' cols='60' placeholder='Write the weather predictions here...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"ingles\", \"future-tenses\")'>Complete lesson</button>
+          `,
+          'lectura-escritura': `
+            <h3>Future Tenses: Describe Your Future</h3>
+            <p>Write about your **future plans and predictions** using 'will', 'going to', and present continuous. Practice forming sentences and paragraphs that clearly express future events.</p>
+            <p><strong>'Will':</strong> For spontaneous decisions, predictions, promises. (e.g., *I think it **will rain** tomorrow.*)</p>
+            <p><strong>'Going to':</strong> For planned actions, predictions based on evidence. (e.g., *I **am going to study** tonight.*)</p>
+            <p><strong>Present Continuous:</strong> For fixed arrangements in the near future. (e.g., *We **are meeting** at 7 PM.*)</p>
+            <p><strong>Writing Exercise:</strong> Describe your plans for next weekend (at least 5 sentences) using 'will' and 'going to'.</p>
+            <textarea rows='10' cols='60' placeholder='Describe your future plans here...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"ingles\", \"future-tenses\")'>Complete lesson</button>
+          `,
+          kinestesico: `
+            <h3>Future Tenses: Plan a Virtual Trip</h3>
+            <p>**Plan a virtual trip** by choosing activities and forming sentences in future tenses. Drag and drop places, activities, and times to build your itinerary. ¡Feel like you're already there!</p>
+            <div class='interactive-game-placeholder'>
+              <p>Interactive future planning game: select destinations and activities.</p>
+              <p><em>Imagine you click on "Paris" and then drag "visit Eiffel Tower" to your itinerary.</em></p>
+            </div>
+            <p><strong>Practical Activity:</strong> Write your future plans on sticky notes. Arrange them on a wall or board, creating a visual timeline of your future actions. Speak each plan out loud as you place it.</p>
+            <button onclick='simulateGameCompletion(\"ingles\", \"future-tenses\")'>Simulate Game Completion</button>
+          `
         },
         'conditionals': {
-          visual: "<p>Understand conditionals with **if-then diagrams** and flowcharts:</p><img src='https://via.placeholder.com/600x400?text=Conditionals+Visual' alt='Conditionals visual'>",
-          auditivo: "<p>Listen to **conditional sentences** and identify their types:</p><audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'></audio>",
-          'lectura-escritura': "<p>Complete **conditional sentences** and create your own:</p><p>If I (study) _____, I (pass) _____ the exam.</p><textarea rows='5' cols='60' placeholder='Write your own conditional sentences...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>**Build conditional sentences** by dragging and dropping clauses:</p><div class='interactive-game-placeholder'>Interactive conditional sentence builder. (Simulated)</div><button onclick='simulateGameCompletion(\"ingles\", \"conditionals\")'>Simular Completar Juego</button>"
+          visual: `
+            <h3>Conditionals: If-Then Diagrams and Flowcharts</h3>
+            <p>Understand conditionals with **if-then diagrams and flowcharts**. See the cause-and-effect relationship visually for zero, first, second, and third conditionals.</p>
+            <img src='https://via.placeholder.com/600x400?text=Conditionals+Flowchart' alt='Conditionals flowchart'>
+            <p><strong>Video Explainer:</strong> Animations demonstrating different conditional situations and their grammatical structures.</p>
+            <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4'></video>
+            <p><strong>Visual Exercise:</strong> Match the beginning of the sentence with the correct ending, using visual cues.</p>
+            <img src='https://via.placeholder.com/500x250?text=Conditional+Matching' alt='Conditional matching exercise'>
+            <textarea rows='3' cols='60' placeholder='Write the complete conditional sentences here...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"ingles\", \"conditionals\")'>Complete lesson</button>
+          `,
+          auditivo: `
+            <h3>Conditionals: Listen and Identify</h3>
+            <p>Listen to **conditional sentences** and identify their types (zero, first, second, third). Pay attention to the verb tenses in both clauses.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'></audio>
+            <p><strong>Audio Quiz:</strong> You will hear a conditional sentence. Say out loud what type it is.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'></audio>
+            <textarea rows='3' cols='60' placeholder='Write the type of conditional for each sentence...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"ingles\", \"conditionals\")'>Complete lesson</button>
+          `,
+          'lectura-escritura': `
+            <h3>Conditionals: Complete and Create</h3>
+            <p>Complete **conditional sentences** and create your own. Read the grammar rules for each type of conditional and apply them in written exercises.</p>
+            <p><strong>Zero Conditional:</strong> If + Present Simple, Present Simple (for facts). (e.g., *If you heat ice, it melts.*)</p>
+            <p><strong>First Conditional:</strong> If + Present Simple, will + base verb (for real future possibilities). (e.g., *If it rains, I will stay home.*)</p>
+            <p><strong>Second Conditional:</strong> If + Past Simple, would + base verb (for unreal present/future situations). (e.g., *If I had wings, I would fly.*)</p>
+            <p><strong>Third Conditional:</strong> If + Past Perfect, would have + past participle (for unreal past situations). (e.g., *If I had studied, I would have passed.*)</p>
+            <p><strong>Writing Exercise:</strong> Complete the following conditional sentences.</p>
+            <ol>
+                <li>If I (win) _____ the lottery, I (buy) _____ a house. (Second)</li>
+                <li>If she (study) _____ harder, she (pass) _____ the exam. (First)</li>
+                <li>If you (mix) _____ blue and yellow, you (get) _____ green. (Zero)</li>
+                <li>If he (arrive) _____ earlier, he (see) _____ the show. (Third)</li>
+            </ol>
+            <textarea rows='10' cols='60' placeholder='Write your own conditional sentences here...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"ingles\", \"conditionals\")'>Complete lesson</button>
+          `,
+          kinestesico: `
+            <h3>Conditionals: Build Sentences Actively</h3>
+            <p>**Build conditional sentences** by dragging and dropping clauses. Manipulate the parts of the sentence to understand how they fit together to form different conditional types. ¡Feel the grammar!</p>
+            <div class='interactive-game-placeholder'>
+              <p>Interactive conditional sentence builder: drag and drop clauses.</p>
+              <p><em>Imagine you drag "If I had time" to "I would visit you".</em></p>
+            </div>
+            <p><strong>Practical Activity:</strong> Write different conditional clauses on separate cards. Then, physically arrange them to form correct conditional sentences. Read them out loud.</p>
+            <button onclick='simulateGameCompletion(\"ingles\", \"conditionals\")'>Simulate Game Completion</button>
+          `
         },
         'listening-speaking': {
-          visual: "<p>Watch **short English video clips** and answer comprehension questions:</p><video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4' poster='https://via.placeholder.com/600x400?text=Listening+Video'></video>",
-          auditivo: "<p>Practice your **listening comprehension** with dialogues and quizzes:</p><audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3'></audio><p>Then, record yourself speaking!</p>",
-          'lectura-escritura': "<p>Read **transcripts of conversations** and summarize them:</p><p>Speaker A: Hi, how are you? Speaker B: I'm good, thanks!</p><textarea rows='8' cols='60' placeholder='Summarize the conversation here...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>**Participate in interactive dialogues** with prompts and role-playing scenarios:</p><div class='interactive-game-placeholder'>Interactive speaking practice. (Simulated)</div><button onclick='simulateGameCompletion(\"ingles\", \"listening-speaking\")'>Simular Completar Juego</button>"
+          visual: `
+            <h3>Listening & Speaking: Video Comprehension</h3>
+            <p>Watch **short English video clips** and answer comprehension questions. Use subtitles initially if needed, then try without them. Focus on visual cues to understand the context.</p>
+            <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4' poster='https://via.placeholder.com/600x400?text=Listening+Video'></video>
+            <p><strong>Visual Task:</strong> Describe what you see happening in the video in your own words.</p>
+            <textarea rows='5' cols='60' placeholder='Describe the video scene here...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"ingles\", \"listening-speaking\")'>Complete lesson</button>
+          `,
+          auditivo: `
+            <h3>Listening & Speaking: Audio Practice and Recording</h3>
+            <p>Practice your **listening comprehension** with dialogues and quizzes. Then, record yourself speaking and compare your pronunciation to native speakers. Focus on intonation and rhythm!</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'></audio>
+            <p><strong>Recording Exercise:</strong> Listen to the dialogue and then record yourself saying the lines of one of the characters. Try to mimic their pronunciation and intonation.</p>
+            <audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3'></audio>
+            <textarea rows='3' cols='60' placeholder='After recording, write down what you learned...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"ingles\", \"listening-speaking\")'>Complete lesson</button>
+          `,
+          'lectura-escritura': `
+            <h3>Listening & Speaking: Transcripts and Summaries</h3>
+            <p>Read **transcripts of conversations** and summarize them. Practice active listening by reading along and then writing down the main points and your understanding.</p>
+            <p><strong>Transcript Example:</strong></p>
+            <p><em>Speaker A: Hello, how are you today?</em></p>
+            <p><em>Speaker B: I'm very well, thank you. And you?</em></p>
+            <p><em>Speaker A: I'm great, thanks. I'm planning my vacation.</em></p>
+            <p><em>Speaker B: Oh, where are you going?</em></p>
+            <p><strong>Writing Exercise:</strong> Read the transcript above and write a short summary of the conversation.</p>
+            <textarea rows='10' cols='60' placeholder='Summarize the conversation here...' style='width: 100%;'></textarea>
+            <button onclick='simulateGameCompletion(\"ingles\", \"listening-speaking\")'>Complete lesson</button>
+          `,
+          kinestesico: `
+            <h3>Listening & Speaking: Interactive Dialogues</h3>
+            <p>**Participate in interactive dialogues** with prompts and role-playing scenarios. You'll respond to virtual characters, making the conversation feel real and engaging. ¡Speak and move your mouth!</p>
+            <div class='interactive-game-placeholder'>
+              <p>Interactive speaking practice: respond to prompts from a virtual character.</p>
+              <p><em>Imagine a chatbot asks "How are you?" and you have to speak your answer.</em></p>
+            </div>
+            <p><strong>Practical Activity:</strong> Find a partner (or use a mirror!) and role-play a simple conversation. Use gestures and body language to enhance your speaking practice.</p>
+            <button onclick='simulateGameCompletion(\"ingles\", \"listening-speaking\")'>Simulate Game Completion</button>
+          `
         }
       }
     };
@@ -1405,8 +2177,10 @@
         const lessonTitleElement = document.getElementById('lesson-title');
         const lessonMaterialElement = document.getElementById('lesson-material');
 
-        const topicName = (topicId.replace(/-/g, ' ').charAt(0).toUpperCase() + topicId.replace(/-/g, ' ').slice(1));
-        lessonTitleElement.textContent = `Lección: ${topicName} de ${subject.charAt(0).toUpperCase() + subject.slice(1)}`;
+        // Formatear el ID del tema para el título de la lección
+        const topicName = topicId.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+        const subjectName = subject.charAt(0).toUpperCase() + subject.slice(1);
+        lessonTitleElement.textContent = `Lección: ${topicName} de ${subjectName}`;
 
         // Obtener el contenido adaptado al estilo de aprendizaje del usuario
         let contentHtml = topicContents[subject] && topicContents[subject][topicId] && topicContents[subject][topicId][userLearningStyle];
