@@ -390,7 +390,7 @@
       font-size: 0.95em;
     }
 
-    /* Quiz Styles (Keep similar to original but adapt colors) */
+    /* Quiz Styles */
     #quiz-container {
       background: var(--bg-white);
       max-width: 550px;
@@ -398,6 +398,8 @@
       padding: 40px;
       border-radius: var(--border-radius);
       box-shadow: 0 8px 25px var(--shadow-light);
+      /* Asegura que el cuestionario se muestre al inicio */
+      display: block; 
     }
     #quiz-container h2 {
       color: var(--primary-color);
@@ -433,9 +435,9 @@
       background: var(--secondary-color);
       transform: translateY(-2px);
     }
-    /* Hidden utility class */
+    /* Updated hidden utility class */
     .hidden {
-      display: none;
+      display: none !important; /* Added !important to ensure override */
     }
     /* Result Styles */
     #result-message {
@@ -1207,14 +1209,19 @@
     // --- Funciones de Navegación y Contenido ---
     function showSubject(subject) {
       // Ocultar contenido principal y otras páginas de asignatura
-      document.getElementById('main-content').style.display = 'none';
+      document.getElementById('main-content').classList.add('hidden');
       document.querySelectorAll('.subject-page').forEach(page => {
         page.classList.remove('active');
+        page.classList.add('hidden'); // Asegurarse de que estén ocultas
       });
       lessonContentDisplay.classList.add('hidden'); // Asegurarse que la lección esté oculta
 
       // Mostrar página de la asignatura
-      document.getElementById(subject + '-page').classList.add('active');
+      const subjectPage = document.getElementById(subject + '-page');
+      if (subjectPage) {
+        subjectPage.classList.remove('hidden');
+        subjectPage.classList.add('active');
+      }
       
       // Personalizar introducción según el estilo de aprendizaje
       personalizeSubjectIntro(subject);
@@ -1227,11 +1234,12 @@
       // Ocultar todas las páginas de asignaturas y el contenido de lección
       document.querySelectorAll('.subject-page').forEach(page => {
         page.classList.remove('active');
+        page.classList.add('hidden');
       });
       lessonContentDisplay.classList.add('hidden'); // Asegurarse que la lección esté oculta
       
       // Mostrar contenido principal
-      document.getElementById('main-content').style.display = 'block';
+      document.getElementById('main-content').classList.remove('hidden');
     }
 
     function personalizeSubjectIntro(subject) {
@@ -1273,7 +1281,7 @@
         'operaciones-basicas': {
           visual: "<p>Mira este **video explicativo** animado sobre sumas y restas:</p><video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4' poster='https://via.placeholder.com/600x400?text=Video+Matemáticas+Visual'></video><p>Y este **diagrama** para visualizarlo:</p><img src='https://via.placeholder.com/600x300?text=Diagrama+Sumas+y+Restas' alt='Diagrama de sumas'>",
           auditivo: "<p>Escucha la **explicación detallada** de cómo sumar y restar:</p><audio controls src='https://www.w3schools.com/html/horse.mp3'></audio><p>Presta atención a cada paso, ¡puedes repetirlo cuantas veces quieras!</p>",
-          'lectura-escritura': "<p>Lee el **resumen completo** sobre las operaciones básicas y luego escribe tus propias notas:</p><p>La **suma** es la operación fundamental de combinar dos o más números para obtener un total. Se representa con el signo más (+). Por ejemplo, 2 + 3 = 5. La **resta** es la operación inversa de la suma, donde se quita una cantidad de otra para encontrar la diferencia. Se representa con el signo menos (-). Por ejemplo, 5 - 2 = 3. La **multiplicación** es la suma repetida de un número, mientras que la **división** es la operación de repartir una cantidad en partes iguales.</p><textarea rows='8' cols='60' placeholder='Toma tus propias notas o crea un resumen aquí...' style='width: 100%;'></textarea>",
+          'lectura-escritura': "<p>Lee el **resumen completo** sobre las operaciones básicas y luego escribe tus propias notas:</p><p>La **suma** es la operación fundamental de combinar dos o más números para obtener un total. Se representa con el signo más (+). Por ejemplo, 2 + 3 = 5. La **resta** es la operación inversa de la suma, donde se quita una cantidad de otra para encontrar la diferencia. Se representa con el signo menos (-). Por ejemplo, 5 - 2 = 3. La **multiplicación** es la suma repetida de un número, mientras que la **division** es la operación de repartir una cantidad en partes iguales.</p><textarea rows='8' cols='60' placeholder='Toma tus propias notas o crea un resumen aquí...' style='width: 100%;'></textarea>",
           kinestesico: "<p>¡Resuelve problemas interactivos! **Arrastra y suelta** los números en el lugar correcto para completar las sumas. ¡Siente las matemáticas!</p><div class='interactive-game-placeholder'>Aquí iría un juego interactivo de arrastrar y soltar números para sumar/restar. (Simulado)</div><button onclick='simulateGameCompletion(\"matematicas\", \"operaciones-basicas\")'>Simular Completar Juego</button>"
         },
         'fracciones': {
@@ -1292,7 +1300,7 @@
           visual: "<p>Observa cómo se balancean las ecuaciones con un **simulador de balanza**:</p><img src='https://via.placeholder.com/600x400?text=Ecuaciones+Visual' alt='Ecuaciones visual'>",
           auditivo: "<p>Escucha una guía **paso a paso** para resolver ecuaciones de primer grado:</p><audio controls src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'></audio>",
           'lectura-escritura': "<p>Sigue los **ejemplos resueltos** y practica escribiendo tus propias soluciones:</p><p>Una ecuación de primer grado es una igualdad matemática que tiene una o más incógnitas elevadas a la primera potencia...</p><textarea rows='8' cols='60' placeholder='Resuelve ecuaciones paso a paso aquí...' style='width: 100%;'></textarea>",
-          kinestesico: "<p>Mueve términos y resuelve ecuaciones con un **juego de "resolver la X"**:</p><div class='interactive-game-placeholder'>Juego interactivo de ecuaciones. (Simulado)</div><button onclick='simulateGameCompletion(\"matematicas\", \"ecuaciones\")'>Simular Completar Juego</button>"
+          kinestesico: "<p>Mueve términos y resuelve ecuaciones con un **juego de \"resolver la X\"**:</p><div class='interactive-game-placeholder'>Juego interactivo de ecuaciones. (Simulado)</div><button onclick='simulateGameCompletion(\"matematicas\", \"ecuaciones\")'>Simular Completar Juego</button>"
         },
         'sistemas': {
           visual: "<p>Visualiza las soluciones de sistemas de ecuaciones con **gráficas interactivas**:</p><img src='https://via.placeholder.com/600x400?text=Sistemas+Visual' alt='Sistemas visual'>",
@@ -1387,13 +1395,12 @@
 
     function showLessonContent(subject, topicId) {
         // Ocultar todas las páginas de asignaturas y el contenido principal
-        document.getElementById('main-content').style.display = 'none';
-        document.querySelectorAll('.subject-page').forEach(page => page.classList.remove('active'));
+        document.getElementById('main-content').classList.add('hidden'); // Oculta el contenido principal
+        document.querySelectorAll('.subject-page').forEach(page => page.classList.add('hidden')); // Oculta las páginas de asignatura
 
         // Mostrar el contenedor de la lección
-        lessonContentDisplay.classList.add('active'); // Usar 'active' para el display de lecciones
-        lessonContentDisplay.classList.remove('hidden');
-
+        lessonContentDisplay.classList.remove('hidden'); // Asegurarse de que esté visible
+        lessonContentDisplay.classList.add('active'); // Activar para posibles estilos de transición
 
         const lessonTitleElement = document.getElementById('lesson-title');
         const lessonMaterialElement = document.getElementById('lesson-material');
@@ -1412,24 +1419,26 @@
     }
 
     function hideLessonContent() {
-        lessonContentDisplay.classList.remove('active'); // Ocultar el contenido de la lección
-        lessonContentDisplay.classList.add('hidden'); // Asegurarse de que esté oculto
+        lessonContentDisplay.classList.remove('active'); // Desactivar para posibles estilos de transición
+        lessonContentDisplay.classList.add('hidden'); // Ocultar el contenido de la lección
 
         // Obtener la página de asignatura activa antes de ocultar las otras (si existe)
         let previouslyActiveSubjectId = null;
         document.querySelectorAll('.subject-page').forEach(page => {
+            // Verifica si tiene la clase 'active' que indica que estaba siendo mostrada
             if (page.classList.contains('active')) {
                 previouslyActiveSubjectId = page.id.replace('-page', '');
-                page.classList.remove('active'); // Quitar active para que showSubject la vuelva a activar correctamente
+                // No se remueve la clase 'active' aquí, ya que `showSubject` la gestionará.
+                // Simplemente marcamos que existía una página activa.
             }
         });
         
         // Si había una página de asignatura activa, mostrarla de nuevo.
         // Si no, volver al contenido principal.
         if (previouslyActiveSubjectId) {
-            showSubject(previouslyActiveSubjectId);
+            showSubject(previouslyActiveSubjectId); // Re-activa la página de asignatura específica
         } else {
-            showMainContent();
+            showMainContent(); // Vuelve a la página principal
         }
     }
 
@@ -1447,6 +1456,8 @@
       // Asegurarse de que el contenido principal y las páginas de asignatura estén ocultas al inicio
       mainContent.classList.add('hidden');
       document.querySelectorAll('.subject-page').forEach(page => page.classList.add('hidden'));
+      // Asegurarse de que el quiz-container se muestra, por si el CSS por defecto lo ocultaba
+      quizContainer.classList.remove('hidden'); 
     });
   </script>
 </body>
