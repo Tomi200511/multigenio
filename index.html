@@ -137,12 +137,16 @@
     .question {
       margin-bottom: 20px;
       font-weight: 600;
+      font-size: 1.1em;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
     .options button {
-      display: block;
       width: 100%;
-      margin: 6px 0;
-      padding: 10px;
+      padding: 12px;
       background: #4b9ce2;
       color: white;
       border: none;
@@ -150,6 +154,7 @@
       cursor: pointer;
       font-size: 1em;
       transition: background 0.3s ease;
+      text-align: left;
     }
     .options button:hover {
       background: #337acc;
@@ -164,6 +169,7 @@
       text-align: center;
       margin-bottom: 1.5rem;
       color: #337acc;
+      font-size: 1.2em;
     }
     /* Recomendaciones TDAH */
     #tdah-warning {
@@ -176,6 +182,16 @@
       max-width: 700px;
       margin-left: auto;
       margin-right: auto;
+    }
+    #study-advice {
+      max-width: 700px;
+      margin: 0 auto 2rem auto;
+      font-weight: 600;
+      color: #23527c;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+      text-align: center;
     }
   </style>
 </head>
@@ -206,6 +222,12 @@
       <h1>Tu tutor virtual para Matemáticas, Inglés y Lengua</h1>
       <p>Diseñado especialmente para estudiantes con TDA o dificultades de atención. Paciencia, claridad y diversión en un solo lugar.</p>
     </section>
+
+    <div id="result-message"></div>
+    <div id="study-advice"></div>
+    <div id="tdah-warning" class="hidden">
+      ⚠️ Si presentas indicios de TDAH, MultiGenio te ofrecerá recursos y estrategias especiales para ayudarte a mantener la concentración y aprovechar tu estilo de aprendizaje.
+    </div>
 
     <section class="section" id="que-es">
       <h2>¿Qué es MultiGenio?</h2>
@@ -268,12 +290,6 @@
       </div>
     </section>
 
-    <div id="result-message"></div>
-    <div id="study-advice" style="max-width:700px; margin: 0 auto 2rem auto; font-weight:600; color:#23527c;"></div>
-    <div id="tdah-warning" class="hidden">
-      ⚠️ Si presentas indicios de TDAH, MultiGenio te ofrecerá recursos y estrategias especiales para ayudarte a mantener la concentración y aprovechar tu estilo de aprendizaje.
-    </div>
-
     <!-- Chatbase Chatbot Embed -->
     <script>
       window.chatbaseConfig = {
@@ -311,7 +327,7 @@
         question: "¿Sueles tener dificultades para mantener la atención o concentración?",
         options: [
           { text: "Sí, frecuentemente", value: "tdah" },
-          { text: "A veces", value: "a veces" },
+          { text: "A veces", value: "a-veces" },
           { text: "No, casi nunca", value: "no" }
         ]
       },
@@ -348,35 +364,39 @@
     let selectedAnswers = {};
 
     function showQuestion() {
+      console.log('Mostrando pregunta:', currentQuestionIndex); // Debug
+      
+      if (currentQuestionIndex >= quizQuestions.length) {
+        finishQuiz();
+        return;
+      }
+
       const currentQ = quizQuestions[currentQuestionIndex];
       questionText.textContent = currentQ.question;
       optionsDiv.innerHTML = '';
-      currentQ.options.forEach(option => {
+      
+      currentQ.options.forEach((option, index) => {
         const btn = document.createElement('button');
         btn.textContent = option.text;
         btn.onclick = () => {
+          console.log('Respuesta seleccionada:', option.value); // Debug
           selectedAnswers[currentQuestionIndex] = option.value;
           currentQuestionIndex++;
-          if(currentQuestionIndex < quizQuestions.length){
-            showQuestion();
-          } else {
-            finishQuiz();
-          }
+          showQuestion();
         };
         optionsDiv.appendChild(btn);
       });
     }
 
     function finishQuiz() {
+      console.log('Finalizando cuestionario con respuestas:', selectedAnswers); // Debug
+      
       // Ocultar cuestionario
       quizContainer.classList.add('hidden');
       // Mostrar contenido principal
       mainContent.classList.remove('hidden');
 
-      // Procesar respuestas
-      const estilo = selectedAnswers[0] || 'visual';
-      const tdahAnswer = selectedAnswers[1] || 'no';
-      // Conteo de estilos, excepto la pregunta 2 (TDAH)
+      // Conteo de estilos, excepto la pregunta 1 (TDAH - índice 1)
       const styleCounts = {
         visual: 0,
         auditivo: 0,
@@ -385,12 +405,14 @@
       };
 
       for(let i = 0; i < quizQuestions.length; i++){
-        if(i === 1) continue; // Saltar la pregunta de TDAH
+        if(i === 1) continue; // Saltar la pregunta de TDAH (índice 1)
         const ans = selectedAnswers[i];
         if(styleCounts.hasOwnProperty(ans)){
           styleCounts[ans]++;
         }
       }
+
+      console.log('Conteo de estilos:', styleCounts); // Debug
 
       // Elegir el estilo con mayor puntuación
       let maxStyle = 'visual';
@@ -402,8 +424,7 @@
         }
       }
 
-      // Mostrar resultado
-      resultMessage.textContent = `Estilo de aprendizaje detectado: ${maxStyle.replace('-', ' ')}.`;
+      console.log('Estilo detectado:', maxStyle); // Debug
 
       // Mostrar recomendaciones según estilo
       const adviceByStyle = {
@@ -414,20 +435,28 @@
       };
 
       // Mostrar mensaje resultado
-      resultMessage.textContent = `Estilo de aprendizaje detectado: ${estilo.replace('-', ' ')}.`;
+      const styleNames = {
+        visual: "Visual",
+        auditivo: "Auditivo", 
+        'lectura-escritura': "Lectura/Escritura",
+        kinestesico: "Kinestésico"
+      };
+
+      resultMessage.textContent = `🎯 Tu estilo de aprendizaje detectado: ${styleNames[maxStyle]}`;
       studyAdvice.textContent = adviceByStyle[maxStyle] || "";
 
       // Mostrar advertencia TDAH si aplica
-      const tdahAnswer = selectedAnswers[1];
+      const tdahAnswer = selectedAnswers[1]; // La pregunta TDAH está en el índice 1
       if(tdahAnswer === 'tdah'){
         tdahWarning.classList.remove('hidden');
-      } else {
-        tdahWarning.classList.add('hidden');
       }
     }
 
     // Iniciar cuestionario al cargar la página
-    showQuestion();
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Página cargada, iniciando cuestionario'); // Debug
+      showQuestion();
+    });
   </script>
 </body>
 </html>
