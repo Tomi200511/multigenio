@@ -612,15 +612,32 @@
         display: block;
     }
 
-    /* Authentication Form Styles */
+    /* Modal Overlay */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: none; /* Hidden by default */
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+    .modal-overlay.active {
+        display: flex;
+    }
+
+    /* Authentication Form Styles (within modal) */
     #auth-container {
       background: var(--bg-white);
       max-width: 450px;
-      margin: 60px auto;
       padding: 40px;
       border-radius: var(--border-radius);
       box-shadow: 0 8px 25px var(--shadow-light);
       text-align: center;
+      position: relative; /* Needed for close button positioning */
     }
     #auth-container h2 {
       color: var(--primary-color);
@@ -675,6 +692,21 @@
     #auth-container .toggle-form-link:hover {
         color: var(--primary-color);
     }
+    .close-modal-button {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 1.8em;
+        color: var(--text-light);
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+    .close-modal-button:hover {
+        color: var(--primary-color);
+    }
+
 
     /* Responsive adjustments */
     @media (max-width: 768px) {
@@ -730,28 +762,32 @@
   <!-- Custom Message Box -->
   <div id="custom-message" class="hidden"></div>
 
-  <!-- Authentication Container -->
-  <div id="auth-container">
-    <div id="login-form">
-      <h2>Iniciar Sesión</h2>
-      <form id="login-email-form">
-        <input type="email" id="login-email" placeholder="Correo Electrónico" required />
-        <input type="password" id="login-password" placeholder="Contraseña" required />
-        <button type="submit">Iniciar Sesión</button>
-      </form>
-      <p class="toggle-form-link" onclick="window.toggleAuthForm('register')">¿No tienes cuenta? Regístrate</p>
-    </div>
+  <!-- Authentication Modal -->
+  <div id="auth-modal-overlay" class="modal-overlay">
+    <div id="auth-container">
+      <button class="close-modal-button" onclick="hideAuthModal()">&times;</button>
+      <div id="login-form">
+        <h2>Iniciar Sesión</h2>
+        <form id="login-email-form">
+          <input type="email" id="login-email" placeholder="Correo Electrónico" required />
+          <input type="password" id="login-password" placeholder="Contraseña" required />
+          <button type="submit">Iniciar Sesión</button>
+        </form>
+        <p class="toggle-form-link" onclick="toggleAuthForm('register')">¿No tienes cuenta? Regístrate</p>
+      </div>
 
-    <div id="register-form" class="hidden">
-      <h2>Registrarse</h2>
-      <form id="register-email-form">
-        <input type="email" id="register-email" placeholder="Correo Electrónico" required />
-        <input type="password" id="register-password" placeholder="Contraseña" required />
-        <button type="submit">Registrarse</button>
-      </form>
-      <p class="toggle-form-link" onclick="window.toggleAuthForm('login')">¿Ya tienes cuenta? Inicia Sesión</p>
+      <div id="register-form" class="hidden">
+        <h2>Registrarse</h2>
+        <form id="register-email-form">
+          <input type="email" id="register-email" placeholder="Correo Electrónico" required />
+          <input type="password" id="register-password" placeholder="Contraseña" required />
+          <button type="submit">Registrarse</button>
+        </form>
+        <p class="toggle-form-link" onclick="toggleAuthForm('login')">¿Ya tienes cuenta? Inicia Sesión</p>
+      </div>
     </div>
   </div>
+
 
   <div id="quiz-container" class="hidden">
     <h2>Cuestionario de Estilo de Aprendizaje</h2>
@@ -759,7 +795,7 @@
     <div id="options" class="options"></div>
   </div>
 
-  <div id="main-content" class="hidden">
+  <div id="main-content">
     <header>
       <div class="logo-container">
         <img src="https://placehold.co/80x80/6ed3b3/ffffff?text=LOGO" alt="MultiGenio Logo" />
@@ -774,6 +810,7 @@
       <a href="#beneficios">Beneficios</a>
       <a href="#testimonios">Testimonios</a>
       <a href="#contacto">Contacto</a>
+      <a href="#" id="auth-nav-link" onclick="showAuthModal()">Iniciar Sesión / Registrarse</a>
       <a href="#" id="quiz-nav-link" class="hidden" onclick="showQuestion()">Cuestionario</a>
       <button id="logout-button" class="hidden">Cerrar Sesión</button>
     </nav>
@@ -805,7 +842,7 @@
         El objetivo es crear un "tutor virtual" que comprende las fortalezas y desafíos individuales, proporcionando una experiencia educativa que se siente hecha a la medida, minimizando las distracciones y potenciando la concentración.
       </p>
 
-      <h2>📋 Cuestionario Inicial: Tu Huella de Aprendizaje</h2>
+      <h2>� Cuestionario Inicial: Tu Huella de Aprendizaje</h2>
       <img src="https://img.icons8.com/color/96/quiz.png" alt="Cuestionario" style="width: 100px; height: 100px;"/>
       <p>
         Antes de sumergirte en el aprendizaje, MultiGenio te invita a un **cuestionario interactivo y estratégico de 5 preguntas**. Este no es un simple test; es una herramienta clave para nuestra IA. Las preguntas están cuidadosamente diseñadas para identificar tu estilo de aprendizaje predominante entre:
@@ -1117,7 +1154,8 @@
     const auth = getAuth(app); // Initialize Firebase Auth service
 
     // DOM elements
-    const authContainer = document.getElementById('auth-container');
+    const authModalOverlay = document.getElementById('auth-modal-overlay');
+    const authContainer = document.getElementById('auth-container'); // This is now inside the modal overlay
     const loginFormDiv = document.getElementById('login-form');
     const registerFormDiv = document.getElementById('register-form');
     const loginEmailInput = document.getElementById('login-email');
@@ -1126,6 +1164,7 @@
     const registerPasswordInput = document.getElementById('register-password');
     const logoutButton = document.getElementById('logout-button');
     const quizNavLink = document.getElementById('quiz-nav-link');
+    const authNavLink = document.getElementById('auth-nav-link'); // New auth nav link
 
     const quizContainer = document.getElementById('quiz-container');
     const mainContent = document.getElementById('main-content');
@@ -1148,7 +1187,7 @@
         }, duration);
     }
 
-    // Make toggleAuthForm globally accessible
+    // Function to toggle between login and register forms
     window.toggleAuthForm = function(formToShow) {
       if (formToShow === 'login') {
         loginFormDiv.classList.remove('hidden');
@@ -1157,6 +1196,26 @@
         loginFormDiv.classList.add('hidden');
         registerFormDiv.classList.remove('hidden');
       }
+    }
+
+    // Function to show the authentication modal
+    window.showAuthModal = function() {
+        authModalOverlay.classList.add('active');
+        // Hide all other content when modal is active
+        mainContent.classList.add('hidden');
+        quizContainer.classList.add('hidden');
+        lessonContentDisplay.classList.add('hidden');
+        document.querySelectorAll('.subject-page').forEach(page => page.classList.add('hidden'));
+        toggleAuthForm('login'); // Always show login form when modal opens
+    }
+
+    // Function to hide the authentication modal
+    window.hideAuthModal = function() {
+        authModalOverlay.classList.remove('active');
+        // Restore main content visibility if authenticated
+        if (isAuthenticated) {
+            mainContent.classList.remove('hidden');
+        }
     }
 
     // Register user with email and password
@@ -1235,26 +1294,26 @@
     // Listen for authentication state changes
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/auth.user
         isAuthenticated = true;
-        authContainer.classList.add('hidden');
+        hideAuthModal(); // Hide modal if user logs in
         mainContent.classList.remove('hidden');
         quizNavLink.classList.remove('hidden');
         logoutButton.classList.remove('hidden');
-        showMessage('Bienvenido de nuevo.'); // Or user.email if you want to be specific
+        authNavLink.classList.add('hidden'); // Hide login/register link
+        showMessage('Bienvenido de nuevo.');
         showMainContent(); // Ensure main content is visible after login
       } else {
-        // User is signed out
         isAuthenticated = false;
-        authContainer.classList.remove('hidden');
-        mainContent.classList.add('hidden');
+        // Do NOT show the modal immediately on logout, let the user click the link
+        mainContent.classList.remove('hidden'); // Main content is visible initially even if logged out
         quizContainer.classList.add('hidden');
         lessonContentDisplay.classList.add('hidden');
+        document.querySelectorAll('.subject-page').forEach(page => page.classList.add('hidden'));
+
         quizNavLink.classList.add('hidden');
         logoutButton.classList.add('hidden');
-        window.toggleAuthForm('login'); // Show login form by default when logged out
-        showMessage('Por favor, inicia sesión para acceder al contenido.');
+        authNavLink.classList.remove('hidden'); // Show login/register link
+        showMessage('Inicia sesión o regístrate para acceder a todas las funciones.', 5000);
       }
     });
 
@@ -1343,9 +1402,11 @@
     function showQuestion() {
       if (!isAuthenticated) {
         showMessage('Por favor, inicia sesión para acceder al cuestionario.');
+        showAuthModal(); // Show auth modal if not authenticated
         return;
       }
-      // Hide main content and subject pages
+      // Hide all other content
+      hideAuthModal();
       mainContent.classList.add('hidden');
       document.querySelectorAll('.subject-page').forEach(page => page.classList.add('hidden'));
       lessonContentDisplay.classList.add('hidden');
@@ -1497,7 +1558,13 @@
 
     // --- Funciones de Navegación y Contenido ---
     function showSubject(subject) {
+      if (!isAuthenticated) {
+        showMessage('Por favor, inicia sesión para acceder a las materias.');
+        showAuthModal(); // Show auth modal if not authenticated
+        return;
+      }
       // Ocultar contenido principal, quiz y otras páginas de asignatura
+      hideAuthModal();
       document.getElementById('main-content').classList.add('hidden');
       document.getElementById('quiz-container').classList.add('hidden');
       document.querySelectorAll('.subject-page').forEach(page => {
@@ -1522,6 +1589,7 @@
 
     function showMainContent() {
       // Ocultar todas las páginas de asignaturas, el cuestionario y el contenido de lección
+      hideAuthModal();
       document.querySelectorAll('.subject-page').forEach(page => {
         page.classList.remove('active');
         page.classList.add('hidden');
@@ -1986,7 +2054,7 @@
             <video controls style='width:100%; height:auto;' src='https://www.w3schools.com/html/mov_bbb.mp4'></video>
             <p><strong>Ejercicio Visual:</strong> Dibuja el esquema de la oración y rellena los componentes.</p>
             <p><em>"Los niños felices juegan en el parque."</em></p>
-            <textarea rows='5' cols='60' placeholder='Dibuja el esquema de la oración y clasifica aquí...' style='width: 100%;'></textarea>
+            <textarea rows='5' cols='60' placeholder='Dibuja el esquema y clasifica aquí...' style='width: 100%;'></textarea>
             <button onclick='simulateGameCompletion(\"lengua\", \"sintaxis-simple\")'>Completar lección</button>
           `,
           auditivo: `
@@ -2457,7 +2525,13 @@
     };
 
     function showLessonContent(subject, topicId) {
+        if (!isAuthenticated) {
+            showMessage('Por favor, inicia sesión para acceder al contenido de las lecciones.');
+            showAuthModal(); // Show auth modal if not authenticated
+            return;
+        }
         // Ocultar todas las páginas de asignaturas y el contenido principal
+        hideAuthModal();
         document.getElementById('main-content').classList.add('hidden'); // Oculta el contenido principal
         document.getElementById('quiz-container').classList.add('hidden'); // Oculta el quiz
         document.querySelectorAll('.subject-page').forEach(page => page.classList.add('hidden')); // Oculta las páginas de asignatura
@@ -2519,16 +2593,24 @@
     // Initial setup on page load
     document.addEventListener('DOMContentLoaded', function() {
         // Initially hide all main content, quiz, and lesson displays
-        mainContent.classList.add('hidden');
+        // The onAuthStateChanged listener will handle showing the correct content
+        // based on whether a user is logged in or not.
+
+        // Ensure main content is visible on load, and auth modal is hidden
+        mainContent.classList.remove('hidden');
+        authModalOverlay.classList.add('hidden');
         quizContainer.classList.add('hidden');
         document.querySelectorAll('.subject-page').forEach(page => page.classList.add('hidden'));
         lessonContentDisplay.classList.add('hidden');
-        quizNavLink.classList.add('hidden'); // Hide quiz link initially
-        logoutButton.classList.add('hidden'); // Hide logout button initially
+        
+        // Hide quiz and logout links until authenticated
+        quizNavLink.classList.add('hidden');
+        logoutButton.classList.add('hidden');
+        authNavLink.classList.remove('hidden'); // Ensure auth nav link is visible
 
-        // The onAuthStateChanged listener will handle showing the correct content
-        // based on whether a user is logged in or not.
-        // No direct showQuestion() call here, it's triggered via auth state or nav link click.
+        // Load progress for all subjects on initial page load
+        loadProgressAndDisplay();
+        updateAllProgressBars();
     });
   
   </script>
