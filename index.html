@@ -4,20 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MultiGenio - Tu aliado en el aprendizaje</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --primary-color: #3f68a2; /* Azul más suave */
-      --secondary-color: #6ed3b3; /* Azul verdoso del logo */
-      --accent-color: #f39c12; /* Naranja para énfasis */
-      --text-dark: #34495e;
-      --text-light: #5e6c7d;
-      --bg-light: #f8f9fa;
+      --primary-color: #3b5998; /* Azul profundo */
+      --secondary-color: #4CAF50; /* Verde vibrante */
+      --accent-color: #FFC107; /* Amarillo cálido */
+      --text-dark: #212121;
+      --text-light: #616161;
+      --bg-light: #f8fafd; /* Fondo muy claro, casi blanco */
       --bg-white: #ffffff;
       --shadow-light: rgba(0, 0, 0, 0.08);
       --shadow-medium: rgba(0, 0, 0, 0.15);
-      --border-radius: 10px;
-      --spacing-unit: 20px;
+      --shadow-strong: rgba(0, 0, 0, 0.25);
+      --border-radius-soft: 12px;
+      --border-radius-medium: 20px;
+      --spacing-unit: 20px; /* Base spacing */
     }
 
     body {
@@ -26,148 +28,228 @@
       padding: 0;
       background: var(--bg-light);
       color: var(--text-light);
-      line-height: 1.7;
+      line-height: 1.6;
       display: flex;
       flex-direction: column;
-      min-height: 100vh; /* Asegura que el footer esté al final */
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased; /* Better font rendering */
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Scrollbar Styling */
+    body::-webkit-scrollbar {
+        width: 10px;
+    }
+    body::-webkit-scrollbar-track {
+        background: var(--bg-light);
+        border-radius: 10px;
+    }
+    body::-webkit-scrollbar-thumb {
+        background-color: var(--primary-color);
+        border-radius: 10px;
+        border: 2px solid var(--bg-light);
+    }
+    body::-webkit-scrollbar-thumb:hover {
+        background-color: var(--secondary-color);
     }
 
     /* Header */
     header {
-      background: linear-gradient(135deg, var(--primary-color) 0%, #345c8c 100%); /* Gradiente azul más profesional */
-      color: var(--bg-white);
-      padding: calc(2 * var(--spacing-unit)) var(--spacing-unit);
+      background: var(--bg-white);
+      color: var(--text-dark);
+      padding: var(--spacing-unit) calc(2 * var(--spacing-unit));
       text-align: center;
-      box-shadow: 0 4px 20px var(--shadow-medium);
-      position: relative; /* Para el chatbot */
-      z-index: 10; /* Para asegurar que esté encima de otros elementos */
+      box-shadow: 0 2px 10px var(--shadow-light);
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
     }
     header .logo-container {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 15px;
-      margin-bottom: var(--spacing-unit);
+      gap: 10px;
     }
     header .logo-container img {
-      height: 90px; /* Tamaño del logo un poco más grande */
+      height: 60px; /* Tamaño del logo ajustado */
       width: auto;
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     }
     header h1 {
-      font-size: 3.5em; /* Fuente más grande para el título principal */
+      font-size: 2.2em; /* Tamaño del título en el header */
       margin: 0;
-      font-weight: 800; /* Más audaz */
-      line-height: 1;
+      font-weight: 700;
+      color: var(--primary-color);
     }
     header p {
-      font-size: 1.4em;
-      margin-top: 10px;
-      font-weight: 300;
+      font-size: 1em;
+      margin: 0;
+      color: var(--text-light);
     }
 
     /* Navigation */
     nav {
-      background: var(--secondary-color);
+      background: var(--primary-color);
       display: flex;
       justify-content: center;
-      padding: var(--spacing-unit) 0;
-      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+      padding: calc(0.7 * var(--spacing-unit)) 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
       flex-wrap: wrap;
-      gap: 10px; /* Espaciado entre elementos de navegación */
-      position: sticky; /* Sticky navigation */
+      gap: 25px; /* Más espacio entre elementos */
+      position: sticky;
       top: 0;
-      z-index: 100; /* Asegura que la nav esté por encima */
+      z-index: 100;
     }
     nav a, nav button {
       color: var(--bg-white);
       text-decoration: none;
-      font-weight: 600;
-      font-size: 1.1em;
-      padding: 8px 18px; /* Padding ajustado para un mejor aspecto */
-      border-radius: var(--border-radius); /* Bordes redondeados para los botones */
-      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      font-weight: 500;
+      font-size: 1.05em;
+      padding: 8px 15px;
+      border-radius: var(--border-radius-soft);
+      transition: all 0.3s ease-in-out;
       background: none;
       border: none;
       cursor: pointer;
-      display: flex; /* Para centrar texto si es necesario */
+      display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: none; /* Elimina la sombra por defecto de los botones */
+      position: relative;
+      overflow: hidden;
     }
     nav a:hover, nav button:hover {
-      background: rgba(255, 255, 255, 0.2); /* Fondo sutil al pasar el ratón */
+      background: rgba(255, 255, 255, 0.1);
       transform: translateY(-2px);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
     nav a.disabled {
       color: rgba(255, 255, 255, 0.5);
       cursor: not-allowed;
-      border-bottom: none;
-      background: none;
+      opacity: 0.7;
+      transform: none;
       box-shadow: none;
     }
 
     /* Hero Section */
     .hero {
-      padding: calc(4 * var(--spacing-unit)) var(--spacing-unit);
+      background: url('https://placehold.co/1920x800/e0f7fa/3b5998?text=Aprendizaje+Inteligente') no-repeat center center/cover; /* Placeholder background image */
+      padding: calc(6 * var(--spacing-unit)) var(--spacing-unit);
       text-align: center;
-      background: linear-gradient(to bottom right, #e0f7fa, #f0f8ff);
-      color: var(--text-dark);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      color: var(--bg-white);
+      box-shadow: 0 8px 30px var(--shadow-strong);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 550px; /* Altura mínima para la sección hero */
+    }
+    .hero::before { /* Overlay for text readability */
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4); /* Oscurecer imagen */
+      z-index: 1;
     }
     .hero h1 {
-      font-size: 3.8em; /* Más grande y llamativo */
-      margin-bottom: var(--spacing-unit);
+      font-size: 3.8em;
+      margin-bottom: calc(1.5 * var(--spacing-unit));
       font-weight: 800;
-      color: var(--primary-color);
-      line-height: 1.1;
+      line-height: 1.2;
       max-width: 900px;
-      margin-left: auto;
-      margin-right: auto;
+      position: relative;
+      z-index: 2;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
     }
     .hero p {
       font-size: 1.6em;
-      color: var(--text-light);
+      color: rgba(255, 255, 255, 0.9);
       max-width: 800px;
-      margin: var(--spacing-unit) auto 0;
+      margin: 0 auto;
       font-weight: 400;
+      position: relative;
+      z-index: 2;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
     }
+    .hero .hero-buttons {
+        margin-top: calc(2 * var(--spacing-unit));
+        position: relative;
+        z-index: 2;
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .hero .hero-buttons button,
+    .hero .hero-buttons a {
+        background: var(--secondary-color);
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: var(--border-radius-soft);
+        font-size: 1.1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        text-decoration: none;
+        display: inline-block;
+    }
+    .hero .hero-buttons button:hover,
+    .hero .hero-buttons a:hover {
+        background: #40c4ff; /* Azul celeste más vibrante */
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
 
     /* Sections */
     .section {
-      padding: calc(3 * var(--spacing-unit)) var(--spacing-unit);
-      max-width: 1100px;
+      padding: calc(4 * var(--spacing-unit)) var(--spacing-unit);
+      max-width: 1200px;
       margin: 0 auto;
-      background: var(--bg-white); /* Fondo blanco para las secciones */
-      border-radius: var(--border-radius);
-      margin-top: calc(2 * var(--spacing-unit)); /* Espaciado entre secciones */
-      box-shadow: 0 4px 20px var(--shadow-light);
+      background: var(--bg-white);
+      border-radius: var(--border-radius-medium);
+      margin-top: calc(2 * var(--spacing-unit));
+      box-shadow: 0 6px 20px var(--shadow-medium);
+      position: relative;
+      overflow: hidden;
     }
     .section:first-of-type {
-        margin-top: 0; /* La primera sección no tiene margen superior si va justo después del hero */
+        margin-top: calc(3 * var(--spacing-unit)); /* Keep space from hero */
     }
     .section h2, .section h3 {
       text-align: center;
       color: var(--primary-color);
-      margin-bottom: calc(1.5 * var(--spacing-unit));
-      font-size: 3em; /* Títulos de sección más grandes */
-      font-weight: 800;
+      margin-bottom: calc(2 * var(--spacing-unit));
+      font-size: 2.8em;
+      font-weight: 700;
       position: relative;
+      padding-bottom: 10px;
     }
     .section h2::after, .section h3::after {
         content: '';
         display: block;
-        width: 100px; /* Línea un poco más larga */
-        height: 5px; /* Línea más gruesa */
+        width: 80px;
+        height: 4px;
         background: var(--secondary-color);
-        margin: var(--spacing-unit) auto 0;
-        border-radius: 3px;
+        margin: 15px auto 0;
+        border-radius: 2px;
     }
     .section p {
-        font-size: 1.15em;
-        margin-bottom: 1.7em;
-        color: var(--text-dark); /* Texto más oscuro para mejor legibilidad */
-        text-align: justify; /* Justificado para un aspecto más profesional */
+        font-size: 1.1em;
+        margin-bottom: 1.5em;
+        color: var(--text-dark);
+        text-align: justify;
     }
     .section ul {
         list-style: none;
@@ -175,38 +257,39 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: var(--spacing-unit);
-        margin-top: calc(1.5 * var(--spacing-unit));
+        gap: calc(1.5 * var(--spacing-unit));
+        margin-top: calc(2 * var(--spacing-unit));
     }
     .section ul li {
-        background: var(--bg-light); /* Fondo ligeramente diferente para los items de lista */
+        background: linear-gradient(145deg, #e3f2fd, #e0f7fa);
         padding: var(--spacing-unit) calc(1.5 * var(--spacing-unit));
-        border-radius: var(--border-radius);
+        border-radius: var(--border-radius-soft);
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        font-size: 1.2em;
+        font-size: 1.15em;
         color: var(--text-dark);
-        font-weight: 600;
+        font-weight: 500;
         display: flex;
         align-items: center;
         gap: 10px;
-        transition: transform 0.3s ease, background 0.3s ease;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border-left: 4px solid var(--primary-color);
     }
     .section ul li:hover {
-        transform: translateY(-5px);
-        background: #e6f0f8; /* Ligeramente más azul al pasar el ratón */
+        transform: translateY(-4px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
-    .section ul li img { /* For icons in lists */
-        height: 35px;
-        width: 35px;
+    .section ul li img {
+        height: 32px;
+        width: 32px;
     }
-    .section img { /* General images within sections */
+    .section img {
       display: block;
-      margin: var(--spacing-unit) auto calc(1.5 * var(--spacing-unit));
-      border-radius: var(--border-radius);
-      box-shadow: 0 8px 20px var(--shadow-light);
+      margin: calc(1.5 * var(--spacing-unit)) auto;
+      border-radius: var(--border-radius-soft);
+      box-shadow: 0 4px 15px var(--shadow-light);
     }
     .section .text-center {
-        text-align: center; /* Para centrar texto en parrafos específicos */
+        text-align: center;
     }
 
     /* Cards */
@@ -214,49 +297,52 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: calc(1.5 * var(--spacing-unit));
-      margin-top: calc(1.5 * var(--spacing-unit));
+      gap: calc(1.8 * var(--spacing-unit));
+      margin-top: calc(2 * var(--spacing-unit));
     }
     .card {
       background: var(--bg-white);
-      border-radius: var(--border-radius);
+      border-radius: var(--border-radius-medium);
       box-shadow: 0 8px 25px var(--shadow-medium);
       padding: calc(1.5 * var(--spacing-unit));
-      width: 320px; /* Ancho ligeramente mayor para contenido */
+      width: 300px; /* Fixed width for consistency */
       text-align: center;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      transition: all 0.3s ease-in-out;
       position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start; /* Alinea contenido al inicio */
-      min-height: 280px; /* Altura mínima para consistencia */
+      justify-content: flex-start;
+      min-height: 280px;
+      border: 1px solid rgba(0, 0, 0, 0.05);
     }
     .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+      transform: translateY(-8px);
+      box-shadow: 0 12px 35px var(--shadow-strong);
+      border-color: var(--secondary-color);
     }
     .card img {
-      width: 90px; /* Iconos más grandes para tarjetas */
-      height: 90px;
+      width: 80px;
+      height: 80px;
       margin-bottom: var(--spacing-unit);
-      transition: transform 0.3s ease;
+      transition: transform 0.2s ease;
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,0.08));
     }
     .card:hover img {
         transform: scale(1.1);
     }
     .card h3 {
-      font-size: 2em; /* Títulos de tarjeta más grandes */
+      font-size: 1.8em;
       color: var(--primary-color);
       margin-bottom: 12px;
-      font-weight: 700;
+      font-weight: 600;
     }
     .card p {
-      font-size: 1.05em;
+      font-size: 1em;
       color: var(--text-light);
-      line-height: 1.6;
-      flex-grow: 1; /* Permite que el párrafo ocupe el espacio restante */
+      line-height: 1.5;
+      flex-grow: 1;
     }
     .clickable-card {
       cursor: pointer;
@@ -267,7 +353,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(63, 104, 162, 0.98); /* Usar --primary-color con más opacidad */
+      background: rgba(var(--primary-color), 0.9);
       color: var(--bg-white);
       display: flex;
       align-items: center;
@@ -275,9 +361,9 @@
       opacity: 0;
       transition: opacity 0.3s ease;
       font-weight: 600;
-      font-size: 1.6em;
-      border-radius: var(--border-radius);
-      padding: var(--spacing-unit); /* Para que el texto no toque los bordes */
+      font-size: 1.5em;
+      border-radius: var(--border-radius-medium);
+      padding: var(--spacing-unit);
       text-align: center;
     }
     .clickable-card:hover .card-overlay {
@@ -287,40 +373,43 @@
     /* Testimonials Section */
     .testimonial-card {
       background: var(--bg-white);
-      border-radius: var(--border-radius);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-      padding: var(--spacing-unit);
+      border-radius: var(--border-radius-medium);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      padding: calc(1.2 * var(--spacing-unit));
       text-align: center;
       max-width: 350px;
       margin: var(--spacing-unit);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: all 0.2s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
+      border: 1px solid rgba(0, 0, 0, 0.05);
     }
     .testimonial-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
     .testimonial-card img {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%; /* Imágenes de perfil redondas */
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
       margin-bottom: 15px;
-      border: 3px solid var(--secondary-color); /* Borde alrededor de la imagen */
+      border: 2px solid var(--secondary-color);
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
     }
     .testimonial-card h3 {
       color: var(--primary-color);
-      font-size: 1.5em;
+      font-size: 1.4em;
       margin-bottom: 8px;
-      font-weight: 700;
+      font-weight: 600;
     }
     .testimonial-card p {
       font-style: italic;
       color: var(--text-dark);
       margin-bottom: 15px;
       flex-grow: 1;
+      line-height: 1.5;
     }
     .testimonial-card .rating {
       color: var(--accent-color);
@@ -328,22 +417,25 @@
     }
     /* New: Review Section */
     #reviews-section {
-        background: linear-gradient(135deg, #f0f8ff, #e0f7fa); /* Fondo suave */
-        padding: calc(3 * var(--spacing-unit)) var(--spacing-unit);
+        background: var(--bg-light);
+        padding: calc(4 * var(--spacing-unit)) var(--spacing-unit);
         text-align: center;
+        border-radius: var(--border-radius-medium);
+        margin-top: calc(2 * var(--spacing-unit));
+        box-shadow: 0 6px 20px var(--shadow-medium);
     }
     #reviews-section h2 {
         color: var(--primary-color);
-        font-size: 3em;
-        font-weight: 800;
-        margin-bottom: calc(1.5 * var(--spacing-unit));
+        font-size: 2.8em;
+        font-weight: 700;
+        margin-bottom: calc(2 * var(--spacing-unit));
     }
     #reviews-section h2::after {
-        background: var(--accent-color); /* Línea naranja para la sección de reseñas */
+        background: var(--accent-color);
     }
     #reviews-container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: calc(1.5 * var(--spacing-unit));
         max-width: 1200px;
         margin: 0 auto;
@@ -351,38 +443,40 @@
     }
     .review-card {
         background: var(--bg-white);
-        border-radius: var(--border-radius);
-        box-shadow: 0 8px 25px var(--shadow-medium); /* Más pronunciada */
-        padding: calc(1.5 * var(--spacing-unit)); /* Más padding */
+        border-radius: var(--border-radius-medium);
+        box-shadow: 0 6px 20px var(--shadow-light);
+        padding: calc(1.5 * var(--spacing-unit));
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
-        transition: transform 0.4s ease, box-shadow 0.4s ease; /* Transiciones más suaves */
-        min-height: 200px; /* Altura mínima para consistencia */
+        transition: all 0.3s ease;
+        min-height: 200px;
+        border: 1px solid rgba(0, 0, 0, 0.05);
     }
     .review-card:hover {
-        transform: translateY(-10px); /* Más elevación */
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2); /* Sombra más grande */
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px var(--shadow-medium);
+        border-color: var(--primary-color);
     }
     .review-card .reviewer-name {
-        font-weight: 700;
+        font-weight: 600;
         color: var(--primary-color);
-        font-size: 1.3em;
+        font-size: 1.2em;
         margin-top: 10px;
         margin-bottom: 5px;
     }
     .review-card .review-text {
-        font-size: 1.05em;
-        color: var(--text-dark); /* Color más oscuro para legibilidad */
+        font-size: 1em;
+        color: var(--text-dark);
         font-style: italic;
         margin-bottom: 15px;
-        flex-grow: 1; /* Permite que el texto ocupe espacio */
-        line-height: 1.6;
+        flex-grow: 1;
+        line-height: 1.5;
     }
     .review-card .review-rating {
         color: var(--accent-color);
-        font-size: 1.2em; /* Estrellas un poco más grandes */
+        font-size: 1.1em;
         margin-top: 5px;
     }
     /* Review form styles */
@@ -392,75 +486,85 @@
       gap: 15px;
       max-width: 600px;
       margin: 30px auto;
-      padding: calc(2 * var(--spacing-unit)); /* Más padding */
+      padding: calc(2 * var(--spacing-unit));
       background: var(--bg-white);
-      border-radius: var(--border-radius);
-      box-shadow: 0 8px 25px var(--shadow-medium); /* Sombra consistente */
+      border-radius: var(--border-radius-medium);
+      box-shadow: 0 6px 20px var(--shadow-medium);
+      border: 1px solid rgba(0, 0, 0, 0.05);
     }
     #submit-review-section .review-form label {
-        font-weight: 600;
+        font-weight: 500;
         color: var(--text-dark);
         text-align: left;
         margin-bottom: 5px;
-        font-size: 1.1em;
+        font-size: 1.05em;
     }
     #submit-review-section .review-form textarea {
         width: calc(100% - 40px);
         padding: 15px 20px;
         border: 1px solid #ddd;
-        border-radius: var(--border-radius);
+        border-radius: var(--border-radius-soft);
         font-family: 'Poppins', sans-serif;
         font-size: 1em;
         min-height: 100px;
         box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
         resize: vertical;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    #submit-review-section .review-form textarea:focus {
+        border-color: var(--primary-color);
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 0 3px rgba(var(--primary-color), 0.15);
+        outline: none;
     }
     #submit-review-section .review-form .rating-stars {
         display: flex;
         justify-content: center;
-        gap: 8px; /* Más espacio entre estrellas */
+        gap: 8px;
         margin-bottom: 20px;
     }
     #submit-review-section .review-form .rating-stars button {
         background: none;
         border: none;
-        font-size: 3em; /* Estrellas más grandes en el formulario */
+        font-size: 2.8em;
         cursor: pointer;
-        color: #d1d1d1; /* Default star color */
+        color: #d1d1d1;
         transition: color 0.2s ease, transform 0.1s ease;
     }
     #submit-review-section .review-form .rating-stars button:hover {
         transform: scale(1.1);
     }
     #submit-review-section .review-form .rating-stars button.selected {
-        color: var(--accent-color); /* Selected star color */
+        color: var(--accent-color);
+        text-shadow: 0 0 5px rgba(255, 193, 7, 0.4);
     }
     #submit-review-section .review-form button[type="submit"] {
       background: var(--primary-color);
       color: white;
-      padding: 15px 30px;
+      padding: 14px 28px;
       border: none;
-      border-radius: var(--border-radius);
+      border-radius: var(--border-radius-soft);
       cursor: pointer;
-      font-size: 1.2em;
+      font-size: 1.1em;
       font-weight: 600;
       transition: background 0.3s ease, transform 0.2s ease;
       margin-top: 20px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
     #submit-review-section .review-form button[type="submit"]:hover {
       background: var(--secondary-color);
       transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     }
     .review-message {
       text-align: center;
-      font-size: 1.1em;
+      font-size: 1.05em;
       color: var(--text-dark);
       margin-top: 20px;
       padding: 15px;
       background: #eef5fb;
-      border-radius: var(--border-radius);
+      border-radius: var(--border-radius-soft);
       border-left: 5px solid var(--secondary-color);
+      font-weight: 500;
     }
     .review-submit-info {
         font-size: 0.95em;
@@ -468,41 +572,43 @@
         margin-top: 15px;
     }
 
-    /* Topic List specific styles for better spacing */
+    /* Topic List specific styles */
     .topic-list {
         margin-top: calc(2 * var(--spacing-unit));
     }
     .topic-list h2 {
-        font-size: 2.5em; /* Ajuste para que los subtítulos de temario sean más grandes */
-        font-weight: 700;
+        font-size: 2.4em;
+        font-weight: 600;
         color: var(--primary-color);
         margin-bottom: calc(1.5 * var(--spacing-unit));
         text-align: center;
     }
     .topic-item {
         background: var(--bg-white);
-        border-radius: var(--border-radius);
+        border-radius: var(--border-radius-soft);
         box-shadow: 0 4px 15px var(--shadow-light);
-        padding: calc(1.2 * var(--spacing-unit)); /* Más padding */
-        margin-bottom: var(--spacing-unit); /* Espacio entre temas */
+        padding: calc(1.2 * var(--spacing-unit));
+        margin-bottom: var(--spacing-unit);
         display: flex;
         flex-direction: column;
-        align-items: flex-start; /* Alinea contenido a la izquierda */
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        align-items: flex-start;
+        transition: all 0.2s ease;
         cursor: pointer;
+        border-left: 4px solid var(--primary-color);
     }
     .topic-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        border-color: var(--secondary-color);
     }
     .topic-item .topic-title {
-        font-size: 1.5em; /* Título del tema más grande */
-        font-weight: 700;
+        font-size: 1.4em;
+        font-weight: 600;
         color: var(--primary-color);
         margin-bottom: 8px;
-        width: 100%; /* Asegura que ocupe todo el ancho */
+        width: 100%;
         display: flex;
-        justify-content: space-between; /* Para alinear el badge y el indicador */
+        justify-content: space-between;
         align-items: center;
     }
     .topic-item .level-badge {
@@ -511,20 +617,21 @@
         padding: 4px 10px;
         border-radius: 8px;
         font-size: 0.8em;
-        font-weight: 600;
+        font-weight: 500;
         margin-left: 15px;
-        white-space: nowrap; /* Evita que el texto del badge se rompa */
+        white-space: nowrap;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
     }
     .topic-item .progress-indicator {
         font-size: 0.9em;
         color: var(--text-light);
-        font-weight: 500;
-        margin-left: auto; /* Empuja el indicador a la derecha */
+        font-weight: 400;
+        margin-left: auto;
     }
     .topic-item .topic-description {
-        font-size: 1.05em;
+        font-size: 0.98em;
         color: var(--text-light);
-        line-height: 1.5;
+        line-height: 1.4;
         text-align: left;
     }
 
@@ -534,82 +641,118 @@
       text-align: center;
       background: var(--bg-white);
       padding: calc(2 * var(--spacing-unit));
-      border-radius: var(--border-radius);
-      box-shadow: 0 4px 15px var(--shadow-light);
+      border-radius: var(--border-radius-medium);
+      box-shadow: 0 6px 20px var(--shadow-medium);
       max-width: 700px;
       margin: var(--spacing-unit) auto;
+      border: 1px solid rgba(0, 0, 0, 0.05);
     }
     .contact-form p {
-      font-size: 1.1em;
+      font-size: 1.05em;
       margin-bottom: var(--spacing-unit);
       color: var(--text-dark);
     }
     .contact-form input,
     .contact-form textarea {
-      width: calc(100% - 40px); /* Ajuste para padding */
-      padding: 15px 20px;
+      width: calc(100% - 40px);
+      padding: 14px 20px;
       margin: 10px 0;
       border: 1px solid #ddd;
-      border-radius: var(--border-radius);
-      font-size: 1.1em;
+      border-radius: var(--border-radius-soft);
+      font-size: 1em;
       color: var(--text-dark);
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
     .contact-form input:focus,
     .contact-form textarea:focus {
       border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(63, 104, 162, 0.2);
+      box-shadow: 0 0 0 3px rgba(var(--primary-color), 0.15);
       outline: none;
     }
     .contact-form button {
       background: var(--primary-color);
       color: white;
-      padding: 15px 30px;
+      padding: 14px 28px;
       border: none;
-      border-radius: var(--border-radius);
+      border-radius: var(--border-radius-soft);
       cursor: pointer;
-      font-size: 1.2em;
+      font-size: 1.1em;
       font-weight: 600;
       transition: background 0.3s ease, transform 0.2s ease;
       margin-top: var(--spacing-unit);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
     .contact-form button:hover {
       background: var(--secondary-color);
       transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     }
 
     /* Footer */
     footer {
-      background: var(--primary-color);
+      background: var(--text-dark); /* Fondo oscuro para el footer */
       color: white;
       text-align: center;
-      padding: var(--spacing-unit);
-      margin-top: auto; /* Empuja el footer al final de la página */
-      font-size: 0.95em;
+      padding: calc(2 * var(--spacing-unit)) var(--spacing-unit);
+      margin-top: auto;
+      font-size: 0.9em;
       box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    }
+    footer .footer-links a {
+        color: white;
+        text-decoration: none;
+        margin: 0 15px;
+        font-weight: 400;
+        transition: color 0.2s ease;
+    }
+    footer .footer-links a:hover {
+        color: var(--secondary-color);
+    }
+    footer .payment-logos {
+        margin-top: var(--spacing-unit);
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    footer .payment-logos img {
+        height: 30px;
+        filter: grayscale(100%) invert(100%); /* Make logos white for dark background */
+        opacity: 0.8;
+        transition: opacity 0.2s ease;
+    }
+    footer .payment-logos img:hover {
+        opacity: 1;
+    }
+    footer .copyright {
+        margin-top: var(--spacing-unit);
+        font-size: 0.85em;
+        color: rgba(255, 255, 255, 0.7);
     }
 
     /* Quiz Styles */
     #quiz-container {
       background: var(--bg-white);
-      max-width: 600px; /* Ancho ligeramente mayor */
+      max-width: 650px;
       margin: calc(3 * var(--spacing-unit)) auto;
-      padding: calc(2 * var(--spacing-unit));
-      border-radius: var(--border-radius);
+      padding: calc(2.5 * var(--spacing-unit));
+      border-radius: var(--border-radius-medium);
       box-shadow: 0 8px 25px var(--shadow-medium);
+      border: 1px solid rgba(0, 0, 0, 0.05);
     }
     #quiz-container h2 {
       color: var(--primary-color);
-      margin-bottom: calc(1.5 * var(--spacing-unit));
+      margin-bottom: calc(1.8 * var(--spacing-unit));
       text-align: center;
-      font-size: 2.5em; /* Título de quiz más grande */
+      font-size: 2.5em;
       font-weight: 700;
     }
     .question {
-      margin-bottom: var(--spacing-unit);
+      margin-bottom: calc(1.5 * var(--spacing-unit));
       font-weight: 600;
-      font-size: 1.4em; /* Fuente de pregunta más grande */
+      font-size: 1.3em;
       color: var(--text-dark);
+      text-align: center;
     }
     .options {
       display: flex;
@@ -618,90 +761,91 @@
     }
     .options button {
       width: 100%;
-      padding: 15px;
+      padding: 14px;
       background: var(--primary-color);
       color: white;
       border: none;
-      border-radius: var(--border-radius);
+      border-radius: var(--border-radius-soft);
       cursor: pointer;
-      font-size: 1.1em;
-      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-      text-align: left;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      font-size: 1.05em;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
     .options button:hover {
       background: var(--secondary-color);
-      transform: translateY(-3px); /* Efecto de elevación */
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
     /* Result Styles */
     #result-message {
-      font-weight: 700;
+      font-weight: 600;
       text-align: center;
       margin-bottom: 1.5rem;
       color: var(--primary-color);
-      font-size: 1.6em; /* Mensaje de resultado más grande */
-      background: #eef5fb;
+      font-size: 1.5em;
+      background: #e3f2fd;
       padding: 1.2 * var(--spacing-unit);
-      border-radius: var(--border-radius);
-      border-left: 6px solid var(--secondary-color); /* Borde más pronunciado */
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      border-radius: var(--border-radius-soft);
+      border-left: 6px solid var(--secondary-color);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
     /* ADHD Recommendations */
     #tdah-warning {
       margin-top: calc(2.5 * var(--spacing-unit));
       padding: 1.5rem;
-      background-color: #ffe0b2; /* Tono naranja suave */
-      border-radius: var(--border-radius);
+      background-color: #fff8e1; /* Amarillo muy suave */
+      border-radius: var(--border-radius-soft);
       color: #b35900;
-      font-weight: 600;
+      font-weight: 500;
       max-width: 750px;
       margin-left: auto;
       margin-right: auto;
-      border-left: 6px solid var(--accent-color); /* Borde más pronunciado */
-      font-size: 1.15em;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      border-left: 6px solid var(--accent-color);
+      font-size: 1.1em;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
     #study-advice {
       max-width: 750px;
       margin: 0 auto calc(2 * var(--spacing-unit)) auto;
-      font-weight: 600;
+      font-weight: 500;
       color: var(--text-dark);
       padding: 1.5rem;
-      background: var(--bg-white);
-      border-radius: var(--border-radius);
+      background: #e8f5e9; /* Verde muy suave */
+      border-radius: var(--border-radius-soft);
       text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      border-left: 6px solid var(--primary-color); /* Borde más pronunciado */
-      font-size: 1.15em;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-left: 6px solid var(--primary-color);
+      font-size: 1.1em;
     }
 
     /* Progress Bar Styles */
     .progress-bar-container {
       width: 100%;
       background-color: #e0e0e0;
-      border-radius: var(--border-radius);
+      border-radius: var(--border-radius-soft);
       overflow: hidden;
       margin-bottom: calc(1.2 * var(--spacing-unit));
-      height: 35px; /* Barra más alta */
+      height: 30px;
       position: relative;
       box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
     }
     .progress-bar-fill {
       height: 100%;
-      background-color: var(--secondary-color); /* Green color for progress */
-      width: 0%; /* Will be updated by JS */
-      border-radius: var(--border-radius) 0 0 var(--border-radius);
+      background-color: var(--secondary-color);
+      width: 0%;
+      border-radius: var(--border-radius-soft) 0 0 var(--border-radius-soft);
       transition: width 0.5s ease-in-out;
     }
     .progress-text {
       position: absolute;
       width: 100%;
       text-align: center;
-      line-height: 35px;
+      line-height: 30px;
       color: var(--text-dark);
-      font-weight: 600;
-      font-size: 1.05em;
+      font-weight: 500;
+      font-size: 1em;
     }
 
     /* Lesson Content Display */
@@ -710,20 +854,42 @@
         max-width: 900px;
         margin: calc(3 * var(--spacing-unit)) auto;
         padding: calc(2 * var(--spacing-unit));
-        border-radius: var(--border-radius);
+        border-radius: var(--border-radius-medium);
         box-shadow: 0 10px 30px var(--shadow-medium);
         min-height: 500px;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    .back-button {
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      font-size: 1.1em;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: var(--border-radius-soft);
+      transition: all 0.2s ease;
+      margin-bottom: var(--spacing-unit);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .back-button:hover {
+      background: rgba(var(--primary-color), 0.1);
+      transform: translateX(-3px);
     }
     #lesson-material h3 {
         color: var(--primary-color);
         font-size: 1.8em;
         margin-top: calc(1.5 * var(--spacing-unit));
         margin-bottom: var(--spacing-unit);
-        font-weight: 700;
+        font-weight: 600;
+        border-bottom: 1px solid rgba(var(--primary-color), 0.1);
+        padding-bottom: 5px;
     }
     #lesson-material p {
-        font-size: 1.1em;
-        margin-bottom: 1.5em;
+        font-size: 1.05em;
+        margin-bottom: 1.4em;
         color: var(--text-dark);
         text-align: justify;
     }
@@ -734,51 +900,51 @@
         height: auto;
         display: block;
         margin: var(--spacing-unit) auto;
-        border-radius: var(--border-radius);
+        border-radius: var(--border-radius-soft);
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
     #lesson-material textarea {
         width: calc(100% - 40px);
         padding: 15px 20px;
         border: 1px solid #ddd;
-        border-radius: var(--border-radius);
+        border-radius: var(--border-radius-soft);
         font-family: 'Poppins', sans-serif;
         font-size: 1em;
         min-height: 120px;
         margin-top: 15px;
         box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
-        resize: vertical; /* Allow vertical resizing */
+        resize: vertical;
     }
     #lesson-material .interactive-game-placeholder {
-        background-color: #eef5fb;
+        background-color: #e0f7fa;
         border: 2px dashed var(--secondary-color);
-        padding: calc(3 * var(--spacing-unit));
+        padding: calc(2.5 * var(--spacing-unit));
         text-align: center;
         font-style: italic;
         color: var(--text-light);
-        border-radius: var(--border-radius);
+        border-radius: var(--border-radius-soft);
         margin: calc(1.5 * var(--spacing-unit)) 0;
-        font-size: 1.25em;
-        font-weight: 500;
+        font-size: 1.15em;
+        font-weight: 400;
         box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
     #lesson-material button {
         background: var(--accent-color);
         color: white;
-        padding: 14px 30px; /* Botón más grande */
+        padding: 12px 25px;
         border: none;
-        border-radius: var(--border-radius);
+        border-radius: var(--border-radius-soft);
         cursor: pointer;
-        font-size: 1.15em;
+        font-size: 1.05em;
         font-weight: 600;
-        transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        transition: background 0.3s ease, transform 0.2s ease;
         margin-top: calc(1.5 * var(--spacing-unit));
-        box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3); /* Sombra para botones de acción */
+        box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
     }
     #lesson-material button:hover {
-        background: #e67e22;
-        transform: translateY(-3px);
-        box-shadow: 0 6px 15px rgba(243, 156, 18, 0.4);
+        background: #ffaa00;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4);
     }
 
     /* Custom Message Box */
@@ -789,13 +955,13 @@
         transform: translateX(-50%);
         background-color: var(--primary-color);
         color: white;
-        padding: 15px 30px;
-        border-radius: var(--border-radius);
+        padding: 14px 28px;
+        border-radius: var(--border-radius-soft);
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
+        z-index: 2000;
         opacity: 0;
         transition: opacity 0.3s ease-in-out;
-        font-weight: 600;
+        font-weight: 500;
     }
     #custom-message.show {
         opacity: 1;
@@ -808,11 +974,11 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.7); /* Fondo más oscuro */
+      background-color: rgba(0, 0, 0, 0.7);
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 999;
+      z-index: 1500;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s ease-in-out;
@@ -825,18 +991,19 @@
     /* Authentication Form Styles (within modal) */
     #auth-container {
       background: var(--bg-white);
-      max-width: 480px; /* Ancho un poco mayor para el modal */
+      max-width: 450px;
       padding: calc(2 * var(--spacing-unit));
-      border-radius: var(--border-radius);
+      border-radius: var(--border-radius-medium);
       box-shadow: 0 10px 30px var(--shadow-medium);
       text-align: center;
       position: relative;
+      border: 1px solid rgba(0, 0, 0, 0.05);
     }
     #auth-container h2 {
       color: var(--primary-color);
       margin-bottom: calc(1.5 * var(--spacing-unit));
-      font-size: 2.4em;
-      font-weight: 700;
+      font-size: 2.2em;
+      font-weight: 600;
     }
     #auth-container form {
       display: flex;
@@ -846,40 +1013,40 @@
     #auth-container input[type="email"],
     #auth-container input[type="password"] {
       width: calc(100% - 40px);
-      padding: 16px 20px; /* Padding más grande */
-      margin: 10px 0;
+      padding: 14px 20px;
+      margin: 8px 0;
       border: 1px solid #ddd;
-      border-radius: var(--border-radius);
-      font-size: 1.15em; /* Fuente más grande */
+      border-radius: var(--border-radius-soft);
+      font-size: 1.05em;
       color: var(--text-dark);
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
     #auth-container input[type="email"]:focus,
     #auth-container input[type="password"]:focus {
       border-color: var(--primary-color);
-      box-shadow: 0 0 0 4px rgba(63, 104, 162, 0.25); /* Sombra de foco más suave */
+      box-shadow: 0 0 0 3px rgba(var(--primary-color), 0.15);
       outline: none;
     }
     #auth-container button {
       background: var(--primary-color);
       color: white;
-      padding: 16px 25px;
+      padding: 14px 25px;
       border: none;
-      border-radius: var(--border-radius);
+      border-radius: var(--border-radius-soft);
       cursor: pointer;
-      font-size: 1.25em;
+      font-size: 1.1em;
       font-weight: 600;
-      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      transition: background 0.3s ease, transform 0.2s ease;
       margin-top: 15px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
     #auth-container button:hover {
       background: var(--secondary-color);
-      transform: translateY(-3px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     }
     #auth-container .toggle-form-link {
-        font-size: 1em;
+        font-size: 0.95em;
         margin-top: var(--spacing-unit);
         color: var(--text-light);
         cursor: pointer;
@@ -894,82 +1061,169 @@
         right: 15px;
         background: none;
         border: none;
-        font-size: 2em; /* Icono más grande */
+        font-size: 1.8em;
         color: var(--text-light);
         cursor: pointer;
-        transition: color 0.3s ease, transform 0.2s ease;
+        transition: color 0.2s ease, transform 0.2s ease;
     }
     .close-modal-button:hover {
         color: var(--primary-color);
-        transform: rotate(90deg); /* Pequeña animación al cerrar */
+        transform: rotate(90deg);
     }
 
+    /* New Legal Sections */
+    .legal-section {
+        background: var(--bg-white);
+        padding: calc(4 * var(--spacing-unit)) var(--spacing-unit);
+        max-width: 900px;
+        margin: calc(2 * var(--spacing-unit)) auto;
+        border-radius: var(--border-radius-medium);
+        box-shadow: 0 6px 20px var(--shadow-medium);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    .legal-section h2 {
+        font-size: 2.2em;
+        color: var(--primary-color);
+        margin-bottom: calc(1.5 * var(--spacing-unit));
+        text-align: center;
+        font-weight: 700;
+    }
+    .legal-section h3 {
+        font-size: 1.6em;
+        color: var(--secondary-color);
+        margin-top: calc(1.5 * var(--spacing-unit));
+        margin-bottom: calc(0.8 * var(--spacing-unit));
+        font-weight: 600;
+    }
+    .legal-section p, .legal-section ul {
+        font-size: 1em;
+        color: var(--text-dark);
+        line-height: 1.6;
+        margin-bottom: 1em;
+    }
+    .legal-section ul {
+        list-style: disc;
+        padding-left: 25px;
+    }
+    .legal-section ol {
+        list-style: decimal;
+        padding-left: 25px;
+    }
+    .legal-section li {
+        margin-bottom: 0.5em;
+    }
 
     /* Responsive adjustments */
+    @media (max-width: 900px) {
+        .hero h1 {
+            font-size: 3em;
+        }
+        .hero p {
+            font-size: 1.4em;
+        }
+        .section h2, .section h3 {
+            font-size: 2.4em;
+        }
+        .cards {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+        .card {
+            width: auto;
+        }
+    }
+
     @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: center;
+        padding: var(--spacing-unit);
+      }
       header h1 {
-        font-size: 2.5em;
+        font-size: 2em;
       }
       header .logo-container img {
-        height: 70px;
+        height: 50px;
+      }
+      .hero {
+          min-height: 400px;
+          padding: calc(4 * var(--spacing-unit)) var(--spacing-unit);
       }
       .hero h1 {
-        font-size: 2.8em;
+        font-size: 2.5em;
       }
       .hero p {
         font-size: 1.2em;
       }
+      .hero .hero-buttons {
+          flex-direction: column;
+          gap: 15px;
+      }
       nav {
         flex-direction: column;
         align-items: center;
-        padding: 10px;
+        gap: 10px;
       }
       nav a, nav button {
-        margin: 5px 0;
-        font-size: 1em;
-        padding: 8px 15px;
+        font-size: 0.95em;
+        padding: 6px 12px;
+      }
+      .section {
+          padding: calc(2.5 * var(--spacing-unit)) var(--spacing-unit);
+          margin-top: calc(1.5 * var(--spacing-unit));
       }
       .section h2, .section h3 {
-        font-size: 2.2em;
+        font-size: 2em;
       }
       .section p {
-          text-align: left; /* Justificado puede ser demasiado en móvil */
+          text-align: left;
       }
-      .cards, .testimonials-grid {
+      .cards, .testimonials-grid, #reviews-container {
         flex-direction: column;
         align-items: center;
       }
-      .card, .testimonial-card {
-        width: 95%;
-        max-width: 400px; /* Un poco más ancho en móviles */
+      .card, .testimonial-card, .review-card {
+        width: 90%;
+        max-width: 350px;
       }
       .contact-form input,
       .contact-form textarea {
-        width: calc(100% - 20px);
-        padding: 12px 10px;
+        width: calc(100% - 30px);
+        padding: 12px 15px;
       }
-      #quiz-container, #lesson-content-display, #auth-container {
-        margin: var(--spacing-unit) auto;
+      #quiz-container, #lesson-content-display, #auth-container, .legal-section {
+        margin: calc(1.5 * var(--spacing-unit)) auto;
         padding: calc(1.5 * var(--spacing-unit));
       }
       #quiz-container h2 {
-          font-size: 2em;
+          font-size: 2.2em;
       }
       .question {
-        font-size: 1.2em;
+        font-size: 1.15em;
       }
-      .review-card {
-        margin: 10px auto; /* Centrar y añadir margen */
+      .options button {
+            font-size: 0.95em;
+            padding: 12px;
+      }
+      footer .footer-links a {
+          margin: 0 10px;
       }
     }
     @media (max-width: 480px) {
         header h1 {
-            font-size: 2em;
+            font-size: 1.8em;
         }
         .hero h1 {
-            font-size: 2.2em;
+            font-size: 2em;
         }
         .hero p {
+            font-size: 1em;
+        }
+        .hero .hero-buttons {
+            gap: 10px;
+        }
+        .hero .hero-buttons button,
+        .hero .hero-buttons a {
+            padding: 12px 25px;
             font-size: 1em;
         }
         .section h2, .section h3 {
@@ -977,13 +1231,39 @@
         }
         .card {
             padding: var(--spacing-unit);
+            min-height: 250px;
         }
         .card h3 {
-            font-size: 1.5em;
+            font-size: 1.6em;
         }
         .options button {
+            font-size: 0.9em;
+            padding: 10px;
+        }
+        #quiz-container h2 {
+            font-size: 1.8em;
+        }
+        .question {
+            font-size: 1em;
+        }
+        #result-message, #tdah-warning, #study-advice {
             font-size: 0.95em;
-            padding: 12px;
+            padding: var(--spacing-unit);
+        }
+        .topic-item .topic-title {
+            font-size: 1.2em;
+        }
+        .topic-item .topic-description {
+            font-size: 0.85em;
+        }
+        .legal-section h2 {
+            font-size: 2em;
+        }
+        .legal-section h3 {
+            font-size: 1.4em;
+        }
+        .legal-section p, .legal-section ul, .legal-section ol {
+            font-size: 0.9em;
         }
     }
   </style>
@@ -1029,10 +1309,12 @@
   <div id="main-content" role="main">
     <header>
       <div class="logo-container">
-        <img src="https://placehold.co/90x90/6ed3b3/ffffff?text=MG" alt="Logo de MultiGenio, iniciales MG" />
-        <h1>MultiGenio</h1>
+        <img src="Blue Modern Brain Genius And Technology Smart Mind Business Logo Template.png-621ecb34-e983-4691-968f-9f0a33cae13c" alt="Logo de MultiGenio, cerebro con dos hemisferios" />
+        <div>
+            <h1>MultiGenio</h1>
+            <p>Tu aliado en el aprendizaje</p>
+        </div>
       </div>
-      <p>Tu aliado en el aprendizaje</p>
       <div id="user-id-display" style="display: none;" aria-live="polite"></div>
     </header>
 
@@ -1051,6 +1333,10 @@
     <section class="hero" aria-label="Sección principal de bienvenida">
       <h1>Tu tutor virtual inteligente para Matemáticas, Inglés y Lengua</h1>
       <p>Un método de aprendizaje dinámico, adaptado a tu ritmo y estilo, diseñado para potenciar tu concentración y comprensión.</p>
+      <div class="hero-buttons">
+          <a href="#materias">Explorar Materias</a>
+          <button onclick="window.showQuestion()">Haz el Cuestionario</button>
+      </div>
     </section>
 
     <div id="result-message" role="status" aria-live="polite" style="display: none;"></div>
@@ -1061,13 +1347,13 @@
 
     <section class="section" id="que-es" aria-labelledby="que-es-heading">
       <h2 id="que-es-heading">¿Qué es MultiGenio?</h2>
-      <img src="https://placehold.co/100x100/eef5fb/34495e?text=IA" alt="Icono de inteligencia artificial" />
+      <img src="https://placehold.co/100x100/eef5fb/3b5998?text=IA" alt="Icono de inteligencia artificial" />
       <p>
         <strong>MultiGenio</strong> es una innovadora plataforma educativa diseñada para transformar la experiencia de aprendizaje. Nos especializamos en ofrecer un **tutor virtual inteligente** que se adapta de manera dinámica a las necesidades individuales de cada estudiante, maximizando su potencial en materias clave como **Matemáticas, Inglés y Lengua Española**. Nuestra misión es hacer el aprendizaje accesible, efectivo y estimulante para todos, incluyendo aquellos con **TDAH** o dificultades de atención, proporcionando herramientas y estrategias personalizadas que fomentan la concentración y la comprensión profunda.
       </p>
 
       <h3>🧠 La Inteligencia Artificial en Acción: Un Enfoque Adaptativo y Personalizado</h3>
-      <img src="https://placehold.co/100x100/eef5fb/34495e?text=Adaptación" alt="Icono de adaptación" />
+      <img src="https://placehold.co/100x100/eef5fb/3b5998?text=Adaptación" alt="Icono de adaptación" />
       <p>
         En el corazón de MultiGenio reside una **Inteligencia Artificial avanzada** que va más allá de los métodos tradicionales. Nuestra IA analiza un conjunto de datos clave: desde tus respuestas en el cuestionario inicial, el progreso en los juegos interactivos, el tiempo que dedicas a cada tema, hasta tus preferencias de material didáctico (visual, auditivo, de lectura/escritura, kinestésico). Con esta información, el sistema es capaz de **ajustar dinámicamente la dificultad de los ejercicios, priorizar tipos de contenido específicos y sugerir rutas de aprendizaje alternativas** que se alinean perfectamente con tu estilo.
       </p>
@@ -1076,18 +1362,9 @@
       </p>
 
       <h2>📋 Cuestionario Inicial: Tu Huella de Aprendizaje para una Personalización Óptima</h2>
-      <img src="https://placehold.co/100x100/eef5fb/34495e?text=Quiz" alt="Icono de cuestionario" />
+      <img src="https://placehold.co/100x100/eef5fb/3b5998?text=Quiz" alt="Icono de cuestionario" />
       <p>
-        Antes de iniciar tu viaje con MultiGenio, te invitamos a completar un **cuestionario interactivo y estratégico de 5 preguntas**. Este no es un simple test de conocimientos; es una herramienta fundamental para que nuestra IA comprenda tu perfil de aprendizaje único. Las preguntas están meticulosamente diseñadas para identificar tu estilo de aprendizaje predominante entre las siguientes categorías:
-      </p>
-      <ul>
-        <li><img src="https://img.icons8.com/color/48/eye.png" alt="Icono de ojo, estilo visual"/> <strong>Visual:</strong> Si procesas la información mejor a través de imágenes, gráficos, diagramas, videos y representaciones visuales.</li>
-        <li><img src="https://img.icons8.com/color/48/ear.png" alt="Icono de oreja, estilo auditivo"/> <strong>Auditivo:</strong> Si retienes la información de forma más efectiva al escuchar explicaciones, debates, grabaciones o podcasts.</li>
-        <li><img src="https://img.icons8.com/color/48/writing.png" alt="Icono de escritura, estilo lectura/escritura"/> <strong>Lectura/Escritura:</strong> Si tu fortaleza radica en la lectura de textos, la toma de notas detalladas, la escritura de resúmenes o la creación de listas.</li>
-        <li><img src="https://img.icons8.com/color/48/running.png" alt="Icono de persona corriendo, estilo kinestésico"/> <strong>Kinestésico:</strong> Si necesitas "hacer" para aprender, prefiriendo actividades prácticas, experimentos, maquetas o el movimiento físico durante el estudio.</li>
-      </ul>
-      <p>
-        Además, una pregunta específica en el cuestionario está formulada para detectar posibles indicios compatibles con el **Trastorno por Déficit de Atención e Hiperactividad (TDAH)**. Si estas señales son identificadas, la plataforma activará un conjunto de estrategias pedagógicas y recursos especiales, como temporizadores de enfoque para gestionar el tiempo de estudio, desafíos de atención para mantener el interés, y formatos de contenido adaptados para minimizar distracciones. Este perfil inicial es la base sobre la cual nuestra IA construye y personaliza cada faceta de tu trayectoria de aprendizaje en MultiGenio, garantizando una experiencia óptima y libre de frustraciones.
+        Antes de iniciar tu viaje con MultiGenio, te invitamos a completar un **cuestionario interactivo y estratégico**. Este no es un simple test de conocimientos; es una herramienta fundamental para que nuestra IA comprenda tu perfil de aprendizaje único. Las preguntas están meticulosamente diseñadas para identificar tu estilo de aprendizaje predominante y posibles indicios relacionados con el **Trastorno por Déficit de Atención e Hiperactividad (TDAH)**. Este perfil inicial es la base sobre la cual nuestra IA construye y personaliza cada faceta de tu trayectoria de aprendizaje en MultiGenio, garantizando una experiencia óptima y libre de frustraciones.
       </p>
     </section>
    
@@ -1096,7 +1373,7 @@
       <p class="text-center">En MultiGenio, ofrecemos un currículo completo y adaptado para que domines las asignaturas más importantes.</p>
       <div class="cards">
         <div class="card clickable-card" role="button" tabindex="0" onclick="window.showSubject('matematicas')" onkeypress="if(event.key === 'Enter') window.showSubject('matematicas')">
-          <img src="https://placehold.co/90x90/eef5fb/3f68a2?text=MATH" alt="Icono de calculadora para Matemáticas" />
+          <img src="https://placehold.co/90x90/eef5fb/3b5998?text=MATH" alt="Icono de calculadora para Matemáticas" />
           <h3>Matemáticas</h3>
           <p>Desde los fundamentos de aritmética hasta el álgebra avanzada para secundaria. Aprende con juegos mentales, visualizaciones interactivas y lógica adaptada a tu ritmo de aprendizaje.</p>
           <div class="card-overlay">
@@ -1104,15 +1381,15 @@
           </div>
         </div>
         <div class="card clickable-card" role="button" tabindex="0" onclick="window.showSubject('lengua')" onkeypress="if(event.key === 'Enter') window.showSubject('lengua')">
-          <img src="https://placehold.co/90x90/eef5fb/3f68a2?text=LENG" alt="Icono de libro para Lengua" />
+          <img src="https://placehold.co/90x90/eef5fb/3b5998?text=LENG" alt="Icono de libro para Lengua" />
           <h3>Lengua</h3>
           <p>Domina la morfología, sintaxis, ortografía y redacción con ejemplos prácticos, ejercicios creativos y explicaciones que facilitan la memorización y comprensión profunda.</p>
           <div class="card-overlay">
             <span>¡Acceder!</span>
           </div>
         </div>
-        <div class="card clickable-card" role="button" tabindex="0" onclick="window.showSubject('ingles')" onkeypress="if(event.key === 'Enter') window.showSubject('ingles')">
-          <img src="https://placehold.co/90x90/eef5fb/3f68a2?text=ENG" alt="Icono de bandera de Reino Unido para Inglés" />
+        <div class="card clickable-card" role="button" tabindex="0" onclick="window.showSubject('ingles')" onkeypress="if(event.key === 'Enter') window.showLessonContent('ingles', 'basic-vocabulary')">
+          <img src="https://placehold.co/90x90/eef5fb/3b5998?text=ENG" alt="Icono de bandera de Reino Unido para Inglés" />
           <h3>Inglés</h3>
           <p>Desde el nivel básico A1 hasta el intermedio B1: expande tu vocabulario, perfecciona tu gramática, mejora tu comprensión auditiva y fluidez oral con contenido visual y audios interactivos.</p>
           <div class="card-overlay">
@@ -1138,19 +1415,19 @@
       <p class="text-center">Las experiencias reales de quienes ya están transformando su aprendizaje con MultiGenio.</p>
       <div class="cards testimonials-grid">
         <div class="card testimonial-card">
-          <img src="https://placehold.co/70x70/6ed3b3/ffffff?text=LG" alt="Foto de perfil de Laura G." />
+          <img src="https://placehold.co/70x70/4CAF50/ffffff?text=LG" alt="Foto de perfil de Laura G." />
           <h3>Laura G.</h3>
           <p>"¡MultiGenio cambió por completo mi forma de ver las matemáticas! Siempre me frustraba, pero con sus explicaciones visuales y los juegos interactivos, ahora entiendo los conceptos más complejos de una forma mucho más sencilla y divertida. ¡Lo recomiendo a todos mis compañeros!"</p>
           <div class="rating">⭐⭐⭐⭐⭐</div>
         </div>
         <div class="card testimonial-card">
-          <img src="https://placehold.co/70x70/6ed3b3/ffffff?text=PR" alt="Foto de perfil de Pablo R." />
+          <img src="https://placehold.co/70x70/4CAF50/ffffff?text=PR" alt="Foto de perfil de Pablo R." />
           <h3>Pablo R. (Padre)</h3>
           <p>"Como padre de un niño con TDAH, encontrar MultiGenio ha sido una verdadera bendición. La paciencia, el enfoque adaptado y las herramientas específicas que ofrece la plataforma son increíbles. Mi hijo está más motivado que nunca y aprendiendo sin el estrés de antes. ¡Estamos encantados!"</p>
           <div class="rating">⭐⭐⭐⭐⭐</div>
         </div>
         <div class="card testimonial-card">
-          <img src="https://placehold.co/70x70/6ed3b3/ffffff?text=SM" alt="Foto de perfil de Sofía M." />
+          <img src="https://placehold.co/70x70/4CAF50/ffffff?text=SM" alt="Foto de perfil de Sofía M." />
           <h3>Sofía M. (Profesora)</h3>
           <p>"He tenido la oportunidad de probar muchas herramientas educativas, pero MultiGenio es única por su profunda capacidad de adaptación. La Inteligencia Artificial es una maravilla para detectar y apoyar a cada alumno según su estilo de aprendizaje y necesidades. La recomiendo sin dudarlo a todos mis colegas y sus estudiantes."</p>
           <div class="rating">⭐⭐⭐⭐⭐</div>
@@ -1164,7 +1441,7 @@
             <!-- Las reseñas se cargarán aquí dinámicamente desde Firestore -->
         </div>
         <div id="review-submit-area">
-            <h3 style="color: var(--primary-color); margin-top: 40px; font-size: 2em; font-weight: 700;">Deja tu Reseña</h3>
+            <h3 style="color: var(--primary-color); margin-top: 40px; font-size: 2em; font-weight: 600;">Deja tu Reseña</h3>
             <p class="review-submit-info" id="review-auth-message">Inicia sesión para poder dejar una reseña.</p>
             <form id="review-form" class="review-form" style="display: none;" aria-labelledby="review-form-heading">
                 <label for="review-text">Tu Experiencia:</label>
@@ -1208,7 +1485,18 @@
     <script src="https://www.chatbase.co/embed.min.js" defer></script>
 
     <footer>
-      <p>&copy; 2025 MultiGenio. Todos los derechos reservados.</p>
+      <div class="footer-links">
+          <a href="#terminos">Términos y Condiciones</a>
+          <a href="#politicas">Política de Privacidad</a>
+          <a href="#contacto">Contacto</a>
+      </div>
+      <div class="payment-logos">
+          <img src="https://www.svgrepo.com/show/303108/visa-logo.svg" alt="Logo de Visa" />
+          <img src="https://www.svgrepo.com/show/303109/mastercard-logo.svg" alt="Logo de Mastercard" />
+          <img src="https://www.svgrepo.com/show/303117/paypal-logo.svg" alt="Logo de PayPal" />
+          <img src="https://www.svgrepo.com/show/303119/stripe-logo.svg" alt="Logo de Stripe" />
+      </div>
+      <p class="copyright">&copy; 2025 MultiGenio. Todos los derechos reservados.</p>
     </footer>
   </div>
 
@@ -1389,6 +1677,114 @@
     <div id="lesson-material"></div>
   </diV>
 
+  <!-- Términos y Condiciones -->
+  <div id="terminos-page" class="legal-section" style="display: none;" role="main" aria-labelledby="terminos-heading">
+    <button class="back-button" onclick="window.showMainContent()">← Volver al inicio</button>
+    <h2 id="terminos-heading">Términos y Condiciones</h2>
+    <p>Última actualización: 11 de junio de 2025</p>
+
+    <h3>1. Introducción</h3>
+    <p>
+      Bienvenido a MultiGenio. Al acceder o utilizar nuestra plataforma, aceptas estar sujeto a estos Términos y Condiciones. Si no estás de acuerdo con alguna parte de los términos, no podrás acceder a la plataforma.
+    </p>
+
+    <h3>2. Uso de la Plataforma</h3>
+    <ul>
+      <li>MultiGenio es una plataforma educativa para el aprendizaje en línea.</li>
+      <li>El contenido proporcionado es solo para fines educativos.</li>
+      <li>Está prohibido cualquier uso ilegal o no autorizado de la plataforma.</li>
+    </ul>
+
+    <h3>3. Cuentas de Usuario</h3>
+    <p>
+      Eres responsable de mantener la confidencialidad de tu cuenta y contraseña y de restringir el acceso a tu computadora. Aceptas la responsabilidad de todas las actividades que ocurran bajo tu cuenta o contraseña.
+    </p>
+
+    <h3>4. Propiedad Intelectual</h3>
+    <p>
+      Todo el contenido, características y funcionalidades originales de MultiGenio (incluyendo textos, gráficos, logotipos, iconos, imágenes y software) son propiedad exclusiva de MultiGenio y están protegidos por leyes de derechos de autor internacionales.
+    </p>
+
+    <h3>5. Limitación de Responsabilidad</h3>
+    <p>
+      MultiGenio no garantiza que la plataforma esté libre de errores o que el acceso será ininterrumpido. En ningún caso MultiGenio será responsable de daños directos, indirectos, incidentales, consecuentes o especiales que surjan del uso o la imposibilidad de usar la plataforma.
+    </p>
+
+    <h3>6. Enlaces a Otros Sitios Web</h3>
+    <p>
+      Nuestra plataforma puede contener enlaces a sitios web o servicios de terceros que no son propiedad ni están controlados por MultiGenio. No tenemos control ni asumimos responsabilidad por el contenido, las políticas de privacidad o las prácticas de ningún sitio web o servicio de terceros.
+    </p>
+
+    <h3>7. Modificaciones</h3>
+    <p>
+      Nos reservamos el derecho, a nuestra entera discreción, de modificar o reemplazar estos Términos en cualquier momento. Si una revisión es material, intentaremos proporcionar un aviso de al menos 30 días antes de que los nuevos términos entren en vigencia. Lo que constituye un cambio material se determinará a nuestra entera discreción.
+    </p>
+
+    <h3>8. Ley Aplicable</h3>
+    <p>
+      Estos Términos se regirán e interpretarán de acuerdo con las leyes de España, sin tener en cuenta sus disposiciones sobre conflicto de leyes.
+    </p>
+
+    <h3>9. Contacto</h3>
+    <p>
+      Si tienes alguna pregunta sobre estos Términos, por favor contáctanos a través de la sección de Contacto.
+    </p>
+  </div>
+
+  <!-- Política de Privacidad -->
+  <div id="politicas-page" class="legal-section" style="display: none;" role="main" aria-labelledby="politicas-heading">
+    <button class="back-button" onclick="window.showMainContent()">← Volver al inicio</button>
+    <h2 id="politicas-heading">Política de Privacidad</h2>
+    <p>Última actualización: 11 de junio de 2025</p>
+
+    <h3>1. Recopilación de Información</h3>
+    <p>
+      Recopilamos información personal que nos proporcionas directamente al registrarte en MultiGenio, como tu nombre, dirección de correo electrónico y contraseña. También recopilamos datos de uso, como el progreso en las lecciones, las respuestas del cuestionario de estilo de aprendizaje y las interacciones con la plataforma.
+    </p>
+
+    <h3>2. Uso de la Información</h3>
+    <p>
+      Utilizamos la información recopilada para:
+    </p>
+    <ul>
+      <li>Personalizar tu experiencia de aprendizaje.</li>
+      <li>Gestionar tu cuenta y proporcionarte acceso a nuestros servicios.</li>
+      <li>Mejorar y desarrollar nuevas funcionalidades para MultiGenio.</li>
+      <li>Comunicarnos contigo sobre actualizaciones y ofertas relevantes.</li>
+      <li>Analizar patrones de uso para optimizar la plataforma.</li>
+    </ul>
+
+    <h3>3. Compartir Información</h3>
+    <p>
+      No vendemos, intercambiamos ni transferimos de ninguna otra forma a terceros tu información de identificación personal. Esto no incluye a los terceros de confianza que nos asisten en la operación de nuestra plataforma, siempre y cuando dichas partes acuerden mantener esta información confidencial.
+    </p>
+
+    <h3>4. Seguridad de los Datos</h3>
+    <p>
+      Implementamos una variedad de medidas de seguridad para mantener la seguridad de tu información personal cuando ingresas, envías o accedes a tu información personal.
+    </p>
+
+    <h3>5. Tus Derechos</h3>
+    <p>
+      Tienes derecho a acceder, rectificar, cancelar y oponerte al tratamiento de tus datos personales. Puedes ejercer estos derechos contactándonos a través de la sección de Contacto de nuestra plataforma.
+    </p>
+
+    <h3>6. Cookies</h3>
+    <p>
+      MultiGenio utiliza cookies para mejorar la experiencia del usuario, personalizar el contenido y analizar el tráfico. Puedes configurar tu navegador para que rechace las cookies, pero esto podría afectar la funcionalidad de algunas partes de la plataforma.
+    </p>
+
+    <h3>7. Cambios en la Política de Privacidad</h3>
+    <p>
+      Podemos actualizar nuestra Política de Privacidad de vez en cuando. Te notificaremos cualquier cambio publicando la nueva Política de Privacidad en esta página. Te recomendamos revisar esta Política de Privacidad periódicamente para cualquier cambio.
+    </p>
+
+    <h3>8. Contacto</h3>
+    <p>
+      Si tienes alguna pregunta sobre esta Política de Privacidad, por favor contáctanos a través de la sección de Contacto.
+    </p>
+  </div>
+
 
   <script type="module">
     // Import the functions you need from the SDKs you need
@@ -1402,7 +1798,7 @@
       apiKey: "AIzaSyDklyhhZOV3c2KbbrvAZOpoUitPBWgRBOQ",
       authDomain: "multigenio-39890.firebaseapp.com",
       projectId: "multigenio-39890",
-      storageBucket: "multigenio-39890.firebasestorage.app",
+      storageBucket: "multigenio-39890.firebase-app.com",
       messagingSenderId: "881137429405",
       appId: "1:881137429405:web:9f061138bdf43b00dd5d74",
       measurementId: "G-9SQX18GVH6"
@@ -1447,6 +1843,10 @@
     const selectedRatingInput = document.getElementById('selected-rating');
     const reviewAuthMessage = document.getElementById('review-auth-message');
 
+    // New legal pages
+    const terminosPage = document.getElementById('terminos-page');
+    const politicasPage = document.getElementById('politicas-page');
+
     let isAuthenticated = false; // Flag to track authentication status
     let currentUserId = null; // Store the current user ID
     let currentUserName = null; // Store the current user's display name or email prefix
@@ -1460,7 +1860,7 @@
     // !! IMPORTANTE !! Si estás ejecutando esta aplicación fuera del entorno de Google Canvas,
     // DEBES reemplazar "TU_API_KEY_DE_GEMINI_AQUI" con tu propia clave API de Gemini.
     // Puedes obtener una clave API en Google AI Studio: https://makersuite.google.com/
-    const GEMINI_API_KEY = "AIzaSyBGKJQINcUZKVxCw8NI43bVmPsDqGVBsB0"; // Reemplazada con la clave proporcionada
+    const GEMINI_API_KEY = ""; 
 
     // --- Utility Functions ---
     function showMessage(message, duration = 3000) {
@@ -1512,6 +1912,8 @@
         hideElement(quizContainer);
         hideElement(lessonContentDisplay);
         document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
+        hideElement(terminosPage); // Ensure legal pages are hidden
+        hideElement(politicasPage); // Ensure legal pages are hidden
         window.toggleAuthForm('login');
     }
 
@@ -1659,7 +2061,7 @@
         // Load user preferences BEFORE updating nav visibility
         await window.loadUserPreferences(user.uid); 
         updateNavigationVisibility(); // Update visibility based on auth status and loaded preferences
-        showMessage('Bienvenido de nuevo.');
+        showMessage('¡Bienvenido de nuevo!');
 
         window.loadProgressAndDisplay(); // Refresh UI based on loaded progress
         window.updateAllProgressBars(); // Recalculate and update all progress bars
@@ -1746,7 +2148,7 @@
             window.loadProgressAndDisplay(); // Call global version
             window.updateAllProgressBars(); // Call global version
         } catch (e) {
-            console.error("Error saving progress: ", e);
+            console.error("Error al guardar el progreso: ", e);
             showMessage("Error al guardar tu progreso.", 3000);
         }
     }
@@ -1798,7 +2200,7 @@
             });
             window.updateAllProgressBars(); // Call global version after loading all individual progress
         } catch (e) {
-            console.error("Error loading progress: ", e);
+            console.error("Error al cargar el progreso: ", e);
             showMessage("Error al cargar tu progreso.", 3000);
         }
     }
@@ -1842,14 +2244,14 @@
 
         if (isAuthenticated) { // Only show personalized message if authenticated
             if (userLearningStyle) {
-                resultMessage.textContent = `🎯 Tu estilo de aprendizaje detectado: ${styleNames[userLearningStyle]}`;
+                resultMessage.textContent = `🎯 Tu estilo de aprendizaje principal detectado: ${styleNames[userLearningStyle]}.`;
                 const adviceByStyle = {
-                    visual: "Recomendamos usar esquemas, mapas conceptuales, videos y colores para organizar tus ideas. Aprovecha imágenes y gráficos para estudiar.",
-                    auditivo: "Aprende mejor con grabaciones, podcasts, explicaciones en voz alta y repitiendo la información oralmente.",
-                    'lectura-escritura': "Prefiere leer textos, tomar apuntes, escribir resúmenes y usar listas para organizar la información.",
-                    kinestesico: "Es ideal aprender haciendo, usando actividades prácticas, movimientos o ejercicios mientras estudias."
+                    visual: "Te recomendamos usar esquemas, mapas conceptuales, videos y colores para organizar tus ideas. Aprovecha imágenes y gráficos para estudiar de forma efectiva.",
+                    auditivo: "Aprenderás mejor con grabaciones, podcasts, explicaciones en voz alta y repitiendo la información oralmente. Considera escuchar tus apuntes.",
+                    'lectura-escritura': "Tu fortaleza es procesar información a través de la lectura de textos, la toma de notas detalladas y la escritura de resúmenes. Organiza tus ideas por escrito.",
+                    kinestesico: "Para ti, es ideal aprender haciendo. Prefieres actividades prácticas, experimentos y el movimiento físico durante el estudio para asimilar el conocimiento."
                 };
-                studyAdvice.textContent = adviceByStyle[userLearningStyle] || "";
+                studyAdvice.textContent = `Consejo de estudio para tu estilo: ${adviceByStyle[userLearningStyle] || "No se encontró un consejo específico para tu estilo de aprendizaje."}`;
                 showElement(resultMessage);
                 showElement(studyAdvice);
             } else { // No personalized style found for authenticated user, hide
@@ -1884,7 +2286,7 @@
         const prompt = `Genera un contenido de lección interactivo y conciso sobre "${topicId.replace(/-/g, ' ')}" dentro del tema de "${subject}" para un estudiante con estilo de aprendizaje "${effectiveLearningStyle}".
 Incluye los siguientes elementos de forma relevante para el estilo de aprendizaje:
 - **Imágenes y esquemas visuales**: Usa etiquetas <img> con URLs de placehold.co (por ejemplo, https://placehold.co/600x400/eef5fb/34495e?text=Esquema+del+Tema). Para cada imagen, incluye un atributo alt que describa la imagen en español.
-- **Videos explicativos**: Usa etiquetas <video> con URLs de videos de ejemplo (por ejemplo, https://www.w3schools.com/html/mov_bbb.mp4). Asegúrate de incluir los atributos controls and poster (una imagen de placeholder para el poster).
+- **Videos explicativos**: Usa etiquetas <video> con URLs de video de ejemplo (por ejemplo, https://www.w3schools.com/html/mov_bbb.mp4). Asegúrate de incluir los atributos controls and poster (una imagen de placeholder para el poster).
 - **Audios o podcasts**: Usa etiquetas <audio> con URLs de audio de ejemplo (por ejemplo, https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3). Incluye el atributo controls.
 - **Ejercicios interactivos**: Incluye áreas de texto (<textarea>) para respuestas o pequeños problemas, y descripciones claras de cómo el usuario puede interactuar.
 - **Un placeholder para un juego interactivo**: Usa una div con la clase 'interactive-game-placeholder' para describir el juego (ej: <div class='interactive-game-placeholder'><p>Aquí iría un juego de arrastrar y soltar.</p></div>).
@@ -1936,53 +2338,129 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
     // --- Quiz Functions ---
     const quizQuestions = [
       {
-        question: "¿Cómo prefieres aprender?",
-        options: [
-          { text: "Viendo imágenes, gráficos o videos", value: "visual" },
-          { text: "Escuchando explicaciones o audios", value: "auditivo" },
-          { text: "Leyendo o escribiendo textos", value: "lectura-escritura" },
-          { text: "Haciendo actividades prácticas o manipulativas", value: "kinestesico" }
-        ]
+        question: "Cuando aprendo algo nuevo, prefiero verlo representado visualmente (diagramas, gráficos, videos).",
+        type: "learning-style",
+        style: "visual"
       },
       {
-        question: "¿Sueles tener dificultades para mantener la atención o concentración?",
-        options: [
-          { text: "Sí, frecuentemente", value: "tdah" },
-          { text: "A veces", value: "a-veces" },
-          { text: "No, casi nunca", value: "no" }
-        ]
+        question: "Recuerdo mejor la información si la escucho (lecturas en voz alta, debates, grabaciones).",
+        type: "learning-style",
+        style: "auditivo"
       },
       {
-        question: "Cuando estudias, ¿qué te ayuda más a entender y recordar?",
-        options: [
-          { text: "Ver esquemas o mapas conceptuales", value: "visual" },
-          { text: "Escuchar grabaciones o explicaciones en voz alta", value: "auditivo" },
-          { text: "Tomar notas o leer textos varias veces", value: "lectura-escritura" },
-          { text: "Hacer ejercicios prácticos o moverme mientras estudio", value: "kinestesico" }
-        ]
+        question: "Disfruto tomando apuntes detallados y leyendo textos para comprender un tema.",
+        type: "learning-style",
+        style: "lectura-escritura"
       },
       {
-        question: "¿Qué actividad prefieres para aprender algo nuevo?",
-        options: [
-          { text: "Observar demostraciones visuales", value: "visual" },
-          { text: "Participar en discusiones o escuchar explicaciones", value: "auditivo" },
-          { text: "Leer libros o escribir resúmenes", value: "lectura-escritura" },
-          { text: "Experimentar y practicar directamente", value: "kinestesico" }
-        ]
+        question: "Necesito manipular objetos o realizar actividades prácticas para asimilar el conocimiento.",
+        type: "learning-style",
+        style: "kinestesico"
       },
       {
-        question: "¿Cómo recuerdas mejor la información?",
-        options: [
-          { text: "Recordando imágenes y colores", value: "visual" },
-          { text: "Recordando sonidos o palabras", value: "auditivo" },
-          { text: "Recordando textos o frases escritas", value: "lectura-escritura" },
-          { text: "Recordando sensaciones y movimientos", value: "kinestesico" }
-        ]
+        question: "Las imágenes y los colores me ayudan significativamente a organizar y recordar la información.",
+        type: "learning-style",
+        style: "visual"
+      },
+      {
+        question: "Cuando estudio, me beneficia escuchar explicaciones o podcasts sobre el tema.",
+        type: "learning-style",
+        style: "auditivo"
+      },
+      {
+        question: "Prefiero resumir la información en mis propias palabras o crear listas para memorizar.",
+        type: "learning-style",
+        style: "lectura-escritura"
+      },
+      {
+        question: "Me siento más cómodo aprendiendo a través de la experimentación o el movimiento físico.",
+        type: "learning-style",
+        style: "kinestesico"
+      },
+      {
+        question: "Me distraigo fácilmente con estímulos externos cuando intento concentrarme.",
+        type: "tdah"
+      },
+      {
+        question: "Los videos tutoriales o las animaciones son mis herramientas favoritas para aprender.",
+        type: "learning-style",
+        style: "visual"
+      },
+      {
+        question: "Me gusta participar en discusiones grupales o explicar conceptos a otros para entenderlos mejor.",
+        type: "learning-style",
+        style: "auditivo"
+      },
+      {
+        question: "Subrayar y hacer esquemas escritos me ayuda mucho a comprender la lectura.",
+        type: "learning-style",
+        style: "lectura-escritura"
+      },
+      {
+        question: "Necesito moverme o gesticular mientras pienso para procesar ideas complejas.",
+        type: "learning-style",
+        style: "kinestesico"
+      },
+      {
+        question: "A menudo me cuesta terminar tareas que requieren un esfuerzo mental sostenido.",
+        type: "tdah"
+      },
+      {
+        question: "Cuando se me explica algo, prefiero que se use un pizarrón o diapositivas con muchos gráficos.",
+        type: "learning-style",
+        style: "visual"
+      },
+      {
+        question: "Si quiero aprender un idioma, la pronunciación y la escucha son lo primero para mí.",
+        type: "learning-style",
+        style: "auditivo"
+      },
+      {
+        question: "Disfruto leyendo artículos científicos o novelas complejas.",
+        type: "learning-style",
+        style: "lectura-escritura"
+      },
+      {
+        question: "Siento la necesidad de 'tocar' o 'construir' modelos para entender cómo funcionan las cosas.",
+        type: "learning-style",
+        style: "kinestesico"
+      },
+      {
+        question: "Me cuesta organizar mis tareas o actividades.",
+        type: "tdah"
+      },
+      {
+        question: "Prefiero los libros de texto con muchas ilustraciones y poco texto denso.",
+        type: "learning-style",
+        style: "visual"
+      },
+      {
+        question: "Cuando estoy en una clase o conferencia, aprendo más si el orador habla claro y con ejemplos verbales.",
+        type: "learning-style",
+        style: "auditivo"
+      },
+      {
+        question: "Me gusta escribir ensayos o informes detallados sobre los temas que estudio.",
+        type: "learning-style",
+        style: "lectura-escritura"
+      },
+      {
+        question: "Aprender un deporte o un instrumento musical me resulta más fácil que aprender una teoría abstracta.",
+        type: "learning-style",
+        style: "kinestesico"
+      },
+      {
+        question: "Con frecuencia olvido citas o lo que iba a decir a mitad de una conversación.",
+        type: "tdah"
+      },
+      {
+        question: "Me resulta difícil esperar mi turno en conversaciones o actividades grupales.",
+        type: "tdah"
       }
     ];
 
     let currentQuestionIndex = 0;
-    let selectedAnswers = {};
+    let selectedAnswersScores = {}; // To store the numerical score for each question
 
     window.showQuestion = function() {
       if (!isAuthenticated) {
@@ -2003,6 +2481,8 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
       document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
       hideElement(lessonContentDisplay);
       hideModalOverlay(authModalOverlay); // Ensure modal is not active
+      hideElement(terminosPage); // Ensure legal pages are hidden
+      hideElement(politicasPage); // Ensure legal pages are hidden
 
       // Show quiz container
       showElement(quizContainer);
@@ -2019,19 +2499,28 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
       optionsDiv.innerHTML = '';
       console.log('Displaying question:', currentQ.question);
       
-      currentQ.options.forEach((option, index) => {
+      // Create 1-5 scale buttons
+      const scaleOptions = [
+          "Totalmente en desacuerdo",
+          "En desacuerdo",
+          "Neutral",
+          "De acuerdo",
+          "Totalmente de acuerdo"
+      ];
+
+      for (let i = 1; i <= 5; i++) {
         const btn = document.createElement('button');
-        btn.textContent = option.text;
+        btn.textContent = `${i} - ${scaleOptions[i-1]}`;
         btn.onclick = () => {
-          selectedAnswers[currentQuestionIndex] = option.value;
+          selectedAnswersScores[currentQuestionIndex] = i; // Store the numerical score
           currentQuestionIndex++;
           console.log('Option selected. Next question index:', currentQuestionIndex);
           window.showQuestion();
         };
-        btn.setAttribute('aria-label', option.text); // Accessibility
+        btn.setAttribute('aria-label', `${i} ${scaleOptions[i-1]}`); // Accessibility
         optionsDiv.appendChild(btn);
-        console.log('Added option button:', option.text);
-      });
+        console.log('Added option button:', btn.textContent);
+      }
     }
 
     async function finishQuiz() {
@@ -2039,32 +2528,46 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
       hideElement(quizContainer);
       showElement(mainContent); // Ensure main content is shown
 
-      const styleCounts = {
+      const learningStyleScores = {
         visual: 0,
         auditivo: 0,
         'lectura-escritura': 0,
         kinestesico: 0
       };
+      let tdahSeverityScore = 0;
+      let tdahQuestionsCount = 0;
 
-      for(let i = 0; i < quizQuestions.length; i++){
-        if(i === 1) continue; // Skip TDAH question (index 1)
-        const ans = selectedAnswers[i];
-        if(styleCounts.hasOwnProperty(ans)){
-          styleCounts[ans]++;
-        }
+
+      // Calculate scores for learning styles and TDAH
+      for (let i = 0; i < quizQuestions.length; i++) {
+          const question = quizQuestions[i];
+          const score = selectedAnswersScores[i];
+
+          if (question.type === 'learning-style') {
+              learningStyleScores[question.style] += score;
+          } else if (question.type === 'tdah') {
+              tdahSeverityScore += score; // Add the 1-5 score to TDAH
+              tdahQuestionsCount++;
+          }
       }
 
+      // Determine the main learning style
       let maxStyle = 'visual';
-      let maxCount = 0;
-      for(const style in styleCounts){
-        if(styleCounts[style] > maxCount){
-          maxCount = styleCounts[style];
-          maxStyle = style;
-        }
+      let maxScore = -1; // Initialize with a value lower than any possible score
+      for (const style in learningStyleScores) {
+          if (learningStyleScores[style] > maxScore) {
+              maxScore = learningStyleScores[style];
+              maxStyle = style;
+          }
       }
       userLearningStyle = maxStyle; // Update global variable
 
-      userTDAHStatus = selectedAnswers[1] || 'no'; // Update global variable for TDAH status
+      // Determine TDAH status based on a threshold
+      // The threshold can be adjusted based on desired sensitivity and number of TDAH questions
+      // For example, if avg score is 3.5 or higher (out of 5) on TDAH questions
+      const averageTDAHScore = tdahQuestionsCount > 0 ? tdahSeverityScore / tdahQuestionsCount : 0;
+      const tdahThresholdAverage = 3.5; // Adjust this value as needed (e.g., 3 = neutral, 4 = leaning towards agreement)
+      userTDAHStatus = averageTDAHScore >= tdahThresholdAverage ? 'tdah' : 'no'; // Update global variable
 
       window.updateQuizResultDisplay(); // Update UI based on final style and TDAH status
       await saveUserPreferences(); // Save preferences to Firestore
@@ -2117,6 +2620,8 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
       document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
       hideElement(lessonContentDisplay);
       hideModalOverlay(authModalOverlay); // Ensure modal is not active
+      hideElement(terminosPage); // Ensure legal pages are hidden
+      hideElement(politicasPage); // Ensure legal pages are hidden
 
       const subjectPage = document.getElementById(subject + '-page');
       if (subjectPage) {
@@ -2153,9 +2658,35 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
       hideElement(quizContainer);
       hideElement(lessonContentDisplay);
       hideModalOverlay(authModalOverlay); // Ensure modal is not active
+      hideElement(terminosPage); // Ensure legal pages are hidden
+      hideElement(politicasPage); // Ensure legal pages are hidden
       
       showElement(mainContent);
     }
+
+    // New functions to show legal pages
+    window.showTerminos = function() {
+        hideElement(mainContent);
+        hideElement(quizContainer);
+        document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
+        hideElement(lessonContentDisplay);
+        hideModalOverlay(authModalOverlay);
+        hideElement(politicasPage);
+        showElement(terminosPage);
+        window.scrollTo(0,0); // Scroll to top
+    }
+
+    window.showPoliticas = function() {
+        hideElement(mainContent);
+        hideElement(quizContainer);
+        document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
+        hideElement(lessonContentDisplay);
+        hideModalOverlay(authModalOverlay);
+        hideElement(terminosPage);
+        showElement(politicasPage);
+        window.scrollTo(0,0); // Scroll to top
+    }
+
 
     function personalizeSubjectIntro(subject) {
       const introElement = document.getElementById(subject + '-personalized-intro');
@@ -2193,7 +2724,7 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
           introText = "¡Bienvenido a la sección de " + subject.charAt(0).toUpperCase() + subject.slice(1) + "! Para una experiencia de aprendizaje personalizada, inicia sesión o regístrate.";
       }
       
-      introElement.innerHTML = `<div style="background: #eef5fb; padding: 25px; border-radius: var(--border-radius); margin-bottom: 30px; border-left: 5px solid var(--secondary-color); font-size: 1.1em; line-height: 1.6; color: var(--text-dark);">${introText}</div>`;
+      introElement.innerHTML = `<div style="background: #eef5fb; padding: 25px; border-radius: var(--border-radius-soft); margin-bottom: 30px; border-left: 6px solid var(--secondary-color); font-size: 1.05em; line-height: 1.6; color: var(--text-dark); box-shadow: 0 2px 10px rgba(0,0,0,0.05);">${introText}</div>`;
     }
 
     // --- Lesson Content Display (uses LLM for content) ---
@@ -2208,6 +2739,8 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
         hideElement(quizContainer);
         document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
         hideModalOverlay(authModalOverlay); // Ensure modal is not active
+        hideElement(terminosPage); // Ensure legal pages are hidden
+        hideElement(politicasPage); // Ensure legal pages are hidden
 
         showElement(lessonContentDisplay);
 
@@ -2217,7 +2750,7 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
         const topicName = topicId.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
         const subjectName = subject.charAt(0).toUpperCase() + subject.slice(1);
         lessonTitleElement.textContent = `Lección: ${topicName} de ${subjectName}`;
-        lessonMaterialElement.innerHTML = '<p>Cargando contenido de la lección...</p>'; // Loading indicator
+        lessonMaterialElement.innerHTML = '<p style="text-align: center; margin-top: 50px; font-size: 1.2em; color: var(--text-light);">Cargando contenido de la lección...</p>'; // Loading indicator
 
         // Generate content using LLM
         const generatedContent = await generateLessonContent(subject, topicId, userLearningStyle);
@@ -2327,7 +2860,7 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
             selectedRatingInput.value = 0;
             updateStarDisplay();
         } catch (error) {
-            console.error("Error submitting review:", error);
+            console.error("Error al enviar la reseña:", error);
             showMessage("Error al enviar la reseña: " + error.message, 5000);
         }
     });
@@ -2368,6 +2901,8 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
         hideElement(lessonContentDisplay);
         hideElement(customMessage); // Ensure custom message is hidden
         hideModalOverlay(authModalOverlay); // Ensure modal is hidden using its CSS class
+        hideElement(terminosPage); // Ensure legal pages are hidden
+        hideElement(politicasPage); // Ensure legal pages are hidden
 
         // Try to sign in anonymously for a seamless guest experience or if no auth token is available (e.g., GitHub)
         try {
@@ -2394,7 +2929,7 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
             });
             renderReviews(reviews);
         }, (error) => {
-            console.error("Error fetching real-time reviews: ", error);
+            console.error("Error al cargar las reseñas en tiempo real: ", error);
             showMessage("Error al cargar las reseñas.", 3000);
         });
 
