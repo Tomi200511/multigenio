@@ -785,6 +785,7 @@
         <h1>MultiGenio</h1>
       </div>
       <p>Tu aliado en el aprendizaje</p>
+      <div id="user-id-display" style="font-size: 0.8em; color: rgba(255, 255, 255, 0.7); margin-top: 10px; display: none;"></div>
     </header>
 
     <nav>
@@ -1160,6 +1161,7 @@
     const studyAdvice = document.getElementById('study-advice');
     const lessonContentDisplay = document.getElementById('lesson-content-display');
     const customMessage = document.getElementById('custom-message');
+    const userIdDisplay = document.getElementById('user-id-display'); // New element for User ID
 
     let isAuthenticated = false; // Flag to track authentication status
     let currentUserId = null; // Store the current user ID
@@ -1168,7 +1170,11 @@
 
     // Gemini API Configuration
     const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=";
-    const GEMINI_API_KEY = ""; // Leave as empty string, Canvas will provide it at runtime
+    // !! IMPORTANTE !! Si estás ejecutando esta aplicación fuera del entorno de Google Canvas,
+    // DEBES reemplazar "TU_API_KEY_DE_GEMINI_AQUI" con tu propia clave API de Gemini.
+    // Puedes obtener una clave API en Google AI Studio: https://makersuite.google.com/
+    const GEMINI_API_KEY = ""; // Deja como cadena vacía si ejecutas en Google Canvas, Canvas la proporcionará.
+                               // Si ejecutas en tu propio servidor, reemplaza con tu clave: "AIzaSy..."
 
     // --- Utility Functions ---
     function showMessage(message, duration = 3000) {
@@ -1188,6 +1194,20 @@
     function hideElement(element) {
         element.style.display = 'none';
     }
+    
+    // Override for modal overlay to use flex for centering
+    function showModalOverlay(element) {
+        element.style.display = 'flex';
+        element.classList.add('active');
+    }
+
+    function hideModalOverlay(element) {
+        element.classList.remove('active');
+        // Give time for transition before setting display to none
+        setTimeout(() => {
+            element.style.display = 'none';
+        }, 300); // Match CSS transition duration
+    }
 
     // --- Authentication Functions ---
     window.toggleAuthForm = function(formToShow) {
@@ -1201,7 +1221,7 @@
     }
 
     window.showAuthModal = function() {
-        authModalOverlay.classList.add('active'); // CSS handles opacity and pointer-events
+        showModalOverlay(authModalOverlay); // Use new modal show function
         hideElement(mainContent);
         hideElement(quizContainer);
         hideElement(lessonContentDisplay);
@@ -1210,7 +1230,7 @@
     }
 
     window.hideAuthModal = function() {
-        authModalOverlay.classList.remove('active');
+        hideModalOverlay(authModalOverlay); // Use new modal hide function
         if (isAuthenticated) {
             showElement(mainContent);
         }
@@ -1295,12 +1315,14 @@
         showElement(quizNavLink);
         showElement(logoutButton);
         hideElement(authNavLink);
+        userIdDisplay.textContent = `ID de Usuario: ${user.uid}`; // Display user ID
+        showElement(userIdDisplay); // Show user ID element
         showMessage('Bienvenido de nuevo.');
 
         // Load user preferences and progress from Firestore
-        await loadUserPreferences(user.uid);
-        loadProgressAndDisplay(); // Refresh UI based on loaded progress
-        updateAllProgressBars(); // Recalculate and update all progress bars
+        await window.loadUserPreferences(user.uid);
+        window.loadProgressAndDisplay(); // Refresh UI based on loaded progress
+        window.updateAllProgressBars(); // Recalculate and update all progress bars
       } else {
         isAuthenticated = false;
         currentUserId = null;
@@ -1312,6 +1334,8 @@
         hideElement(quizNavLink);
         hideElement(logoutButton);
         showElement(authNavLink);
+        hideElement(userIdDisplay); // Hide user ID element
+        userIdDisplay.textContent = ''; // Clear user ID
         showMessage('Inicia sesión o regístrate para acceder a todas las funciones.', 5000);
 
         // Reset user preferences to default
@@ -1343,7 +1367,7 @@
         }
     }
 
-    async function loadUserPreferences(uid) {
+    window.loadUserPreferences = async function(uid) { // Made global
         const userRef = doc(db, "users", uid);
         try {
             const userSnap = await getDoc(userRef);
@@ -1354,7 +1378,7 @@
                 console.log("User preferences loaded from Firestore:", data);
                 
                 // Update UI based on loaded preferences
-                updateQuizResultDisplay();
+                window.updateQuizResultDisplay(); // Call global version
             } else {
                 console.log("No user preferences found in Firestore. User is new or quiz not completed.");
                 // For new users, or users without preferences saved, the default 'visual' and 'no' will be used.
@@ -1365,7 +1389,7 @@
         }
     }
 
-    async function saveProgress(subject, topicId, status) {
+    window.saveProgress = async function(subject, topicId, status) { // Made global
         if (!currentUserId) {
             console.error("No user ID to save progress.");
             showMessage("Por favor, inicia sesión para guardar tu progreso.", 3000);
@@ -1375,15 +1399,15 @@
         try {
             await setDoc(progressRef, { status: status, timestamp: new Date() }, { merge: true });
             console.log(`Progress for ${subject}-${topicId} saved.`);
-            loadProgressAndDisplay();
-            updateAllProgressBars();
+            window.loadProgressAndDisplay(); // Call global version
+            window.updateAllProgressBars(); // Call global version
         } catch (e) {
             console.error("Error saving progress: ", e);
             showMessage("Error al guardar tu progreso.", 3000);
         }
     }
 
-    async function loadProgressAndDisplay() {
+    window.loadProgressAndDisplay = async function() { // Made global
         if (!currentUserId) {
             console.warn("No user ID to load progress. Displaying default progress.");
             // If not authenticated, ensure progress indicators are cleared.
@@ -1408,6 +1432,9 @@
                 userProgress[doc.id] = doc.data().status;
             });
 
+            // Make userProgress globally accessible for window.updateSubjectProgress
+            window.userProgress = userProgress; 
+
             // Update individual topic indicators
             [
                 ...mathTopics.map(t => ({ subject: 'matematicas', topic: t })),
@@ -1425,14 +1452,41 @@
                     }
                 }
             });
-            updateAllProgressBars(); // Call after loading all individual progress
+            window.updateAllProgressBars(); // Call global version after loading all individual progress
         } catch (e) {
             console.error("Error loading progress: ", e);
             showMessage("Error al cargar tu progreso.", 3000);
         }
     }
 
-    function updateQuizResultDisplay() {
+    window.updateSubjectProgress = function(subject, topicsArray, progressFillId, progressTextId) { // Made global
+      let completedCount = 0;
+      topicsArray.forEach(topic => {
+          const progressKey = `${subject}-${topic.id}`; // This matches doc ID in Firestore
+          if (window.userProgress && window.userProgress[progressKey] === 'completed') {
+              completedCount++;
+          }
+      });
+
+      const totalTopics = topicsArray.length;
+      const percentage = totalTopics > 0 ? (completedCount / totalTopics) * 100 : 0;
+
+      const progressBarFill = document.getElementById(progressFillId);
+      const progressBarText = document.getElementById(progressTextId);
+
+      if (progressBarFill && progressBarText) {
+        progressBarFill.style.width = `${percentage}%`;
+        progressBarText.textContent = `${Math.round(percentage)}% completado`;
+      }
+    }
+
+    window.updateAllProgressBars = function() { // Made global
+      window.updateSubjectProgress('matematicas', mathTopics, 'matematicas-progress-fill', 'matematicas-progress-text');
+      window.updateSubjectProgress('lengua', lenguaTopics, 'lengua-progress-fill', 'lengua-progress-text');
+      window.updateSubjectProgress('ingles', inglesTopics, 'ingles-progress-fill', 'ingles-progress-text');
+    }
+
+    window.updateQuizResultDisplay = function() { // Made global
         const styleNames = {
             visual: "Visual",
             auditivo: "Auditivo",
@@ -1465,19 +1519,38 @@
     // --- LLM Integration for Content Generation ---
     async function generateLessonContent(subject, topicId, learningStyle) {
         showMessage("Generando contenido de lección con IA...", 5000);
-        const prompt = `Genera un contenido de lección interactivo y conciso sobre "${topicId.replace(/-/g, ' ')}" dentro del tema de "${subject}" para un estudiante con estilo de aprendizaje "${learningStyle}". Incluye elementos visuales, auditivos, de lectura/escritura o kinestésicos relevantes para ese estilo. Proporciona el contenido en formato HTML, con etiquetas como <h3>, <p>, <img>, <audio>, <video>, <textarea> para ejercicios, y un placeholder para juegos interactivos. Asegúrate de que el HTML sea válido y limpio. El contenido debe ser didáctico y atractivo.`;
+        const prompt = `Genera un contenido de lección interactivo y conciso sobre "${topicId.replace(/-/g, ' ')}" dentro del tema de "${subject}" para un estudiante con estilo de aprendizaje "${learningStyle}".
+Incluye los siguientes elementos de forma relevante para el estilo de aprendizaje:
+- **Imágenes y esquemas visuales**: Usa etiquetas <img> con URLs de placehold.co (por ejemplo, https://placehold.co/600x400/eef5fb/34495e?text=Esquema+del+Tema). Para cada imagen, incluye un atributo alt que describa la imagen en español.
+- **Videos explicativos**: Usa etiquetas <video> con URLs de videos de ejemplo (por ejemplo, https://www.w3schools.com/html/mov_bbb.mp4). Asegúrate de incluir los atributos controls y poster (una imagen de placeholder para el poster).
+- **Audios o podcasts**: Usa etiquetas <audio> con URLs de audio de ejemplo (por ejemplo, https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3). Incluye el atributo controls.
+- **Ejercicios interactivos**: Incluye áreas de texto (<textarea>) para respuestas o pequeños problemas, y descripciones claras de cómo el usuario puede interactuar.
+- **Un placeholder para un juego interactivo**: Usa una div con la clase 'interactive-game-placeholder' para describir el juego (ej: <div class='interactive-game-placeholder'><p>Aquí iría un juego de arrastrar y soltar.</p></div>).
+- **Contenido textual didáctico**: Usa etiquetas <h3>, <p> para explicaciones claras y concisas.
+
+Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido debe ser didáctico y atractivo, adaptado al estilo de aprendizaje especificado. Al final de la lección, incluye un botón para simular la finalización de la lección con el texto 'Completar lección' o 'Simular Completar Juego'.`;
 
         try {
             const payload = {
                 contents: [{ role: "user", parts: [{ text: prompt }] }],
             };
             const apiUrl = `${GEMINI_API_URL}${GEMINI_API_KEY}`;
+            console.log("Calling Gemini API with prompt:", prompt); // Log the prompt for debugging
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error("Gemini API network response was not ok:", response.status, errorText);
+                showMessage(`Error al generar contenido (código: ${response.status}). Inténtalo de nuevo.`, 5000);
+                return "<p>Error al cargar el contenido de la lección debido a un problema de red.</p>";
+            }
+
             const result = await response.json();
+            console.log("Gemini API response:", result); // Log the full response
 
             if (result.candidates && result.candidates.length > 0 &&
                 result.candidates[0].content && result.candidates[0].content.parts &&
@@ -1486,14 +1559,14 @@
                 // Clean markdown backticks if LLM adds them
                 return htmlContent.replace(/```html\n?|\n?```/g, '');
             } else {
-                console.error("Unexpected LLM response structure:", result);
-                showMessage("No se pudo generar el contenido de la lección. Inténtalo de nuevo.", 5000);
-                return "<p>Error: No se pudo generar el contenido. Por favor, inténtalo de nuevo.</p>";
+                console.error("Unexpected LLM response structure or missing content:", result);
+                showMessage("No se pudo generar el contenido de la lección (estructura inesperada).", 5000);
+                return "<p>Error: No se pudo generar el contenido. La IA no proporcionó una respuesta válida.</p>";
             }
         } catch (error) {
             console.error("Error calling Gemini API:", error);
-            showMessage("Error de conexión con la IA. Asegúrate de que tu API Key sea válida.", 5000);
-            return "<p>Error de conexión al generar el contenido. Por favor, verifica tu conexión o inténtalo más tarde.</p>";
+            showMessage("Error de conexión con la IA. Verifica tu clave API y conexión a internet.", 7000);
+            return "<p>Error de conexión al generar el contenido. Por favor, verifica tu clave API y conexión a internet.</p>";
         }
     }
 
@@ -1562,7 +1635,7 @@
       hideElement(mainContent);
       document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
       hideElement(lessonContentDisplay);
-      authModalOverlay.classList.remove('active'); // Ensure modal is not active
+      hideModalOverlay(authModalOverlay); // Ensure modal is not active
 
       // Show quiz container
       showElement(quizContainer);
@@ -1625,11 +1698,11 @@
 
       userTDAHStatus = selectedAnswers[1] || 'no'; // Update global variable for TDAH status
 
-      updateQuizResultDisplay(); // Update UI based on final style and TDAH status
+      window.updateQuizResultDisplay(); // Update UI based on final style and TDAH status
       await saveUserPreferences(); // Save preferences to Firestore
 
-      loadProgressAndDisplay();
-      updateAllProgressBars();
+      window.loadProgressAndDisplay(); // Use global version
+      window.updateAllProgressBars(); // Use global version
     }
 
     // --- Data de Temas para Cálculo de Progreso ---
@@ -1661,39 +1734,6 @@
     ];
 
 
-    function updateSubjectProgress(subject, topicsArray, progressFillId, progressTextId) {
-      let completedCount = 0;
-      topicsArray.forEach(topic => {
-          const progressKey = `${subject}-${topic.id}`; // This matches doc ID in Firestore
-          // We need access to the `userProgress` map loaded from Firestore for accurate calculation
-          // For now, we'll assume `userProgress` is available or load it if necessary.
-          // For this specific function's purpose (updating bars), we assume individual progress is loaded.
-          // A more robust implementation might pass userProgress as an argument or ensure it's globally available.
-          // For now, let's just make sure we are correctly retrieving from the global `userProgress` map
-          // which is populated by `loadProgressAndDisplay`.
-          if (window.userProgress && window.userProgress[progressKey] === 'completed') {
-              completedCount++;
-          }
-      });
-
-      const totalTopics = topicsArray.length;
-      const percentage = totalTopics > 0 ? (completedCount / totalTopics) * 100 : 0;
-
-      const progressBarFill = document.getElementById(progressFillId);
-      const progressBarText = document.getElementById(progressTextId);
-
-      if (progressBarFill && progressBarText) {
-        progressBarFill.style.width = `${percentage}%`;
-        progressBarText.textContent = `${Math.round(percentage)}% completado`;
-      }
-    }
-
-    function updateAllProgressBars() {
-      updateSubjectProgress('matematicas', mathTopics, 'matematicas-progress-fill', 'matematicas-progress-text');
-      updateSubjectProgress('lengua', lenguaTopics, 'lengua-progress-fill', 'lengua-progress-text');
-      updateSubjectProgress('ingles', inglesTopics, 'ingles-progress-fill', 'ingles-progress-text');
-    }
-
     // --- Funciones de Navegación y Contenido ---
     window.showSubject = function(subject) {
       if (!isAuthenticated) {
@@ -1706,7 +1746,7 @@
       hideElement(quizContainer);
       document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
       hideElement(lessonContentDisplay);
-      authModalOverlay.classList.remove('active');
+      hideModalOverlay(authModalOverlay); // Ensure modal is not active
 
       const subjectPage = document.getElementById(subject + '-page');
       if (subjectPage) {
@@ -1714,8 +1754,8 @@
       }
       
       personalizeSubjectIntro(subject);
-      loadProgressAndDisplay(); // Load and display individual topic progress checks
-      updateAllProgressBars(); // Update overall subject progress bars
+      window.loadProgressAndDisplay(); // Call global version to load and display individual topic progress checks
+      window.updateAllProgressBars(); // Call global version to update overall subject progress bars
     }
 
     window.showMainContent = function() {
@@ -1723,7 +1763,7 @@
       document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
       hideElement(quizContainer);
       hideElement(lessonContentDisplay);
-      authModalOverlay.classList.remove('active');
+      hideModalOverlay(authModalOverlay); // Ensure modal is not active
       
       showElement(mainContent);
     }
@@ -1773,7 +1813,7 @@
         hideElement(mainContent);
         hideElement(quizContainer);
         document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
-        authModalOverlay.classList.remove('active');
+        hideModalOverlay(authModalOverlay); // Ensure modal is not active
 
         showElement(lessonContentDisplay);
 
@@ -1792,9 +1832,7 @@
         // Add event listener to the "Completar lección" button within the generated content
         // This assumes the generated content will include a button with this specific text and purpose.
         const completeLessonButton = lessonMaterialElement.querySelector('button');
-        if (completeLessonButton && completeLessonButton.textContent.includes('Completar lección')) {
-            completeLessonButton.onclick = () => window.simulateGameCompletion(subject, topicId);
-        } else if (completeLessonButton && completeLessonButton.textContent.includes('Simular Completar Juego')) {
+        if (completeLessonButton && (completeLessonButton.textContent.includes('Completar lección') || completeLessonButton.textContent.includes('Simular Completar Juego'))) {
             completeLessonButton.onclick = () => window.simulateGameCompletion(subject, topicId);
         }
     }
@@ -1820,32 +1858,32 @@
 
     window.simulateGameCompletion = function(subject, topicId) {
         showMessage('¡Felicidades! Has completado el juego interactivo. Tu progreso ha sido guardado.', 4000);
-        saveProgress(subject, topicId, 'completed');
+        window.saveProgress(subject, topicId, 'completed'); // Call global version
         window.hideLessonContent();
     }
 
 
     // Initial setup on page load
     document.addEventListener('DOMContentLoaded', function() {
-        // Set initial display states for all main content elements
-        // All elements are initially hidden by default, except mainContent
+        // Explicitly hide all content areas that are not the main content by default
         hideElement(quizContainer);
         document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
         hideElement(lessonContentDisplay);
         hideElement(customMessage); // Ensure custom message is hidden
-        authModalOverlay.classList.remove('active'); // Ensure modal is hidden with CSS class
+        hideModalOverlay(authModalOverlay); // Ensure modal is hidden using its CSS class
 
-        // Auth and nav links visibility will be handled by onAuthStateChanged
+        // Auth and nav links visibility will be dynamically handled by onAuthStateChanged
+        // Initially, we assume no user is logged in, so show auth link and hide others.
         hideElement(quizNavLink);
         hideElement(logoutButton);
-        showElement(authNavLink); // Default to showing auth link
+        showElement(authNavLink); // Show login/register link by default
+        hideElement(userIdDisplay); // Hide user ID on initial load
 
-        // Main content is shown by default until login status is determined
+        // Display the main content initially until Firebase auth state determines otherwise.
         showElement(mainContent);
 
-        // Load progress for all subjects on initial page load (will run after auth state is determined)
-        // loadProgressAndDisplay(); // This is now called within onAuthStateChanged
-        // updateAllProgressBars(); // This is now called within onAuthStateChanged
+        // loadProgressAndDisplay() and updateAllProgressBars() are called within onAuthStateChanged
+        // to ensure they run only after authentication status is determined and currentUserId is available.
     });
   
   </script>
