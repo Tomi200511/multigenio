@@ -1131,13 +1131,14 @@
   </div>
 
 
-  <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+   <script type="module">
+    // Import Firebase functions
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-analytics.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-firestore.js";
 
-    // Your web app's Firebase configuration
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyDklyhhZOV3c2KbbrvAZOpoUitPBWgRBOQ",
       authDomain: "multigenio-39890.firebaseapp.com",
@@ -1151,8 +1152,50 @@
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
-    const auth = getAuth(app); // Initialize Firebase Auth service
+    const auth = getAuth();
+    const db = getFirestore();
 
+    // Reference to "Users" collection
+    const usersRef = collection(db, "Users");
+
+    // Function to register user in Firebase Auth and Firestore
+    async function registerUser(email, password) {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        console.log("User created:", user.uid);
+
+        // Save user in Firestore
+        await addDoc(usersRef, {
+          uid: user.uid,
+          email: user.email,
+          registrationDate: new Date()
+        });
+        alert("User registered successfully");
+      } catch (error) {
+        console.error("Error registering user:", error);
+        alert("Error registering user: " + error.message);
+      }
+    }
+
+    // Function to read users and log them to console (test)
+    async function readUsers() {
+      const querySnapshot = await getDocs(usersRef);
+      querySnapshot.forEach((doc) => {
+        console.log(`${doc.id} =>`, doc.data());
+      });
+    }
+
+    // Event listener for Register button
+    document.getElementById("btnRegister").addEventListener("click", () => {
+      const email = document.getElementById("registerEmail").value;
+      const password = document.getElementById("registerPassword").value;
+      if (email && password) {
+        registerUser(email, password);
+      } else {
+        alert("Please enter email and password.");
+      }
+    });
     // DOM elements
     const authModalOverlay = document.getElementById('auth-modal-overlay');
     const authContainer = document.getElementById('auth-container'); // This is now inside the modal overlay
