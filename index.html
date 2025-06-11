@@ -620,7 +620,7 @@
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.6);
-      display: none; /* Hidden by default */
+      display: none; /* Hidden by default, managed by JS active class */
       align-items: center;
       justify-content: center;
       z-index: 999;
@@ -842,7 +842,7 @@
         El objetivo es crear un "tutor virtual" que comprende las fortalezas y desafíos individuales, proporcionando una experiencia educativa que se siente hecha a la medida, minimizando las distracciones y potenciando la concentración.
       </p>
 
-      <h2>� Cuestionario Inicial: Tu Huella de Aprendizaje</h2>
+      <h2>📋 Cuestionario Inicial: Tu Huella de Aprendizaje</h2>
       <img src="https://img.icons8.com/color/96/quiz.png" alt="Cuestionario" style="width: 100px; height: 100px;"/>
       <p>
         Antes de sumergirte en el aprendizaje, MultiGenio te invita a un **cuestionario interactivo y estratégico de 5 preguntas**. Este no es un simple test; es una herramienta clave para nuestra IA. Las preguntas están cuidadosamente diseñadas para identificar tu estilo de aprendizaje predominante entre:
@@ -1193,7 +1193,7 @@
         loginFormDiv.classList.remove('hidden');
         registerFormDiv.classList.add('hidden');
       } else {
-        loginFormDiv.classList.add('hidden');
+        loginFormDiv.classList.remove('hidden'); // Ensure login form is hidden
         registerFormDiv.classList.remove('hidden');
       }
     }
@@ -1296,7 +1296,7 @@
       if (user) {
         isAuthenticated = true;
         hideAuthModal(); // Hide modal if user logs in
-        mainContent.classList.remove('hidden');
+        mainContent.classList.remove('hidden'); // Ensure main content is visible
         quizNavLink.classList.remove('hidden');
         logoutButton.classList.remove('hidden');
         authNavLink.classList.add('hidden'); // Hide login/register link
@@ -1304,8 +1304,9 @@
         showMainContent(); // Ensure main content is visible after login
       } else {
         isAuthenticated = false;
+        // When logged out, show the main content and hide everything else.
         // Do NOT show the modal immediately on logout, let the user click the link
-        mainContent.classList.remove('hidden'); // Main content is visible initially even if logged out
+        mainContent.classList.remove('hidden'); 
         quizContainer.classList.add('hidden');
         lessonContentDisplay.classList.add('hidden');
         document.querySelectorAll('.subject-page').forEach(page => page.classList.add('hidden'));
@@ -1406,7 +1407,7 @@
         return;
       }
       // Hide all other content
-      hideAuthModal();
+      hideAuthModal(); // Ensure auth modal is hidden
       mainContent.classList.add('hidden');
       document.querySelectorAll('.subject-page').forEach(page => page.classList.add('hidden'));
       lessonContentDisplay.classList.add('hidden');
@@ -1564,7 +1565,7 @@
         return;
       }
       // Ocultar contenido principal, quiz y otras páginas de asignatura
-      hideAuthModal();
+      hideAuthModal(); // Ensure auth modal is hidden
       document.getElementById('main-content').classList.add('hidden');
       document.getElementById('quiz-container').classList.add('hidden');
       document.querySelectorAll('.subject-page').forEach(page => {
@@ -1589,7 +1590,7 @@
 
     function showMainContent() {
       // Ocultar todas las páginas de asignaturas, el cuestionario y el contenido de lección
-      hideAuthModal();
+      hideAuthModal(); // Ensure auth modal is hidden
       document.querySelectorAll('.subject-page').forEach(page => {
         page.classList.remove('active');
         page.classList.add('hidden');
@@ -1871,9 +1872,9 @@
             <p>Un **sistema de ecuaciones** es un conjunto de dos o más ecuaciones con varias incógnitas, donde buscamos los valores de las incógnitas que satisfacen todas las ecuaciones simultáneamente.</p>
             <p><strong>Métodos principales:</strong></p>
             <ul>
-                <li><strong>Sustitución:</strong> Despejar una incógnita de una ecuación y sustituirla en la otra.</li>
-                <li><strong>Igualación:</strong> Despejar la misma incógnita de ambas ecuaciones e igualar las expresiones.</li>
-                <li><strong>Reducción:</strong> Multiplicar las ecuaciones por números para que, al sumarlas o restarlas, se elimine una incógnita.</li>
+                <li>**Sustitución:** Despejar una incógnita de una ecuación y sustituirla en la otra.</li>
+                <li>**Igualación:** Despejar la misma incógnita de ambas ecuaciones e igualar las expresiones.</li>
+                <li>**Reducción:** Multiplicar las ecuaciones por números para que, al sumarlas o restarlas, se elimine una incógnita.</li>
             </ul>
             <p><strong>Ejercicio Escrito:</strong> Resuelve el siguiente sistema por el método que prefieras, mostrando todos los pasos.</p>
             <p>x + y = 5</p>
@@ -2087,7 +2088,7 @@
           `,
           kinestesico: `
             <h3>Sintaxis - Oración Simple: Construye Oraciones</h3>
-            <p>**Construye oraciones** arrastrando los componentes (sujeto, predicado, complementos) a su lugar en un juego interactivo. ¡Siente cómo se forma una oración al unir sus partes!</p>
+            <p>**Construye oraciones** arrastrándolas a su categoría correcta en un juego interactivo. ¡Siente cómo se forma una oración al unir sus partes!</p>
             <div class='interactive-game-placeholder'>
               <p>Juego interactivo de construcción sintáctica: arrastra cajas de palabras para formar oraciones correctas.</p>
               <p><em>Imagina que arrastras "El perro" a la caja de "Sujeto", y "ladra mucho" a la caja de "Predicado".</em></p>
@@ -2531,7 +2532,7 @@
             return;
         }
         // Ocultar todas las páginas de asignaturas y el contenido principal
-        hideAuthModal();
+        hideAuthModal(); // Ensure auth modal is hidden
         document.getElementById('main-content').classList.add('hidden'); // Oculta el contenido principal
         document.getElementById('quiz-container').classList.add('hidden'); // Oculta el quiz
         document.querySelectorAll('.subject-page').forEach(page => page.classList.add('hidden')); // Oculta las páginas de asignatura
@@ -2596,9 +2597,9 @@
         // The onAuthStateChanged listener will handle showing the correct content
         // based on whether a user is logged in or not.
 
-        // Ensure main content is visible on load, and auth modal is hidden
+        // Ensure main content is visible on load, and auth modal is hidden by default CSS.
         mainContent.classList.remove('hidden');
-        authModalOverlay.classList.add('hidden');
+        // Removed: authModalOverlay.classList.add('hidden'); - rely on default CSS display:none
         quizContainer.classList.add('hidden');
         document.querySelectorAll('.subject-page').forEach(page => page.classList.add('hidden'));
         lessonContentDisplay.classList.add('hidden');
