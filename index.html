@@ -795,6 +795,7 @@
       <a href="#testimonios">Testimonios</a>
       <a href="#contacto">Contacto</a>
       <a href="#" id="auth-nav-link" onclick="window.showAuthModal()">Iniciar Sesión / Registrarse</a>
+      <button id="guest-mode-button">Modo Invitado</button>
       <a href="#" id="quiz-nav-link" onclick="window.showQuestion()">Cuestionario</a>
       <button id="logout-button">Cerrar Sesión</button>
     </nav>
@@ -1119,7 +1120,7 @@
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
     // Your web app's Firebase configuration
@@ -1151,6 +1152,7 @@
     const logoutButton = document.getElementById('logout-button');
     const quizNavLink = document.getElementById('quiz-nav-link');
     const authNavLink = document.getElementById('auth-nav-link');
+    const guestModeButton = document.getElementById('guest-mode-button'); // New element for guest mode button
 
     const quizContainer = document.getElementById('quiz-container');
     const mainContent = document.getElementById('main-content');
@@ -1165,6 +1167,7 @@
 
     let isAuthenticated = false; // Flag to track authentication status
     let currentUserId = null; // Store the current user ID
+    let isGuestMode = false; // Flag for guest mode
     let userLearningStyle = 'visual'; // Default learning style, updated by quiz or Firestore
     let userTDAHStatus = 'no'; // Default TDAH status, updated by quiz or Firestore
 
@@ -1173,8 +1176,7 @@
     // !! IMPORTANTE !! Si estás ejecutando esta aplicación fuera del entorno de Google Canvas,
     // DEBES reemplazar "TU_API_KEY_DE_GEMINI_AQUI" con tu propia clave API de Gemini.
     // Puedes obtener una clave API en Google AI Studio: https://makersuite.google.com/
-    const GEMINI_API_KEY = ""; // Deja como cadena vacía si ejecutas en Google Canvas, Canvas la proporcionará.
-                               // Si ejecutas en tu propio servidor, reemplaza con tu clave: "AIzaSy..."
+    const GEMINI_API_KEY = "AIzaSyBGKJQINcUZKVxCw8NI43bVmPsDqGVBsB0"; // Reemplazada con la clave proporcionada
 
     // --- Utility Functions ---
     function showMessage(message, duration = 3000) {
@@ -1231,7 +1233,7 @@
 
     window.hideAuthModal = function() {
         hideModalOverlay(authModalOverlay); // Use new modal hide function
-        if (isAuthenticated) {
+        if (isAuthenticated || isGuestMode) { // Show main content for authenticated or guest users
             showElement(mainContent);
         }
     }
@@ -1245,6 +1247,7 @@
       try {
         await createUserWithEmailAndPassword(auth, email, password);
         showMessage('¡Registro exitoso! Has iniciado sesión.');
+        isGuestMode = false; // Exit guest mode if user registers
       } catch (error) {
         let errorMessage = 'Error al registrar: ';
         switch (error.code) {
@@ -1274,6 +1277,7 @@
       try {
         await signInWithEmailAndPassword(auth, email, password);
         showMessage('¡Inicio de sesión exitoso!');
+        isGuestMode = false; // Exit guest mode if user logs in
       } catch (error) {
         let errorMessage = 'Error al iniciar sesión: ';
         switch (error.code) {
@@ -1295,10 +1299,23 @@
       }
     });
 
+    // Guest mode button event listener
+    guestModeButton.addEventListener('click', () => {
+        isGuestMode = true;
+        isAuthenticated = false; // Ensure not authenticated if guest
+        currentUserId = null; // No specific user ID for guest mode
+        window.hideAuthModal();
+        showElement(mainContent);
+        showMessage('Modo invitado activado. Algunas funciones de personalización y guardado no están disponibles.', 5000);
+        updateNavigationVisibility();
+        window.updateQuizResultDisplay(); // Clear quiz result display
+    });
+
     // Logout button event listener
     logoutButton.addEventListener('click', async () => {
       try {
         await signOut(auth);
+        isGuestMode = false; // Exit guest mode on logout
         showMessage('Has cerrado sesión.');
       } catch (error) {
         showMessage('Error al cerrar sesión: ' + error.message, 5000);
@@ -1306,17 +1323,43 @@
       }
     });
 
+    function updateNavigationVisibility() {
+        if (isAuthenticated) {
+            showElement(quizNavLink);
+            showElement(logoutButton);
+            hideElement(authNavLink);
+            hideElement(guestModeButton); // Hide guest button when logged in
+            // userIdDisplay.textContent = `ID de Usuario: ${currentUserId}`; // Keep ID hidden as per user request
+            hideElement(userIdDisplay); 
+        } else if (isGuestMode) {
+            hideElement(quizNavLink); // Guests cannot take quiz or save progress
+            hideElement(logoutButton);
+            hideElement(authNavLink); // Hide auth link if already in guest mode
+            showElement(guestModeButton); // Keep guest button visible if it's the current mode
+            hideElement(userIdDisplay);
+            // Reset to default learning style for guest mode
+            userLearningStyle = 'visual';
+            userTDAHStatus = 'no';
+            resultMessage.textContent = '';
+            studyAdvice.textContent = '';
+            hideElement(tdahWarning);
+        } else { // Not authenticated, not guest mode (initial state or after logout)
+            hideElement(quizNavLink);
+            hideElement(logoutButton);
+            showElement(authNavLink);
+            showElement(guestModeButton); // Show guest button
+            hideElement(userIdDisplay);
+        }
+    }
+
     // Listen for authentication state changes
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         isAuthenticated = true;
         currentUserId = user.uid;
+        isGuestMode = false; // Ensure not in guest mode if authenticated
         window.hideAuthModal(); // Hide modal, show main content
-        showElement(quizNavLink);
-        showElement(logoutButton);
-        hideElement(authNavLink);
-        userIdDisplay.textContent = `ID de Usuario: ${user.uid}`; // Display user ID
-        showElement(userIdDisplay); // Show user ID element
+        updateNavigationVisibility(); // Update visibility based on auth status
         showMessage('Bienvenido de nuevo.');
 
         // Load user preferences and progress from Firestore
@@ -1326,31 +1369,26 @@
       } else {
         isAuthenticated = false;
         currentUserId = null;
-        showElement(mainContent); // Ensure main content is visible on logout
-        hideElement(quizContainer);
-        hideElement(lessonContentDisplay);
-        document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
-
-        hideElement(quizNavLink);
-        hideElement(logoutButton);
-        showElement(authNavLink);
-        hideElement(userIdDisplay); // Hide user ID element
-        userIdDisplay.textContent = ''; // Clear user ID
+        // Do not force show mainContent here, let specific functions handle it
+        // based on guest mode or initial state.
+        updateNavigationVisibility(); // Update visibility based on auth status (not authenticated)
+        // Reset user preferences to default only if not in guest mode.
+        if (!isGuestMode) {
+            userLearningStyle = 'visual';
+            userTDAHStatus = 'no';
+            resultMessage.textContent = '';
+            studyAdvice.textContent = '';
+            hideElement(tdahWarning);
+        }
         showMessage('Inicia sesión o regístrate para acceder a todas las funciones.', 5000);
-
-        // Reset user preferences to default
-        userLearningStyle = 'visual';
-        userTDAHStatus = 'no';
-        resultMessage.textContent = '';
-        studyAdvice.textContent = '';
-        hideElement(tdahWarning);
       }
     });
 
     // --- Firestore Functions for User Preferences and Progress ---
     async function saveUserPreferences() {
-        if (!currentUserId) {
-            console.error("No user ID to save preferences.");
+        if (!isAuthenticated) {
+            console.error("No user ID to save preferences. User is not authenticated.");
+            showMessage("Por favor, inicia sesión para guardar tus preferencias.", 3000);
             return;
         }
         const userRef = doc(db, "users", currentUserId);
@@ -1368,6 +1406,10 @@
     }
 
     window.loadUserPreferences = async function(uid) { // Made global
+        if (!isAuthenticated) {
+            console.warn("Cannot load user preferences: User is not authenticated.");
+            return;
+        }
         const userRef = doc(db, "users", uid);
         try {
             const userSnap = await getDoc(userRef);
@@ -1390,8 +1432,8 @@
     }
 
     window.saveProgress = async function(subject, topicId, status) { // Made global
-        if (!currentUserId) {
-            console.error("No user ID to save progress.");
+        if (!isAuthenticated) {
+            console.error("No user ID to save progress. User is not authenticated.");
             showMessage("Por favor, inicia sesión para guardar tu progreso.", 3000);
             return;
         }
@@ -1408,7 +1450,7 @@
     }
 
     window.loadProgressAndDisplay = async function() { // Made global
-        if (!currentUserId) {
+        if (!isAuthenticated) {
             console.warn("No user ID to load progress. Displaying default progress.");
             // If not authenticated, ensure progress indicators are cleared.
             [
@@ -1493,33 +1535,49 @@
             'lectura-escritura': "Lectura/Escritura",
             kinestesico: "Kinestésico"
         };
-        if (userLearningStyle) {
-            resultMessage.textContent = `🎯 Tu estilo de aprendizaje detectado: ${styleNames[userLearningStyle]}`;
-            const adviceByStyle = {
-                visual: "Recomendamos usar esquemas, mapas conceptuales, videos y colores para organizar tus ideas. Aprovecha imágenes y gráficos para estudiar.",
-                auditivo: "Aprende mejor con grabaciones, podcasts, explicaciones en voz alta y repitiendo la información oralmente.",
-                'lectura-escritura': "Prefiere leer textos, tomar apuntes, escribir resúmenes y usar listas para organizar la información.",
-                kinestesico: "Es ideal aprender haciendo, usando actividades prácticas, movimientos o ejercicios mientras estudias."
-            };
-            studyAdvice.textContent = adviceByStyle[userLearningStyle] || "";
-            showElement(resultMessage);
-            showElement(studyAdvice);
-        } else {
+
+        if (isAuthenticated) { // Only show personalized message if authenticated
+            if (userLearningStyle) {
+                resultMessage.textContent = `🎯 Tu estilo de aprendizaje detectado: ${styleNames[userLearningStyle]}`;
+                const adviceByStyle = {
+                    visual: "Recomendamos usar esquemas, mapas conceptuales, videos y colores para organizar tus ideas. Aprovecha imágenes y gráficos para estudiar.",
+                    auditivo: "Aprende mejor con grabaciones, podcasts, explicaciones en voz alta y repitiendo la información oralmente.",
+                    'lectura-escritura': "Prefiere leer textos, tomar apuntes, escribir resúmenes y usar listas para organizar la información.",
+                    kinestesico: "Es ideal aprender haciendo, usando actividades prácticas, movimientos o ejercicios mientras estudias."
+                };
+                studyAdvice.textContent = adviceByStyle[userLearningStyle] || "";
+                showElement(resultMessage);
+                showElement(studyAdvice);
+            } else { // No personalized style found for authenticated user, hide
+                hideElement(resultMessage);
+                hideElement(studyAdvice);
+            }
+
+            if (userTDAHStatus === 'tdah') {
+                showElement(tdahWarning);
+            } else {
+                hideElement(tdahWarning);
+            }
+        } else { // Hide for guests or logged out users
             hideElement(resultMessage);
             hideElement(studyAdvice);
-        }
-
-        if (userTDAHStatus === 'tdah') {
-            showElement(tdahWarning);
-        } else {
             hideElement(tdahWarning);
         }
     }
 
     // --- LLM Integration for Content Generation ---
     async function generateLessonContent(subject, topicId, learningStyle) {
+        if (!GEMINI_API_KEY) {
+            showMessage("Error: La clave API de Gemini no está configurada. Por favor, añádela para generar contenido con IA.", 10000);
+            return "<p>Contenido no disponible. Por favor, configura tu clave API de Gemini.</p>";
+        }
+
         showMessage("Generando contenido de lección con IA...", 5000);
-        const prompt = `Genera un contenido de lección interactivo y conciso sobre "${topicId.replace(/-/g, ' ')}" dentro del tema de "${subject}" para un estudiante con estilo de aprendizaje "${learningStyle}".
+        let effectiveLearningStyle = learningStyle;
+        if (isGuestMode) {
+             effectiveLearningStyle = 'general'; // Use a general style for guests
+        }
+        const prompt = `Genera un contenido de lección interactivo y conciso sobre "${topicId.replace(/-/g, ' ')}" dentro del tema de "${subject}" para un estudiante con estilo de aprendizaje "${effectiveLearningStyle}".
 Incluye los siguientes elementos de forma relevante para el estilo de aprendizaje:
 - **Imágenes y esquemas visuales**: Usa etiquetas <img> con URLs de placehold.co (por ejemplo, https://placehold.co/600x400/eef5fb/34495e?text=Esquema+del+Tema). Para cada imagen, incluye un atributo alt que describa la imagen en español.
 - **Videos explicativos**: Usa etiquetas <video> con URLs de videos de ejemplo (por ejemplo, https://www.w3schools.com/html/mov_bbb.mp4). Asegúrate de incluir los atributos controls y poster (una imagen de placeholder para el poster).
@@ -1624,7 +1682,7 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
 
     window.showQuestion = function() {
       if (!isAuthenticated) {
-        showMessage('Por favor, inicia sesión para acceder al cuestionario.');
+        showMessage('Por favor, inicia sesión para acceder al cuestionario y guardar tus preferencias.');
         window.showAuthModal();
         return;
       }
@@ -1736,8 +1794,9 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
 
     // --- Funciones de Navegación y Contenido ---
     window.showSubject = function(subject) {
-      if (!isAuthenticated) {
-        showMessage('Por favor, inicia sesión para acceder a las materias.');
+      // Allow guests to see subjects, but warn about personalization
+      if (!isAuthenticated && !isGuestMode) {
+        showMessage('Por favor, inicia sesión o usa el modo invitado para acceder a las materias.', 4000);
         window.showAuthModal();
         return;
       }
@@ -1754,8 +1813,27 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
       }
       
       personalizeSubjectIntro(subject);
-      window.loadProgressAndDisplay(); // Call global version to load and display individual topic progress checks
-      window.updateAllProgressBars(); // Call global version to update overall subject progress bars
+      // Only load and update progress if authenticated, otherwise it's just topic list
+      if (isAuthenticated) {
+          window.loadProgressAndDisplay(); // Call global version to load and display individual topic progress checks
+          window.updateAllProgressBars(); // Call global version to update overall subject progress bars
+      } else {
+          // Clear progress indicators for guest mode
+          [
+              ...mathTopics.map(t => ({ subject: 'matematicas', topic: t })),
+              ...lenguaTopics.map(t => ({ subject: 'lengua', topic: t })),
+              ...inglesTopics.map(t => ({ subject: 'ingles', topic: t }))
+            ].forEach(({ subject: sub, topic: tpc }) => {
+              const indicator = document.getElementById(`progress-${sub}-${tpc.id}`);
+              if (indicator) {
+                indicator.innerHTML = '';
+              }
+            });
+            const allProgressBars = document.querySelectorAll('.progress-bar-fill');
+            allProgressBars.forEach(bar => bar.style.width = '0%');
+            const allProgressTexts = document.querySelectorAll('.progress-text');
+            allProgressTexts.forEach(text => text.textContent = '0% completado');
+      }
     }
 
     window.showMainContent = function() {
@@ -1772,40 +1850,45 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
       const introElement = document.getElementById(subject + '-personalized-intro');
       if (!introElement) return;
 
-      const personalizedIntros = {
-        matematicas: {
-          visual: "🎨 Como eres una persona con estilo **visual**, hemos preparado esquemas, gráficos y representaciones visuales para cada tema de matemáticas. ¡Verás las matemáticas de una forma completamente nueva!",
-          auditivo: "🔊 Perfecto para tu estilo **auditivo**: cada lección incluye explicaciones paso a paso, podcasts matemáticos y ejercicios que puedes resolver 'hablando' contigo mismo.",
-          'lectura-escritura': "📝 Ideal para tu estilo de **lectura/escritura**: encontrarás resúmenes detallados, ejercicios escritos y la posibilidad de tomar notas estructuradas en cada tema.",
-          kinestesico: "🏃 ¡Matemáticas en movimiento! Hemos diseñado actividades prácticas, manipulativas y ejercicios que puedes resolver moviéndote o usando objetos físicos."
-        },
-        lengua: {
-          visual: "🎨 Tu aprendizaje **visual** te ayudará con mapas mentales, esquemas de sintaxis y representaciones gráficas de las reglas gramaticales.",
-          auditivo: "🔊 Perfecto para tu estilo: lecturas en voz alta, ejercicios de dictado, y técnicas de memorización con ritmo y sonidos.",
-          'lectura-escritura': "📝 En tu elemento: análisis de textos, ejercicios de escritura creativa y técnicas de estudio basadas en la lectura comprensiva.",
-          kinestesico: "🏃 Lengua activa: dramatizaciones, juegos de roles y ejercicios donde puedas moverte mientras aprendes gramática y literatura."
-        },
-        ingles: {
-          visual: "🎨 **Visual English**: flashcards, mind maps, videos y material gráfico para aprender vocabulario y gramática de forma visual.",
-          auditivo: "🔊 Perfect for you: **listening exercises**, pronunciation practice, songs and audio materials to improve your English naturally.",
-          'lectura-escritura': "📝 **Reading & Writing** focus: textos graduados, ejercicios de escritura y técnicas de estudio basadas en la lectura en inglés.",
-          kinestesico: "🏃 **Active English**: role-plays, interactive games y actividades prácticas para aprender inglés moviéndote y experimentando."
-        }
-      };
-
-      const intro = personalizedIntros[subject] && personalizedIntros[subject][userLearningStyle];
-      if (intro) {
-        introElement.innerHTML = `<div style="background: #eef5fb; padding: 25px; border-radius: var(--border-radius); margin-bottom: 30px; border-left: 5px solid var(--secondary-color); font-size: 1.1em; line-height: 1.6; color: var(--text-dark);"><strong>Personalizado para ti:</strong><br>${intro}</div>`;
+      let introText = "";
+      if (isAuthenticated && userLearningStyle) {
+          const personalizedIntros = {
+            matematicas: {
+              visual: "🎨 Como eres una persona con estilo **visual**, hemos preparado esquemas, gráficos y representaciones visuales para cada tema de matemáticas. ¡Verás las matemáticas de una forma completamente nueva!",
+              auditivo: "🔊 Perfecto para tu estilo **auditivo**: cada lección incluye explicaciones paso a paso, podcasts matemáticos y ejercicios que puedes resolver 'hablando' contigo mismo.",
+              'lectura-escritura': "📝 Ideal para tu estilo de **lectura/escritura**: encontrarás resúmenes detallados, ejercicios escritos y la posibilidad de tomar notas estructuradas en cada tema.",
+              kinestesico: "🏃 ¡Matemáticas en movimiento! Hemos diseñado actividades prácticas, manipulativas y ejercicios que puedes resolver moviéndote o usando objetos físicos."
+            },
+            lengua: {
+              visual: "🎨 Tu aprendizaje **visual** te ayudará con mapas mentales, esquemas de sintaxis y representaciones gráficas de las reglas gramaticales.",
+              auditivo: "🔊 Perfecto para tu estilo: lecturas en voz alta, ejercicios de dictado, y técnicas de memorización con ritmo y sonidos.",
+              'lectura-escritura': "📝 En tu elemento: análisis de textos, ejercicios de escritura creativa y técnicas de estudio basadas en la lectura comprensiva.",
+              kinestesico: "🏃 Lengua activa: dramatizaciones, juegos de roles y ejercicios donde puedas moverte mientras aprendes gramática y literatura."
+            },
+            ingles: {
+              visual: "🎨 **Visual English**: flashcards, mind maps, videos y material gráfico para aprender vocabulario y gramática de forma visual.",
+              auditivo: "🔊 Perfect for you: **listening exercises**, pronunciation practice, songs and audio materials to improve your English naturally.",
+              'lectura-escritura': "📝 **Reading & Writing** focus: textos graduados, ejercicios de escritura y técnicas de estudio basadas en la lectura en inglés.",
+              kinestesico: "🏃 **Active English**: role-plays, interactive games y actividades prácticas para aprender inglés moviéndote y experimentando."
+            }
+          };
+          introText = personalizedIntros[subject] && personalizedIntros[subject][userLearningStyle];
+          if (introText) {
+            introText = `<strong>Personalizado para ti:</strong><br>${introText}`;
+          } else {
+            introText = "¡Bienvenido a la sección de " + subject.charAt(0).toUpperCase() + subject.slice(1) + "! Explora nuestros temas.";
+          }
+      } else {
+          introText = "¡Bienvenido a la sección de " + subject.charAt(0).toUpperCase() + subject.slice(1) + "! Para una experiencia de aprendizaje personalizada, inicia sesión o regístrate.";
       }
+      
+      introElement.innerHTML = `<div style="background: #eef5fb; padding: 25px; border-radius: var(--border-radius); margin-bottom: 30px; border-left: 5px solid var(--secondary-color); font-size: 1.1em; line-height: 1.6; color: var(--text-dark);">${introText}</div>`;
     }
 
     // --- Lesson Content Display (uses LLM for content) ---
-    // Remove predefined topicContents as they will be generated by LLM
-    // const topicContents = { ... };
-
     window.showLessonContent = async function(subject, topicId) {
-        if (!isAuthenticated) {
-            showMessage('Por favor, inicia sesión para acceder al contenido de las lecciones.');
+        if (!isAuthenticated && !isGuestMode) {
+            showMessage('Por favor, inicia sesión o usa el modo invitado para acceder al contenido de las lecciones.', 4000);
             window.showAuthModal();
             return;
         }
@@ -1833,7 +1916,17 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
         // This assumes the generated content will include a button with this specific text and purpose.
         const completeLessonButton = lessonMaterialElement.querySelector('button');
         if (completeLessonButton && (completeLessonButton.textContent.includes('Completar lección') || completeLessonButton.textContent.includes('Simular Completar Juego'))) {
-            completeLessonButton.onclick = () => window.simulateGameCompletion(subject, topicId);
+            // Only allow completion if authenticated
+            if (isAuthenticated) {
+                completeLessonButton.onclick = () => window.simulateGameCompletion(subject, topicId);
+            } else {
+                completeLessonButton.style.display = 'none'; // Hide button for guests
+                const completeMessage = document.createElement('p');
+                completeMessage.textContent = 'Inicia sesión para guardar tu progreso de esta lección.';
+                completeMessage.style.color = 'var(--accent-color)';
+                completeMessage.style.fontWeight = 'bold';
+                lessonMaterialElement.appendChild(completeMessage);
+            }
         }
     }
 
@@ -1857,6 +1950,10 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
     }
 
     window.simulateGameCompletion = function(subject, topicId) {
+        if (!isAuthenticated) {
+            showMessage("Necesitas iniciar sesión para guardar el progreso.", 3000);
+            return;
+        }
         showMessage('¡Felicidades! Has completado el juego interactivo. Tu progreso ha sido guardado.', 4000);
         window.saveProgress(subject, topicId, 'completed'); // Call global version
         window.hideLessonContent();
@@ -1864,7 +1961,7 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
 
 
     // Initial setup on page load
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', async function() { // Added async for potential signInAnonymously
         // Explicitly hide all content areas that are not the main content by default
         hideElement(quizContainer);
         document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
@@ -1872,12 +1969,20 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
         hideElement(customMessage); // Ensure custom message is hidden
         hideModalOverlay(authModalOverlay); // Ensure modal is hidden using its CSS class
 
-        // Auth and nav links visibility will be dynamically handled by onAuthStateChanged
-        // Initially, we assume no user is logged in, so show auth link and hide others.
-        hideElement(quizNavLink);
-        hideElement(logoutButton);
-        showElement(authNavLink); // Show login/register link by default
-        hideElement(userIdDisplay); // Hide user ID on initial load
+        // Try to sign in anonymously for a seamless guest experience or if no auth token is available (e.g., GitHub)
+        // If signInAnonymously fails, user will effectively be in unauthenticated state handled by onAuthStateChanged
+        try {
+            await signInAnonymously(auth);
+            // onAuthStateChanged will handle setting isAuthenticated/isGuestMode and visibility
+        } catch (error) {
+            console.warn("Failed to sign in anonymously:", error);
+            // If anonymous sign-in fails, default to unauthenticated state, user will see login/guest options.
+            isAuthenticated = false;
+            currentUserId = null;
+            isGuestMode = false;
+            updateNavigationVisibility(); // Ensure correct nav state if anonymous fails
+            showElemen; // Show main content if no auth possible
+        }
 
         // Display the main content initially until Firebase auth state determines otherwise.
         showElement(mainContent);
