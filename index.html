@@ -2144,11 +2144,11 @@
     import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
     // Default Firebase configuration (replace with your actual Firebase project config if not in Canvas)
-    const firebaseConfig = {
-      apiKey: "AIzaSyDklyhhZOV3c2KbbrvAZOpoUitPBWgRBOQ",
+    const defaultFirebaseConfig = {
+      apiKey: "AIzaSyDklyhhZOV3c2KbbrvAZOpoUitPBWgRBOQ", // <<--- REEMPLAZA CON TU CLAVE API DE FIREBASE
       authDomain: "multigenio-39890.firebaseapp.com",
       projectId: "multigenio-39890",
-      storageBucket: "multigenio-39890.firebase-app.com",
+      storageBucket: "multigenio-39890.firebasestorage.app",
       messagingSenderId: "881137429405",
       appId: "1:881137429405:web:9f061138bdf43b00dd5d74",
       measurementId: "G-9SQX18GVH6"
@@ -2162,6 +2162,7 @@
     const analytics = getAnalytics(app); // Google Analytics initialization
     const auth = getAuth(app); // Initialize Firebase Auth service
     const db = getFirestore(app); // Initialize Firestore
+
 
     // DOM elements
     const authModalOverlay = document.getElementById('auth-modal-overlay');
