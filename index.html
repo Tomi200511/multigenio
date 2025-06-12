@@ -4,36 +4,45 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MultiGenio - Tu aliado en el aprendizaje</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --primary-color: #3b5998; /* Azul profundo */
-      --secondary-color: #4CAF50; /* Verde vibrante */
-      --accent-color: #FFC107; /* Amarillo cálido */
-      --text-dark: #212121;
-      --text-light: #616161;
-      --bg-light: #f8fafd; /* Fondo muy claro, casi blanco */
-      --bg-white: #ffffff;
-      --shadow-light: rgba(0, 0, 0, 0.08);
-      --shadow-medium: rgba(0, 0, 0, 0.15);
-      --shadow-strong: rgba(0, 0, 0, 0.25);
-      --border-radius-soft: 12px;
-      --border-radius-medium: 20px;
-      --spacing-unit: 20px; /* Base spacing */
+      /* New Modern Color Palette */
+      --primary-dark: #2c3e50; /* Deep Blue Grey for main elements, text */
+      --primary-light: #34495e; /* Slightly lighter shade for backgrounds/secondary text */
+      --accent-blue: #3498db; /* Vibrant Blue for highlights, buttons */
+      --accent-green: #2ecc71; /* Fresh Green for success, completion */
+      --text-main: #212121; /* Rich black for primary text */
+      --text-secondary: #7f8c8d; /* Muted grey for secondary text */
+      --bg-light: #ecf0f1; /* Very light grey for main background */
+      --bg-white: #ffffff; /* Pure white for cards, modals */
+      --border-light: #dfe6e9; /* Light border color */
+
+      /* Shadows and Borders */
+      --shadow-sm: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+      --shadow-md: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+      --shadow-lg: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+      --border-radius-sm: 8px;
+      --border-radius-md: 16px;
+      --spacing-unit: 1rem; /* 16px */
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 0;
       background: var(--bg-light);
-      color: var(--text-light);
+      color: var(--text-secondary);
       line-height: 1.6;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
       overflow-x: hidden;
-      -webkit-font-smoothing: antialiased; /* Better font rendering */
+      -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
@@ -46,209 +55,255 @@
         border-radius: 10px;
     }
     body::-webkit-scrollbar-thumb {
-        background-color: var(--primary-color);
+        background-color: var(--accent-blue);
         border-radius: 10px;
         border: 2px solid var(--bg-light);
     }
     body::-webkit-scrollbar-thumb:hover {
-        background-color: var(--secondary-color);
+        background-color: var(--accent-green);
     }
 
     /* Header */
     header {
       background: var(--bg-white);
-      color: var(--text-dark);
-      padding: var(--spacing-unit) calc(2 * var(--spacing-unit));
-      text-align: center;
-      box-shadow: 0 2px 10px var(--shadow-light);
-      position: relative;
-      z-index: 10;
+      padding: calc(var(--spacing-unit) * 0.8) calc(var(--spacing-unit) * 2);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: center; /* Align items vertically */
       flex-wrap: wrap;
-      gap: 15px;
+      gap: var(--spacing-unit); /* Gap between logo and right group on wrap */
     }
+
     header .logo-container {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: calc(var(--spacing-unit) * 0.5);
     }
     header .logo-container img {
-      height: 60px; /* Tamaño del logo ajustado */
+      height: 40px;
       width: auto;
       border-radius: 50%;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--shadow-sm);
     }
     header h1 {
-      font-size: 2.2em; /* Tamaño del título en el header */
+      font-size: 1.6em;
       margin: 0;
       font-weight: 700;
-      color: var(--primary-color);
+      color: var(--primary-dark);
     }
-    header p {
-      font-size: 1em;
+    header .tagline {
+      font-size: 0.8em;
       margin: 0;
-      color: var(--text-light);
+      color: var(--text-secondary);
+    }
+
+    /* Right group for navigation and auth */
+    .header-right-group {
+        display: flex;
+        align-items: center;
+        gap: calc(var(--spacing-unit) * 1.5); /* Space between nav and auth group */
+        flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        justify-content: flex-end; /* Push content to the right */
+        flex-grow: 1; /* Allow it to grow and push logo to left */
     }
 
     /* Navigation */
     nav {
-      background: var(--primary-color);
       display: flex;
-      justify-content: center;
-      padding: calc(0.7 * var(--spacing-unit)) 0;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+      justify-content: flex-end; /* Align nav links to the right */
+      align-items: center;
+      gap: calc(var(--spacing-unit) * 1.2); /* Slightly reduced gap between nav items */
       flex-wrap: wrap;
-      gap: 25px; /* Más espacio entre elementos */
-      position: sticky;
-      top: 0;
-      z-index: 100;
     }
     nav a, nav button {
-      color: var(--bg-white);
+      color: var(--primary-dark);
       text-decoration: none;
       font-weight: 500;
-      font-size: 1.05em;
-      padding: 8px 15px;
-      border-radius: var(--border-radius-soft);
-      transition: all 0.3s ease-in-out;
+      font-size: 0.9em;
+      padding: calc(var(--spacing-unit) * 0.6) calc(var(--spacing-unit) * 1.2); /* More padding for button-like feel */
+      border-radius: var(--border-radius-sm);
+      transition: all 0.2s ease-in-out;
       background: none;
-      border: none;
+      border: 1px solid transparent; /* Initial transparent border */
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       overflow: hidden;
+      min-width: 80px; /* Minimum width for consistency */
+      text-align: center; /* Ensure text is centered within the button */
     }
     nav a:hover, nav button:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(var(--accent-blue), 0.08);
+      color: var(--accent-blue);
       transform: translateY(-2px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--shadow-sm);
+      border-color: rgba(var(--accent-blue), 0.3); /* Border on hover */
     }
     nav a.disabled {
-      color: rgba(255, 255, 255, 0.5);
+      color: var(--text-secondary);
       cursor: not-allowed;
-      opacity: 0.7;
+      opacity: 0.6;
       transform: none;
       box-shadow: none;
+      border-color: transparent;
+    }
+
+    /* Auth Group */
+    .header-auth-group {
+        display: flex;
+        align-items: center;
+        gap: calc(var(--spacing-unit) * 0.8); /* Adjusted gap for auth items */
+        flex-wrap: wrap; /* Allow wrapping */
+        justify-content: flex-end; /* Push to the right */
+    }
+    .header-auth-group button {
+        background: var(--accent-blue);
+        color: white;
+        padding: calc(var(--spacing-unit) * 0.7) calc(var(--spacing-unit) * 1.3); /* Slightly more padding */
+        border: none;
+        border-radius: var(--border-radius-sm);
+        font-weight: 600;
+        box-shadow: var(--shadow-sm);
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+    }
+    .header-auth-group button:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+    .header-auth-group .auth-link-text {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: var(--primary-dark);
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.2s ease;
+        padding: calc(var(--spacing-unit) * 0.6) calc(var(--spacing-unit) * 0.5); /* Match padding of nav links */
+        border-radius: var(--border-radius-sm);
+    }
+    .header-auth-group .auth-link-text:hover {
+        color: var(--accent-blue);
+        background: rgba(var(--accent-blue), 0.08); /* Hover effect */
+        box-shadow: var(--shadow-sm);
+    }
+    .header-auth-group .auth-link-text svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+    }
+    #user-display-name {
+        font-weight: 600;
+        color: var(--primary-dark);
+        margin-right: calc(var(--spacing-unit) * 0.5);
+        padding: calc(var(--spacing-unit) * 0.6) calc(var(--spacing-unit) * 0.5); /* Match padding */
+        border-radius: var(--border-radius-sm);
+        background: var(--bg-light); /* Subtle background */
     }
 
     /* Hero Section */
     .hero {
-      background: url('https://placehold.co/1920x800/e0f7fa/3b5998?text=Aprendizaje+Inteligente') no-repeat center center/cover; /* Placeholder background image */
-      padding: calc(6 * var(--spacing-unit)) var(--spacing-unit);
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--accent-blue) 100%);
+      padding: calc(var(--spacing-unit) * 5) var(--spacing-unit);
       text-align: center;
-      color: var(--bg-white);
-      box-shadow: 0 8px 30px var(--shadow-strong);
+      color: white;
+      box-shadow: var(--shadow-lg);
       position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      min-height: 550px; /* Altura mínima para la sección hero */
-    }
-    .hero::before { /* Overlay for text readability */
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.4); /* Oscurecer imagen */
-      z-index: 1;
+      min-height: 500px;
     }
     .hero h1 {
-      font-size: 3.8em;
-      margin-bottom: calc(1.5 * var(--spacing-unit));
+      font-size: 3.2em;
+      margin-bottom: calc(var(--spacing-unit) * 1.2);
       font-weight: 800;
-      line-height: 1.2;
-      max-width: 900px;
-      position: relative;
-      z-index: 2;
-      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+      line-height: 1.1;
+      max-width: 800px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
     .hero p {
-      font-size: 1.6em;
+      font-size: 1.4em;
       color: rgba(255, 255, 255, 0.9);
-      max-width: 800px;
+      max-width: 700px;
       margin: 0 auto;
       font-weight: 400;
-      position: relative;
-      z-index: 2;
-      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
     .hero .hero-buttons {
-        margin-top: calc(2 * var(--spacing-unit));
-        position: relative;
-        z-index: 2;
+        margin-top: calc(var(--spacing-unit) * 2);
         display: flex;
-        gap: 20px;
+        gap: var(--spacing-unit);
         justify-content: center;
         flex-wrap: wrap;
     }
     .hero .hero-buttons button,
     .hero .hero-buttons a {
-        background: var(--secondary-color);
+        background: var(--accent-green);
         color: white;
-        padding: 15px 30px;
+        padding: calc(var(--spacing-unit) * 0.9) calc(var(--spacing-unit) * 1.8);
         border: none;
-        border-radius: var(--border-radius-soft);
-        font-size: 1.1em;
+        border-radius: var(--border-radius-sm);
+        font-size: 1em;
         font-weight: 600;
         cursor: pointer;
-        transition: all 0.3s ease-in-out;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s ease-in-out;
+        box-shadow: var(--shadow-md);
         text-decoration: none;
         display: inline-block;
     }
     .hero .hero-buttons button:hover,
     .hero .hero-buttons a:hover {
-        background: #40c4ff; /* Azul celeste más vibrante */
+        background: #27ae60;
         transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        box-shadow: var(--shadow-lg);
     }
 
-
-    /* Sections */
+    /* General Sections */
     .section {
-      padding: calc(4 * var(--spacing-unit)) var(--spacing-unit);
+      padding: calc(var(--spacing-unit) * 3) var(--spacing-unit);
       max-width: 1200px;
-      margin: 0 auto;
+      margin: calc(var(--spacing-unit) * 2) auto;
       background: var(--bg-white);
-      border-radius: var(--border-radius-medium);
-      margin-top: calc(2 * var(--spacing-unit));
-      box-shadow: 0 6px 20px var(--shadow-medium);
+      border-radius: var(--border-radius-md);
+      box-shadow: var(--shadow-md);
       position: relative;
       overflow: hidden;
     }
     .section:first-of-type {
-        margin-top: calc(3 * var(--spacing-unit)); /* Keep space from hero */
+        margin-top: calc(var(--spacing-unit) * 3);
     }
     .section h2, .section h3 {
       text-align: center;
-      color: var(--primary-color);
-      margin-bottom: calc(2 * var(--spacing-unit));
-      font-size: 2.8em;
+      color: var(--primary-dark);
+      margin-bottom: calc(var(--spacing-unit) * 1.5);
+      font-size: 2.5em;
       font-weight: 700;
       position: relative;
-      padding-bottom: 10px;
+      padding-bottom: calc(var(--spacing-unit) * 0.6);
     }
     .section h2::after, .section h3::after {
         content: '';
         display: block;
-        width: 80px;
-        height: 4px;
-        background: var(--secondary-color);
-        margin: 15px auto 0;
+        width: 60px;
+        height: 3px;
+        background: var(--accent-blue);
+        margin: calc(var(--spacing-unit) * 0.8) auto 0;
         border-radius: 2px;
     }
     .section p {
-        font-size: 1.1em;
-        margin-bottom: 1.5em;
-        color: var(--text-dark);
+        font-size: 1em;
+        margin-bottom: 1.2em;
+        color: var(--text-main);
         text-align: justify;
     }
     .section ul {
@@ -257,36 +312,37 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: calc(1.5 * var(--spacing-unit));
-        margin-top: calc(2 * var(--spacing-unit));
+        gap: var(--spacing-unit);
+        margin-top: var(--spacing-unit);
     }
     .section ul li {
-        background: linear-gradient(145deg, #e3f2fd, #e0f7fa);
-        padding: var(--spacing-unit) calc(1.5 * var(--spacing-unit));
-        border-radius: var(--border-radius-soft);
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        font-size: 1.15em;
-        color: var(--text-dark);
+        background: var(--bg-light);
+        padding: var(--spacing-unit) calc(var(--spacing-unit) * 1.2);
+        border-radius: var(--border-radius-sm);
+        box-shadow: var(--shadow-sm);
+        font-size: 0.95em;
+        color: var(--primary-dark);
         font-weight: 500;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: calc(var(--spacing-unit) * 0.5);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
-        border-left: 4px solid var(--primary-color);
+        border-left: 4px solid var(--accent-blue);
     }
     .section ul li:hover {
         transform: translateY(-4px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow-md);
     }
     .section ul li img {
-        height: 32px;
-        width: 32px;
+        height: 28px;
+        width: 28px;
+        filter: invert(0.2) sepia(1) saturate(5) hue-rotate(180deg); /* Adjust icon color to fit theme */
     }
     .section img {
       display: block;
-      margin: calc(1.5 * var(--spacing-unit)) auto;
-      border-radius: var(--border-radius-soft);
-      box-shadow: 0 4px 15px var(--shadow-light);
+      margin: calc(var(--spacing-unit) * 1.5) auto;
+      border-radius: var(--border-radius-sm);
+      box-shadow: var(--shadow-sm);
     }
     .section .text-center {
         text-align: center;
@@ -297,51 +353,51 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: calc(1.8 * var(--spacing-unit));
-      margin-top: calc(2 * var(--spacing-unit));
+      gap: calc(var(--spacing-unit) * 1.5);
+      margin-top: calc(var(--spacing-unit) * 1.5);
     }
     .card {
       background: var(--bg-white);
-      border-radius: var(--border-radius-medium);
-      box-shadow: 0 8px 25px var(--shadow-medium);
-      padding: calc(1.5 * var(--spacing-unit));
-      width: 300px; /* Fixed width for consistency */
+      border-radius: var(--border-radius-md);
+      box-shadow: var(--shadow-md);
+      padding: calc(var(--spacing-unit) * 1.2);
+      width: 300px;
       text-align: center;
-      transition: all 0.3s ease-in-out;
+      transition: all 0.2s ease-in-out;
       position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      min-height: 280px;
-      border: 1px solid rgba(0, 0, 0, 0.05);
+      min-height: 260px;
+      border: 1px solid var(--border-light);
     }
     .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 35px var(--shadow-strong);
-      border-color: var(--secondary-color);
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent-blue);
     }
     .card img {
-      width: 80px;
-      height: 80px;
+      width: 70px;
+      height: 70px;
       margin-bottom: var(--spacing-unit);
       transition: transform 0.2s ease;
-      filter: drop-shadow(0 3px 8px rgba(0,0,0,0.08));
+      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.08));
     }
     .card:hover img {
-        transform: scale(1.1);
+        transform: scale(1.05);
     }
     .card h3 {
-      font-size: 1.8em;
-      color: var(--primary-color);
-      margin-bottom: 12px;
+      font-size: 1.5em;
+      color: var(--primary-dark);
+      margin-bottom: 10px;
       font-weight: 600;
     }
     .card p {
-      font-size: 1em;
-      color: var(--text-light);
-      line-height: 1.5;
+      font-size: 0.95em;
+      color: var(--text-secondary);
+      line-height: 1.4;
       flex-grow: 1;
     }
     .clickable-card {
@@ -353,7 +409,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(var(--primary-color), 0.9);
+      background: rgba(var(--accent-blue), 0.9);
       color: var(--bg-white);
       display: flex;
       align-items: center;
@@ -361,8 +417,8 @@
       opacity: 0;
       transition: opacity 0.3s ease;
       font-weight: 600;
-      font-size: 1.5em;
-      border-radius: var(--border-radius-medium);
+      font-size: 1.3em;
+      border-radius: var(--border-radius-md);
       padding: var(--spacing-unit);
       text-align: center;
     }
@@ -373,352 +429,361 @@
     /* Testimonials Section */
     .testimonial-card {
       background: var(--bg-white);
-      border-radius: var(--border-radius-medium);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      padding: calc(1.2 * var(--spacing-unit));
+      border-radius: var(--border-radius-md);
+      box-shadow: var(--shadow-md);
+      padding: var(--spacing-unit);
       text-align: center;
-      max-width: 350px;
-      margin: var(--spacing-unit);
+      max-width: 320px;
+      margin: calc(var(--spacing-unit) * 0.8);
       transition: all 0.2s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      border: 1px solid rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-light);
     }
     .testimonial-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
     }
     .testimonial-card img {
-      width: 60px;
-      height: 60px;
+      width: 55px;
+      height: 55px;
       border-radius: 50%;
-      margin-bottom: 15px;
-      border: 2px solid var(--secondary-color);
-      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+      margin-bottom: 12px;
+      border: 2px solid var(--accent-green);
+      box-shadow: var(--shadow-sm);
     }
     .testimonial-card h3 {
-      color: var(--primary-color);
-      font-size: 1.4em;
-      margin-bottom: 8px;
+      color: var(--primary-dark);
+      font-size: 1.2em;
+      margin-bottom: 6px;
       font-weight: 600;
     }
     .testimonial-card p {
       font-style: italic;
-      color: var(--text-dark);
-      margin-bottom: 15px;
+      color: var(--text-main);
+      margin-bottom: 12px;
       flex-grow: 1;
       line-height: 1.5;
     }
     .testimonial-card .rating {
-      color: var(--accent-color);
-      font-size: 1.2em;
+      color: #f1c40f; /* Star color */
+      font-size: 1.1em;
     }
-    /* New: Review Section */
+
+    /* Reviews Section */
     #reviews-section {
         background: var(--bg-light);
-        padding: calc(4 * var(--spacing-unit)) var(--spacing-unit);
+        padding: calc(var(--spacing-unit) * 3) var(--spacing-unit);
         text-align: center;
-        border-radius: var(--border-radius-medium);
-        margin-top: calc(2 * var(--spacing-unit));
-        box-shadow: 0 6px 20px var(--shadow-medium);
+        border-radius: var(--border-radius-md);
+        margin-top: calc(var(--spacing-unit) * 2);
+        box-shadow: var(--shadow-md);
     }
     #reviews-section h2 {
-        color: var(--primary-color);
-        font-size: 2.8em;
+        color: var(--primary-dark);
+        font-size: 2.5em;
         font-weight: 700;
-        margin-bottom: calc(2 * var(--spacing-unit));
+        margin-bottom: calc(var(--spacing-unit) * 1.5);
     }
     #reviews-section h2::after {
-        background: var(--accent-color);
+        background: var(--accent-green);
     }
     #reviews-container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: calc(1.5 * var(--spacing-unit));
-        max-width: 1200px;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: var(--spacing-unit);
+        max-width: 1100px;
         margin: 0 auto;
         padding-top: var(--spacing-unit);
     }
     .review-card {
         background: var(--bg-white);
-        border-radius: var(--border-radius-medium);
-        box-shadow: 0 6px 20px var(--shadow-light);
-        padding: calc(1.5 * var(--spacing-unit));
+        border-radius: var(--border-radius-md);
+        box-shadow: var(--shadow-md);
+        padding: var(--spacing-unit);
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
-        transition: all 0.3s ease;
-        min-height: 200px;
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease;
+        min-height: 180px;
+        border: 1px solid var(--border-light);
     }
     .review-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 30px var(--shadow-medium);
-        border-color: var(--primary-color);
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--accent-blue);
     }
     .review-card .reviewer-name {
         font-weight: 600;
-        color: var(--primary-color);
-        font-size: 1.2em;
-        margin-top: 10px;
-        margin-bottom: 5px;
+        color: var(--primary-dark);
+        font-size: 1.1em;
+        margin-top: 8px;
+        margin-bottom: 4px;
     }
     .review-card .review-text {
-        font-size: 1em;
-        color: var(--text-dark);
+        font-size: 0.9em;
+        color: var(--text-main);
         font-style: italic;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
         flex-grow: 1;
-        line-height: 1.5;
+        line-height: 1.4;
     }
     .review-card .review-rating {
-        color: var(--accent-color);
-        font-size: 1.1em;
-        margin-top: 5px;
+        color: #f1c40f;
+        font-size: 1em;
+        margin-top: 4px;
     }
-    /* Review form styles */
-    #submit-review-section .review-form {
+
+    /* Review Form */
+    #review-submit-area .review-form {
       display: flex;
       flex-direction: column;
-      gap: 15px;
-      max-width: 600px;
-      margin: 30px auto;
-      padding: calc(2 * var(--spacing-unit));
+      gap: 12px;
+      max-width: 550px;
+      margin: calc(var(--spacing-unit) * 1.5) auto;
+      padding: calc(var(--spacing-unit) * 1.5);
       background: var(--bg-white);
-      border-radius: var(--border-radius-medium);
-      box-shadow: 0 6px 20px var(--shadow-medium);
-      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: var(--border-radius-md);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
     }
-    #submit-review-section .review-form label {
+    #review-submit-area .review-form label {
         font-weight: 500;
-        color: var(--text-dark);
+        color: var(--primary-dark);
         text-align: left;
-        margin-bottom: 5px;
-        font-size: 1.05em;
+        margin-bottom: 4px;
+        font-size: 0.95em;
     }
-    #submit-review-section .review-form textarea {
-        width: calc(100% - 40px);
-        padding: 15px 20px;
-        border: 1px solid #ddd;
-        border-radius: var(--border-radius-soft);
-        font-family: 'Poppins', sans-serif;
-        font-size: 1em;
-        min-height: 100px;
-        box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    #review-submit-area .review-form textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--border-light);
+        border-radius: var(--border-radius-sm);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9em;
+        min-height: 80px;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         resize: vertical;
         transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
-    #submit-review-section .review-form textarea:focus {
-        border-color: var(--primary-color);
-        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 0 3px rgba(var(--primary-color), 0.15);
+    #review-submit-area .review-form textarea:focus {
+        border-color: var(--accent-blue);
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.1), 0 0 0 3px rgba(52, 152, 219, 0.2);
         outline: none;
     }
-    #submit-review-section .review-form .rating-stars {
+    #review-submit-area .review-form .rating-stars {
         display: flex;
         justify-content: center;
-        gap: 8px;
-        margin-bottom: 20px;
+        gap: 6px;
+        margin-bottom: var(--spacing-unit);
     }
-    #submit-review-section .review-form .rating-stars button {
+    #review-submit-area .review-form .rating-stars button {
         background: none;
         border: none;
-        font-size: 2.8em;
+        font-size: 2.2em;
         cursor: pointer;
-        color: #d1d1d1;
+        color: #d8d8d8;
         transition: color 0.2s ease, transform 0.1s ease;
     }
-    #submit-review-section .review-form .rating-stars button:hover {
+    #review-submit-area .review-form .rating-stars button:hover {
         transform: scale(1.1);
     }
-    #submit-review-section .review-form .rating-stars button.selected {
-        color: var(--accent-color);
-        text-shadow: 0 0 5px rgba(255, 193, 7, 0.4);
+    #review-submit-area .review-form .rating-stars button.selected {
+        color: #f1c40f;
+        text-shadow: 0 0 4px rgba(241, 196, 15, 0.4);
     }
-    #submit-review-section .review-form button[type="submit"] {
-      background: var(--primary-color);
+    #review-submit-area .review-form button[type="submit"] {
+      background: var(--accent-blue);
       color: white;
-      padding: 14px 28px;
+      padding: calc(var(--spacing-unit) * 0.8) calc(var(--spacing-unit) * 1.5);
       border: none;
-      border-radius: var(--border-radius-soft);
+      border-radius: var(--border-radius-sm);
       cursor: pointer;
-      font-size: 1.1em;
+      font-size: 0.95em;
       font-weight: 600;
-      transition: background 0.3s ease, transform 0.2s ease;
-      margin-top: 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: background 0.2s ease, transform 0.1s ease;
+      margin-top: var(--spacing-unit);
+      box-shadow: var(--shadow-sm);
     }
-    #submit-review-section .review-form button[type="submit"]:hover {
-      background: var(--secondary-color);
+    #review-submit-area .review-form button[type="submit"]:hover {
+      background: var(--primary-dark);
       transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    }
-    .review-message {
-      text-align: center;
-      font-size: 1.05em;
-      color: var(--text-dark);
-      margin-top: 20px;
-      padding: 15px;
-      background: #eef5fb;
-      border-radius: var(--border-radius-soft);
-      border-left: 5px solid var(--secondary-color);
-      font-weight: 500;
+      box-shadow: var(--shadow-md);
     }
     .review-submit-info {
-        font-size: 0.95em;
-        color: var(--text-light);
-        margin-top: 15px;
+        font-size: 0.85em;
+        color: var(--text-secondary);
+        margin-top: var(--spacing-unit);
     }
 
     /* Topic List specific styles */
     .topic-list {
-        margin-top: calc(2 * var(--spacing-unit));
+        margin-top: calc(var(--spacing-unit) * 1.5);
     }
     .topic-list h2 {
-        font-size: 2.4em;
+        font-size: 2em;
         font-weight: 600;
-        color: var(--primary-color);
-        margin-bottom: calc(1.5 * var(--spacing-unit));
+        color: var(--primary-dark);
+        margin-bottom: var(--spacing-unit);
         text-align: center;
     }
     .topic-item {
         background: var(--bg-white);
-        border-radius: var(--border-radius-soft);
-        box-shadow: 0 4px 15px var(--shadow-light);
-        padding: calc(1.2 * var(--spacing-unit));
+        border-radius: var(--border-radius-sm);
+        box-shadow: var(--shadow-sm);
+        padding: calc(var(--spacing-unit) * 0.8);
         margin-bottom: var(--spacing-unit);
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         transition: all 0.2s ease;
         cursor: pointer;
-        border-left: 4px solid var(--primary-color);
+        border-left: 4px solid var(--accent-blue);
     }
     .topic-item:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        border-color: var(--secondary-color);
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+        border-color: var(--accent-green);
     }
     .topic-item .topic-title {
-        font-size: 1.4em;
+        font-size: 1.2em;
         font-weight: 600;
-        color: var(--primary-color);
-        margin-bottom: 8px;
+        color: var(--primary-dark);
+        margin-bottom: 6px;
         width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
     .topic-item .level-badge {
-        background: var(--secondary-color);
+        background: var(--accent-green);
         color: white;
-        padding: 4px 10px;
-        border-radius: 8px;
-        font-size: 0.8em;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-size: 0.7em;
         font-weight: 500;
-        margin-left: 15px;
+        margin-left: 10px;
         white-space: nowrap;
-        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow-sm);
     }
     .topic-item .progress-indicator {
-        font-size: 0.9em;
-        color: var(--text-light);
+        font-size: 0.8em;
+        color: var(--text-secondary);
         font-weight: 400;
         margin-left: auto;
     }
     .topic-item .topic-description {
-        font-size: 0.98em;
-        color: var(--text-light);
-        line-height: 1.4;
+        font-size: 0.9em;
+        color: var(--text-secondary);
+        line-height: 1.3;
         text-align: left;
     }
-
 
     /* Contact Form */
     .contact-form {
       text-align: center;
       background: var(--bg-white);
-      padding: calc(2 * var(--spacing-unit));
-      border-radius: var(--border-radius-medium);
-      box-shadow: 0 6px 20px var(--shadow-medium);
-      max-width: 700px;
+      padding: calc(var(--spacing-unit) * 1.5);
+      border-radius: var(--border-radius-md);
+      box-shadow: var(--shadow-md);
+      max-width: 600px;
       margin: var(--spacing-unit) auto;
-      border: 1px solid rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-light);
     }
     .contact-form p {
-      font-size: 1.05em;
+      font-size: 0.95em;
       margin-bottom: var(--spacing-unit);
-      color: var(--text-dark);
+      color: var(--text-main);
     }
     .contact-form input,
     .contact-form textarea {
-      width: calc(100% - 40px);
-      padding: 14px 20px;
-      margin: 10px 0;
-      border: 1px solid #ddd;
-      border-radius: var(--border-radius-soft);
-      font-size: 1em;
-      color: var(--text-dark);
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid var(--border-light);
+      border-radius: var(--border-radius-sm);
+      font-size: 0.9em;
+      color: var(--text-main);
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
     .contact-form input:focus,
     .contact-form textarea:focus {
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(var(--primary-color), 0.15);
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
       outline: none;
     }
     .contact-form button {
-      background: var(--primary-color);
+      background: var(--accent-blue);
       color: white;
-      padding: 14px 28px;
+      padding: calc(var(--spacing-unit) * 0.8) calc(var(--spacing-unit) * 1.5);
       border: none;
-      border-radius: var(--border-radius-soft);
+      border-radius: var(--border-radius-sm);
       cursor: pointer;
-      font-size: 1.1em;
+      font-size: 0.95em;
       font-weight: 600;
-      transition: background 0.3s ease, transform 0.2s ease;
+      transition: background 0.2s ease, transform 0.1s ease;
       margin-top: var(--spacing-unit);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--shadow-sm);
     }
     .contact-form button:hover {
-      background: var(--secondary-color);
+      background: var(--primary-dark);
       transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      box-shadow: var(--shadow-md);
     }
 
     /* Footer */
     footer {
-      background: var(--text-dark); /* Fondo oscuro para el footer */
+      background: var(--primary-dark);
       color: white;
       text-align: center;
-      padding: calc(2 * var(--spacing-unit)) var(--spacing-unit);
+      padding: calc(var(--spacing-unit) * 1.5) var(--spacing-unit);
       margin-top: auto;
-      font-size: 0.9em;
+      font-size: 0.85em;
       box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    }
+    footer .footer-links {
+        margin-bottom: var(--spacing-unit);
     }
     footer .footer-links a {
         color: white;
         text-decoration: none;
-        margin: 0 15px;
+        margin: 0 calc(var(--spacing-unit) * 0.8);
         font-weight: 400;
         transition: color 0.2s ease;
     }
     footer .footer-links a:hover {
-        color: var(--secondary-color);
+        color: var(--accent-green);
+    }
+    footer .social-icons {
+        margin-top: var(--spacing-unit);
+        display: flex;
+        justify-content: center;
+        gap: var(--spacing-unit);
+        flex-wrap: wrap;
+    }
+    footer .social-icons a {
+        color: white;
+        font-size: 1.6em;
+        transition: color 0.2s ease, transform 0.2s ease;
+    }
+    footer .social-icons a:hover {
+        color: var(--accent-green);
+        transform: translateY(-2px);
     }
     footer .payment-logos {
         margin-top: var(--spacing-unit);
         display: flex;
         justify-content: center;
-        gap: 15px;
+        gap: calc(var(--spacing-unit) * 0.8);
         flex-wrap: wrap;
     }
     footer .payment-logos img {
-        height: 30px;
-        filter: grayscale(100%) invert(100%); /* Make logos white for dark background */
-        opacity: 0.8;
+        height: 25px;
+        filter: grayscale(100%) brightness(200%); /* Make logos white */
+        opacity: 0.9;
         transition: opacity 0.2s ease;
     }
     footer .payment-logos img:hover {
@@ -726,148 +791,148 @@
     }
     footer .copyright {
         margin-top: var(--spacing-unit);
-        font-size: 0.85em;
+        font-size: 0.8em;
         color: rgba(255, 255, 255, 0.7);
     }
 
     /* Quiz Styles */
     #quiz-container {
       background: var(--bg-white);
-      max-width: 650px;
-      margin: calc(3 * var(--spacing-unit)) auto;
-      padding: calc(2.5 * var(--spacing-unit));
-      border-radius: var(--border-radius-medium);
-      box-shadow: 0 8px 25px var(--shadow-medium);
-      border: 1px solid rgba(0, 0, 0, 0.05);
+      max-width: 600px;
+      margin: calc(var(--spacing-unit) * 2) auto;
+      padding: calc(var(--spacing-unit) * 1.8);
+      border-radius: var(--border-radius-md);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-light);
     }
     #quiz-container h2 {
-      color: var(--primary-color);
-      margin-bottom: calc(1.8 * var(--spacing-unit));
+      color: var(--primary-dark);
+      margin-bottom: calc(var(--spacing-unit) * 1.2);
       text-align: center;
-      font-size: 2.5em;
+      font-size: 2.2em;
       font-weight: 700;
     }
     .question {
-      margin-bottom: calc(1.5 * var(--spacing-unit));
+      margin-bottom: var(--spacing-unit);
       font-weight: 600;
-      font-size: 1.3em;
-      color: var(--text-dark);
+      font-size: 1.1em;
+      color: var(--text-main);
       text-align: center;
     }
     .options {
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 10px;
     }
     .options button {
       width: 100%;
-      padding: 14px;
-      background: var(--primary-color);
+      padding: 12px;
+      background: var(--accent-blue);
       color: white;
       border: none;
-      border-radius: var(--border-radius-soft);
+      border-radius: var(--border-radius-sm);
       cursor: pointer;
-      font-size: 1.05em;
+      font-size: 0.95em;
       font-weight: 500;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       text-align: center;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--shadow-sm);
     }
     .options button:hover {
-      background: var(--secondary-color);
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
     }
-    /* Result Styles */
+
+    /* Quiz Result Display */
     #result-message {
       font-weight: 600;
       text-align: center;
-      margin-bottom: 1.5rem;
-      color: var(--primary-color);
-      font-size: 1.5em;
-      background: #e3f2fd;
-      padding: 1.2 * var(--spacing-unit);
-      border-radius: var(--border-radius-soft);
-      border-left: 6px solid var(--secondary-color);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: var(--spacing-unit);
+      color: var(--primary-dark);
+      font-size: 1.2em;
+      background: #e6f7ff; /* Light blue */
+      padding: var(--spacing-unit);
+      border-radius: var(--border-radius-sm);
+      border-left: 5px solid var(--accent-blue);
+      box-shadow: var(--shadow-sm);
     }
-    /* ADHD Recommendations */
     #tdah-warning {
-      margin-top: calc(2.5 * var(--spacing-unit));
-      padding: 1.5rem;
-      background-color: #fff8e1; /* Amarillo muy suave */
-      border-radius: var(--border-radius-soft);
-      color: #b35900;
+      margin-top: calc(var(--spacing-unit) * 1.5);
+      padding: var(--spacing-unit);
+      background-color: #fffacd; /* Light yellow */
+      border-radius: var(--border-radius-sm);
+      color: #b8860b;
       font-weight: 500;
-      max-width: 750px;
+      max-width: 700px;
       margin-left: auto;
       margin-right: auto;
-      border-left: 6px solid var(--accent-color);
-      font-size: 1.1em;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-left: 5px solid #ffd700; /* Gold */
+      font-size: 0.95em;
+      box-shadow: var(--shadow-sm);
     }
     #study-advice {
-      max-width: 750px;
-      margin: 0 auto calc(2 * var(--spacing-unit)) auto;
+      max-width: 700px;
+      margin: var(--spacing-unit) auto calc(var(--spacing-unit) * 1.5) auto;
       font-weight: 500;
-      color: var(--text-dark);
-      padding: 1.5rem;
-      background: #e8f5e9; /* Verde muy suave */
-      border-radius: var(--border-radius-soft);
+      color: var(--text-main);
+      padding: var(--spacing-unit);
+      background: #e6ffe6; /* Light green */
+      border-radius: var(--border-radius-sm);
       text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      border-left: 6px solid var(--primary-color);
-      font-size: 1.1em;
+      box-shadow: var(--shadow-sm);
+      border-left: 5px solid var(--accent-green);
+      font-size: 0.95em;
     }
 
-    /* Progress Bar Styles */
+    /* Progress Bars */
     .progress-bar-container {
       width: 100%;
-      background-color: #e0e0e0;
-      border-radius: var(--border-radius-soft);
+      background-color: var(--border-light);
+      border-radius: var(--border-radius-sm);
       overflow: hidden;
-      margin-bottom: calc(1.2 * var(--spacing-unit));
-      height: 30px;
+      margin-bottom: var(--spacing-unit);
+      height: 25px;
       position: relative;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
     }
     .progress-bar-fill {
       height: 100%;
-      background-color: var(--secondary-color);
+      background-color: var(--accent-green);
       width: 0%;
-      border-radius: var(--border-radius-soft) 0 0 var(--border-radius-soft);
+      border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm);
       transition: width 0.5s ease-in-out;
     }
     .progress-text {
       position: absolute;
       width: 100%;
       text-align: center;
-      line-height: 30px;
-      color: var(--text-dark);
+      line-height: 25px;
+      color: var(--primary-dark);
       font-weight: 500;
-      font-size: 1em;
+      font-size: 0.9em;
     }
 
     /* Lesson Content Display */
     #lesson-content-display {
         background: var(--bg-white);
         max-width: 900px;
-        margin: calc(3 * var(--spacing-unit)) auto;
-        padding: calc(2 * var(--spacing-unit));
-        border-radius: var(--border-radius-medium);
-        box-shadow: 0 10px 30px var(--shadow-medium);
-        min-height: 500px;
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        margin: calc(var(--spacing-unit) * 2) auto;
+        padding: calc(var(--spacing-unit) * 1.5);
+        border-radius: var(--border-radius-md);
+        box-shadow: var(--shadow-md);
+        min-height: 450px;
+        border: 1px solid var(--border-light);
     }
     .back-button {
       background: none;
       border: none;
-      color: var(--primary-color);
-      font-size: 1.1em;
+      color: var(--primary-dark);
+      font-size: 1em;
       font-weight: 500;
       cursor: pointer;
-      padding: 6px 12px;
-      border-radius: var(--border-radius-soft);
+      padding: 6px 10px;
+      border-radius: var(--border-radius-sm);
       transition: all 0.2s ease;
       margin-bottom: var(--spacing-unit);
       display: inline-flex;
@@ -875,22 +940,22 @@
       gap: 5px;
     }
     .back-button:hover {
-      background: rgba(var(--primary-color), 0.1);
+      background: rgba(var(--accent-blue), 0.1);
       transform: translateX(-3px);
     }
     #lesson-material h3 {
-        color: var(--primary-color);
-        font-size: 1.8em;
-        margin-top: calc(1.5 * var(--spacing-unit));
-        margin-bottom: var(--spacing-unit);
+        color: var(--primary-dark);
+        font-size: 1.5em;
+        margin-top: var(--spacing-unit);
+        margin-bottom: var(--spacing-unit) * 0.8;
         font-weight: 600;
-        border-bottom: 1px solid rgba(var(--primary-color), 0.1);
-        padding-bottom: 5px;
+        border-bottom: 1px solid var(--border-light);
+        padding-bottom: 4px;
     }
     #lesson-material p {
-        font-size: 1.05em;
-        margin-bottom: 1.4em;
-        color: var(--text-dark);
+        font-size: 0.95em;
+        margin-bottom: var(--spacing-unit);
+        color: var(--text-main);
         text-align: justify;
     }
     #lesson-material video,
@@ -900,51 +965,131 @@
         height: auto;
         display: block;
         margin: var(--spacing-unit) auto;
-        border-radius: var(--border-radius-soft);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border-radius: var(--border-radius-sm);
+        box-shadow: var(--shadow-sm);
     }
     #lesson-material textarea {
-        width: calc(100% - 40px);
-        padding: 15px 20px;
-        border: 1px solid #ddd;
-        border-radius: var(--border-radius-soft);
-        font-family: 'Poppins', sans-serif;
-        font-size: 1em;
-        min-height: 120px;
-        margin-top: 15px;
-        box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--border-light);
+        border-radius: var(--border-radius-sm);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.9em;
+        min-height: 100px;
+        margin-top: 12px;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         resize: vertical;
     }
     #lesson-material .interactive-game-placeholder {
         background-color: #e0f7fa;
-        border: 2px dashed var(--secondary-color);
-        padding: calc(2.5 * var(--spacing-unit));
+        border: 2px dashed var(--accent-blue);
+        padding: calc(var(--spacing-unit) * 1.5);
         text-align: center;
         font-style: italic;
-        color: var(--text-light);
-        border-radius: var(--border-radius-soft);
-        margin: calc(1.5 * var(--spacing-unit)) 0;
-        font-size: 1.15em;
+        color: var(--text-secondary);
+        border-radius: var(--border-radius-sm);
+        margin: var(--spacing-unit) 0;
+        font-size: 1em;
         font-weight: 400;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        box-shadow: var(--shadow-sm);
+    }
+    #lesson-material .lesson-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: calc(var(--spacing-unit) * 1.5);
+        flex-wrap: wrap;
+        justify-content: center;
     }
     #lesson-material button {
-        background: var(--accent-color);
+        background: var(--accent-blue);
         color: white;
-        padding: 12px 25px;
+        padding: 10px 20px;
         border: none;
-        border-radius: var(--border-radius-soft);
+        border-radius: var(--border-radius-sm);
         cursor: pointer;
-        font-size: 1.05em;
+        font-size: 0.95em;
         font-weight: 600;
-        transition: background 0.3s ease, transform 0.2s ease;
-        margin-top: calc(1.5 * var(--spacing-unit));
-        box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+        transition: background 0.2s ease, transform 0.1s ease;
+        box-shadow: var(--shadow-sm);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
     }
     #lesson-material button:hover {
-        background: #ffaa00;
+        background: var(--primary-dark);
         transform: translateY(-2px);
-        box-shadow: 0 4px 10px rgba(255, 193, 7, 0.4);
+        box-shadow: var(--shadow-md);
+    }
+    #lesson-material .gemini-output {
+        margin-top: calc(var(--spacing-unit) * 1.5);
+        padding: var(--spacing-unit);
+        background: #e6ffe6;
+        border-radius: var(--border-radius-sm);
+        border-left: 5px solid var(--accent-green);
+        box-shadow: var(--shadow-sm);
+        color: var(--text-main);
+        font-size: 0.9em;
+        line-height: 1.5;
+        text-align: left;
+    }
+    #lesson-material .gemini-output h4 {
+        color: var(--primary-dark);
+        font-size: 1.1em;
+        margin-top: 0;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+
+    /* Blog Section specific styles */
+    #blog-section .blog-actions {
+        text-align: center;
+        margin-top: calc(var(--spacing-unit) * 1.5);
+        margin-bottom: calc(var(--spacing-unit) * 1.5);
+    }
+    #blog-section .blog-actions button {
+        background: var(--accent-blue);
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: var(--border-radius-sm);
+        cursor: pointer;
+        font-size: 0.95em;
+        font-weight: 600;
+        transition: background 0.2s ease, transform 0.1s ease;
+        box-shadow: var(--shadow-sm);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    #blog-section .blog-actions button:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+    #blog-ideas-output {
+        margin-top: calc(var(--spacing-unit) * 1.5);
+        padding: var(--spacing-unit);
+        background: #e6f7ff;
+        border-radius: var(--border-radius-sm);
+        border-left: 5px solid var(--accent-blue);
+        box-shadow: var(--shadow-sm);
+        color: var(--text-main);
+        font-size: 0.9em;
+        line-height: 1.6;
+    }
+    #blog-ideas-output h4 {
+        color: var(--primary-dark);
+        font-size: 1.1em;
+        margin-top: 0;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+    #blog-ideas-output ul {
+        list-style: disc;
+        padding-left: 18px;
+    }
+    #blog-ideas-output li {
+        margin-bottom: 8px;
     }
 
     /* Custom Message Box */
@@ -953,15 +1098,16 @@
         top: var(--spacing-unit);
         left: 50%;
         transform: translateX(-50%);
-        background-color: var(--primary-color);
+        background-color: var(--primary-dark);
         color: white;
-        padding: 14px 28px;
-        border-radius: var(--border-radius-soft);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        padding: 12px 24px;
+        border-radius: var(--border-radius-sm);
+        box-shadow: var(--shadow-md);
         z-index: 2000;
         opacity: 0;
         transition: opacity 0.3s ease-in-out;
         font-weight: 500;
+        font-size: 0.9em;
     }
     #custom-message.show {
         opacity: 1;
@@ -974,7 +1120,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
+      background-color: rgba(0, 0, 0, 0.6);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -988,144 +1134,215 @@
         pointer-events: all;
     }
 
-    /* Authentication Form Styles (within modal) */
+    /* Auth Form (inside modal) */
     #auth-container {
       background: var(--bg-white);
-      max-width: 450px;
-      padding: calc(2 * var(--spacing-unit));
-      border-radius: var(--border-radius-medium);
-      box-shadow: 0 10px 30px var(--shadow-medium);
+      max-width: 400px;
+      padding: calc(var(--spacing-unit) * 1.5);
+      border-radius: var(--border-radius-md);
+      box-shadow: var(--shadow-lg);
       text-align: center;
       position: relative;
-      border: 1px solid rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-light);
     }
     #auth-container h2 {
-      color: var(--primary-color);
-      margin-bottom: calc(1.5 * var(--spacing-unit));
-      font-size: 2.2em;
+      color: var(--primary-dark);
+      margin-bottom: var(--spacing-unit);
+      font-size: 1.8em;
       font-weight: 600;
     }
     #auth-container form {
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 10px;
     }
     #auth-container input[type="email"],
     #auth-container input[type="password"] {
-      width: calc(100% - 40px);
-      padding: 14px 20px;
-      margin: 8px 0;
-      border: 1px solid #ddd;
-      border-radius: var(--border-radius-soft);
-      font-size: 1.05em;
-      color: var(--text-dark);
+      width: 100%;
+      padding: 12px;
+      margin: 6px 0;
+      border: 1px solid var(--border-light);
+      border-radius: var(--border-radius-sm);
+      font-size: 0.9em;
+      color: var(--text-main);
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
     #auth-container input[type="email"]:focus,
     #auth-container input[type="password"]:focus {
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(var(--primary-color), 0.15);
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
       outline: none;
     }
     #auth-container button {
-      background: var(--primary-color);
+      background: var(--accent-blue);
       color: white;
-      padding: 14px 25px;
+      padding: 12px 20px;
       border: none;
-      border-radius: var(--border-radius-soft);
+      border-radius: var(--border-radius-sm);
       cursor: pointer;
-      font-size: 1.1em;
+      font-size: 1em;
       font-weight: 600;
-      transition: background 0.3s ease, transform 0.2s ease;
-      margin-top: 15px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: background 0.2s ease, transform 0.1s ease;
+      margin-top: 10px;
+      box-shadow: var(--shadow-sm);
     }
     #auth-container button:hover {
-      background: var(--secondary-color);
+      background: var(--primary-dark);
       transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      box-shadow: var(--shadow-md);
     }
     #auth-container .toggle-form-link {
-        font-size: 0.95em;
-        margin-top: var(--spacing-unit);
-        color: var(--text-light);
+        font-size: 0.85em;
+        margin-top: var(--spacing-unit) * 0.8;
+        color: var(--text-secondary);
         cursor: pointer;
         text-decoration: underline;
     }
     #auth-container .toggle-form-link:hover {
-        color: var(--primary-color);
+        color: var(--accent-blue);
     }
     .close-modal-button {
         position: absolute;
-        top: 15px;
-        right: 15px;
+        top: 10px;
+        right: 10px;
         background: none;
         border: none;
-        font-size: 1.8em;
-        color: var(--text-light);
+        font-size: 1.6em;
+        color: var(--text-secondary);
         cursor: pointer;
         transition: color 0.2s ease, transform 0.2s ease;
     }
     .close-modal-button:hover {
-        color: var(--primary-color);
+        color: var(--primary-dark);
         transform: rotate(90deg);
     }
 
-    /* New Legal Sections */
+    /* Legal Sections (Terms, Privacy) */
     .legal-section {
         background: var(--bg-white);
-        padding: calc(4 * var(--spacing-unit)) var(--spacing-unit);
-        max-width: 900px;
-        margin: calc(2 * var(--spacing-unit)) auto;
-        border-radius: var(--border-radius-medium);
-        box-shadow: 0 6px 20px var(--shadow-medium);
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        padding: calc(var(--spacing-unit) * 2);
+        max-width: 800px;
+        margin: calc(var(--spacing-unit) * 1.5) auto;
+        border-radius: var(--border-radius-md);
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border-light);
     }
     .legal-section h2 {
-        font-size: 2.2em;
-        color: var(--primary-color);
-        margin-bottom: calc(1.5 * var(--spacing-unit));
+        font-size: 2em;
+        color: var(--primary-dark);
+        margin-bottom: var(--spacing-unit);
         text-align: center;
         font-weight: 700;
     }
     .legal-section h3 {
-        font-size: 1.6em;
-        color: var(--secondary-color);
-        margin-top: calc(1.5 * var(--spacing-unit));
-        margin-bottom: calc(0.8 * var(--spacing-unit));
+        font-size: 1.4em;
+        color: var(--accent-blue);
+        margin-top: var(--spacing-unit);
+        margin-bottom: calc(var(--spacing-unit) * 0.5);
         font-weight: 600;
     }
-    .legal-section p, .legal-section ul {
-        font-size: 1em;
-        color: var(--text-dark);
-        line-height: 1.6;
-        margin-bottom: 1em;
+    .legal-section p, .legal-section ul, .legal-section ol {
+        font-size: 0.95em;
+        color: var(--text-main);
+        line-height: 1.5;
+        margin-bottom: 0.8em;
     }
-    .legal-section ul {
-        list-style: disc;
-        padding-left: 25px;
-    }
-    .legal-section ol {
-        list-style: decimal;
-        padding-left: 25px;
+    .legal-section ul, .legal-section ol {
+        padding-left: 20px;
     }
     .legal-section li {
-        margin-bottom: 0.5em;
+        margin-bottom: 0.4em;
     }
 
-    /* Responsive adjustments */
+    /* FAQ Section */
+    .faq-section {
+        background: var(--bg-light);
+        padding: calc(var(--spacing-unit) * 2);
+        max-width: 800px;
+        margin: calc(var(--spacing-unit) * 1.5) auto;
+        border-radius: var(--border-radius-md);
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border-light);
+    }
+    .faq-section h2 {
+        font-size: 2.2em;
+        color: var(--primary-dark);
+        margin-bottom: calc(var(--spacing-unit) * 1.5);
+        text-align: center;
+        font-weight: 700;
+    }
+    .faq-section h2::after {
+        background: var(--accent-blue);
+    }
+    .faq-item {
+        background: var(--bg-white);
+        border-radius: var(--border-radius-sm);
+        box-shadow: var(--shadow-sm);
+        margin-bottom: var(--spacing-unit);
+        overflow: hidden;
+        border: 1px solid var(--border-light);
+    }
+    .faq-question {
+        padding: 15px 20px;
+        background: #f8fbfc;
+        color: var(--primary-dark);
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        text-align: left;
+        border: none;
+        border-bottom: 1px solid var(--border-light);
+        transition: background 0.2s ease;
+    }
+    .faq-question:hover {
+        background: #eef2f5;
+    }
+    .faq-question .arrow {
+        font-size: 1.1em;
+        transition: transform 0.2s ease;
+    }
+    .faq-question.active .arrow {
+        transform: rotate(180deg);
+    }
+    .faq-answer {
+        padding: 0 20px;
+        background: var(--bg-white);
+        color: var(--text-main);
+        font-size: 0.9em;
+        line-height: 1.5;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+    }
+    .faq-answer.active {
+        max-height: 150px; /* Adjust as needed */
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+
+    /* Responsive Adjustments */
     @media (max-width: 900px) {
         .hero h1 {
-            font-size: 3em;
+            font-size: 2.8em;
         }
         .hero p {
-            font-size: 1.4em;
+            font-size: 1.2em;
         }
         .section h2, .section h3 {
-            font-size: 2.4em;
+            font-size: 2.2em;
+        }
+        .header-right-group {
+            gap: calc(var(--spacing-unit) * 1); /* Smaller gap for nav/auth group on slightly smaller screens */
+        }
+        nav {
+            gap: calc(var(--spacing-unit) * 0.8); /* Smaller gap for nav items */
         }
         .cards {
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         }
         .card {
             width: auto;
@@ -1138,41 +1355,49 @@
         align-items: center;
         padding: var(--spacing-unit);
       }
-      header h1 {
-        font-size: 2em;
+      .header-right-group { /* New rule for the wrapper */
+        flex-direction: column; /* Stack nav and auth vertically */
+        width: 100%; /* Take full width to align content */
+        margin-top: var(--spacing-unit);
+        gap: var(--spacing-unit); /* Space between nav and auth group */
       }
-      header .logo-container img {
-        height: 50px;
+      nav {
+        flex-direction: column; /* Stack nav links vertically */
+        width: 100%;
+        margin-top: 0; /* Handled by parent gap */
+        gap: 8px; /* Space between nav links */
       }
+      nav a, nav button {
+        font-size: 0.85em;
+        padding: 6px 10px;
+        width: 90%; /* Make nav items take most of the width */
+      }
+      .header-auth-group {
+          flex-direction: column; /* Stack auth buttons vertically */
+          width: 100%;
+          margin-top: 0; /* Already handled by parent gap */
+      }
+
       .hero {
           min-height: 400px;
-          padding: calc(4 * var(--spacing-unit)) var(--spacing-unit);
+          padding: calc(var(--spacing-unit) * 3) var(--spacing-unit);
       }
       .hero h1 {
-        font-size: 2.5em;
+        font-size: 2em;
       }
       .hero p {
-        font-size: 1.2em;
+        font-size: 1em;
       }
       .hero .hero-buttons {
           flex-direction: column;
-          gap: 15px;
-      }
-      nav {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-      }
-      nav a, nav button {
-        font-size: 0.95em;
-        padding: 6px 12px;
+          gap: 10px;
       }
       .section {
-          padding: calc(2.5 * var(--spacing-unit)) var(--spacing-unit);
-          margin-top: calc(1.5 * var(--spacing-unit));
+          padding: calc(var(--spacing-unit) * 1.5) var(--spacing-unit);
+          margin-top: var(--spacing-unit);
       }
       .section h2, .section h3 {
-        font-size: 2em;
+        font-size: 1.8em;
       }
       .section p {
           text-align: left;
@@ -1182,88 +1407,95 @@
         align-items: center;
       }
       .card, .testimonial-card, .review-card {
-        width: 90%;
+        width: 95%;
         max-width: 350px;
       }
       .contact-form input,
       .contact-form textarea {
-        width: calc(100% - 30px);
-        padding: 12px 15px;
+        width: 100%;
+        padding: 10px;
       }
-      #quiz-container, #lesson-content-display, #auth-container, .legal-section {
-        margin: calc(1.5 * var(--spacing-unit)) auto;
-        padding: calc(1.5 * var(--spacing-unit));
+      #quiz-container, #lesson-content-display, #auth-container, .legal-section, .faq-section, #blog-section {
+        margin: var(--spacing-unit) auto;
+        padding: var(--spacing-unit);
       }
       #quiz-container h2 {
-          font-size: 2.2em;
+          font-size: 1.8em;
       }
       .question {
-        font-size: 1.15em;
+        font-size: 1em;
       }
       .options button {
-            font-size: 0.95em;
-            padding: 12px;
+            font-size: 0.9em;
+            padding: 10px;
       }
       footer .footer-links a {
-          margin: 0 10px;
+          margin: 0 8px;
       }
     }
     @media (max-width: 480px) {
         header h1 {
-            font-size: 1.8em;
+            font-size: 1.4em;
+        }
+        header .tagline {
+            font-size: 0.7em;
         }
         .hero h1 {
-            font-size: 2em;
+            font-size: 1.8em;
         }
         .hero p {
-            font-size: 1em;
+            font-size: 0.9em;
         }
         .hero .hero-buttons {
-            gap: 10px;
+            gap: 8px;
         }
         .hero .hero-buttons button,
         .hero .hero-buttons a {
-            padding: 12px 25px;
-            font-size: 1em;
+            padding: 10px 20px;
+            font-size: 0.9em;
         }
         .section h2, .section h3 {
-            font-size: 1.8em;
-        }
-        .card {
-            padding: var(--spacing-unit);
-            min-height: 250px;
-        }
-        .card h3 {
             font-size: 1.6em;
         }
-        .options button {
-            font-size: 0.9em;
-            padding: 10px;
+        .card {
+            padding: calc(var(--spacing-unit) * 0.8);
+            min-height: 220px;
         }
-        #quiz-container h2 {
-            font-size: 1.8em;
-        }
-        .question {
-            font-size: 1em;
-        }
-        #result-message, #tdah-warning, #study-advice {
-            font-size: 0.95em;
-            padding: var(--spacing-unit);
-        }
-        .topic-item .topic-title {
-            font-size: 1.2em;
-        }
-        .topic-item .topic-description {
-            font-size: 0.85em;
-        }
-        .legal-section h2 {
-            font-size: 2em;
-        }
-        .legal-section h3 {
+        .card h3 {
             font-size: 1.4em;
         }
-        .legal-section p, .legal-section ul, .legal-section ol {
+        .options button {
+            font-size: 0.85em;
+            padding: 8px;
+        }
+        #quiz-container h2 {
+            font-size: 1.6em;
+        }
+        .question {
             font-size: 0.9em;
+        }
+        #result-message, #tdah-warning, #study-advice {
+            font-size: 0.85em;
+            padding: calc(var(--spacing-unit) * 0.8);
+        }
+        .topic-item .topic-title {
+            font-size: 1.1em;
+        }
+        .topic-item .topic-description {
+            font-size: 0.8em;
+        }
+        .legal-section h2, .faq-section h2, #blog-section h2 {
+            font-size: 1.8em;
+        }
+        .legal-section h3 {
+            font-size: 1.2em;
+        }
+        .legal-section p, .legal-section ul, .legal-section ol, .faq-item p {
+            font-size: 0.85em;
+        }
+        .faq-question {
+            font-size: 0.9em;
+            padding: 12px 15px;
         }
     }
   </style>
@@ -1276,7 +1508,7 @@
   <!-- Authentication Modal -->
   <div id="auth-modal-overlay" class="modal-overlay">
     <div id="auth-container">
-      <button class="close-modal-button" aria-label="Cerrar modal" onclick="window.hideAuthModal()">&times;</button>
+      <button class="close-modal-button" aria-label="Cerrar modal">&times;</button>
       <div id="login-form">
         <h2>Iniciar Sesión</h2>
         <form id="login-email-form" aria-labelledby="login-heading">
@@ -1284,7 +1516,7 @@
           <input type="password" id="login-password" placeholder="Contraseña" required autocomplete="current-password" aria-label="Contraseña" />
           <button type="submit">Iniciar Sesión</button>
         </form>
-        <p class="toggle-form-link" role="button" tabindex="0" onclick="window.toggleAuthForm('register')" onkeypress="if(event.key === 'Enter') window.toggleAuthForm('register')">¿No tienes cuenta? Regístrate</p>
+        <p class="toggle-form-link" role="button" tabindex="0" data-form-target="register">¿No tienes cuenta? Regístrate</p>
       </div>
 
       <div id="register-form" style="display: none;">
@@ -1294,7 +1526,7 @@
           <input type="password" id="register-password" placeholder="Contraseña" required autocomplete="new-password" aria-label="Contraseña" />
           <button type="submit">Registrarse</button>
         </form>
-        <p class="toggle-form-link" role="button" tabindex="0" onclick="window.toggleAuthForm('login')" onkeypress="if(event.key === 'Enter') window.toggleAuthForm('login')">¿Ya tienes cuenta? Inicia Sesión</p>
+        <p class="toggle-form-link" role="button" tabindex="0" data-form-target="login">¿Ya tienes cuenta? Inicia Sesión</p>
       </div>
     </div>
   </div>
@@ -1309,33 +1541,46 @@
   <div id="main-content" role="main">
     <header>
       <div class="logo-container">
-        <img src="Blue Modern Brain Genius And Technology Smart Mind Business Logo Template.png-621ecb34-e983-4691-968f-9f0a33cae13c" alt="Logo de MultiGenio, cerebro con dos hemisferios" />
+        <img src="https://placehold.co/100x100/ecf0f1/2c3e50?text=Logo" alt="Logo de MultiGenio, cerebro con dos hemisferios" />
         <div>
             <h1>MultiGenio</h1>
-            <p>Tu aliado en el aprendizaje</p>
+            <p class="tagline">Tu aliado en el aprendizaje</p>
         </div>
       </div>
-      <div id="user-id-display" style="display: none;" aria-live="polite"></div>
-    </header>
 
-    <nav aria-label="Navegación principal">
-      <a href="#que-es">¿Qué es?</a>
-      <a href="#materias">Materias</a>
-      <a href="#beneficios">Beneficios</a>
-      <a href="#testimonios">Testimonios</a>
-      <a href="#contacto">Contacto</a>
-      <a href="#" id="auth-nav-link" onclick="window.showAuthModal()">Iniciar Sesión / Registrarse</a>
-      <button id="guest-mode-button" aria-label="Entrar en modo invitado">Modo Invitado</button>
-      <a href="#" id="quiz-nav-link" onclick="window.showQuestion()">Cuestionario</a>
-      <button id="logout-button" aria-label="Cerrar sesión">Cerrar Sesión</button>
-    </nav>
+      <div class="header-right-group"> <!-- New wrapper for nav and auth -->
+        <nav aria-label="Navegación principal">
+          <a href="#que-es">¿Qué es?</a>
+          <a href="#materias">Materias</a>
+          <a href="#beneficios">Beneficios</a>
+          <a href="#testimonios">Testimonios</a>
+          <a href="#" id="nav-faq">FAQ</a> 
+          <a href="#contacto">Contacto</a>
+          <a href="#" id="nav-blog">Blog</a> 
+        </nav>
+        
+        <div class="header-auth-group">
+          <span id="user-display-name" style="display: none;"></span>
+          <a href="#" id="auth-nav-link" class="auth-link-text">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span>Iniciar Sesión / Registrarse</span>
+          </a>
+          <button id="guest-mode-button" aria-label="Entrar en modo invitado">Modo Invitado</button>
+          <a href="#" id="quiz-nav-link">Cuestionario</a>
+          <button id="logout-button" aria-label="Cerrar sesión">Cerrar Sesión</button>
+        </div>
+      </div>
+    </header>
 
     <section class="hero" aria-label="Sección principal de bienvenida">
       <h1>Tu tutor virtual inteligente para Matemáticas, Inglés y Lengua</h1>
       <p>Un método de aprendizaje dinámico, adaptado a tu ritmo y estilo, diseñado para potenciar tu concentración y comprensión.</p>
       <div class="hero-buttons">
           <a href="#materias">Explorar Materias</a>
-          <button onclick="window.showQuestion()">Haz el Cuestionario</button>
+          <button id="hero-quiz-button">Haz el Cuestionario</button>
       </div>
     </section>
 
@@ -1347,22 +1592,22 @@
 
     <section class="section" id="que-es" aria-labelledby="que-es-heading">
       <h2 id="que-es-heading">¿Qué es MultiGenio?</h2>
-      <img src="https://placehold.co/100x100/eef5fb/3b5998?text=IA" alt="Icono de inteligencia artificial" />
+      <img src="https://placehold.co/100x100/ecf0f1/2c3e50?text=IA" alt="Icono de inteligencia artificial" />
       <p>
         <strong>MultiGenio</strong> es una innovadora plataforma educativa diseñada para transformar la experiencia de aprendizaje. Nos especializamos en ofrecer un **tutor virtual inteligente** que se adapta de manera dinámica a las necesidades individuales de cada estudiante, maximizando su potencial en materias clave como **Matemáticas, Inglés y Lengua Española**. Nuestra misión es hacer el aprendizaje accesible, efectivo y estimulante para todos, incluyendo aquellos con **TDAH** o dificultades de atención, proporcionando herramientas y estrategias personalizadas que fomentan la concentración y la comprensión profunda.
       </p>
 
       <h3>🧠 La Inteligencia Artificial en Acción: Un Enfoque Adaptativo y Personalizado</h3>
-      <img src="https://placehold.co/100x100/eef5fb/3b5998?text=Adaptación" alt="Icono de adaptación" />
+      <img src="https://placehold.co/100x100/ecf0f1/2c3e50?text=Adaptación" alt="Icono de adaptación" />
       <p>
-        En el corazón de MultiGenio reside una **Inteligencia Artificial avanzada** que va más allá de los métodos tradicionales. Nuestra IA analiza un conjunto de datos clave: desde tus respuestas en el cuestionario inicial, el progreso en los juegos interactivos, el tiempo que dedicas a cada tema, hasta tus preferencias de material didáctico (visual, auditivo, de lectura/escritura, kinestésico). Con esta información, el sistema es capaz de **ajustar dinámicamente la dificultad de los ejercicios, priorizar tipos de contenido específicos y sugerir rutas de aprendizaje alternativas** que se alinean perfectamente con tu estilo.
+        En el corazón de MultiGenio reside una una **Inteligencia Artificial avanzada** que va más allá de los métodos tradicionales. Nuestra IA analiza un conjunto de datos clave: desde tus respuestas en el cuestionario inicial, el progreso en los juegos interactivos, el tiempo que dedicas a cada tema, hasta tus preferencias de material didáctico (visual, auditivo, de lectura/escritura, kinestésico). Con esta información, el sistema es capaz de **ajustar dinámicamente la dificultad de los ejercicios, priorizar tipos de contenido específicos y sugerir rutas de aprendizaje alternativas** que se alinean perfectamente con tu estilo.
       </p>
       <p>
         Por ejemplo, si la IA detecta que un estudiante visual tiene dificultades con un concepto particular, podría ofrecer un **video explicativo animado**, un **mapa mental interactivo** o diagramas claros antes de proponer ejercicios de texto. Para alumnos con TDAH, la plataforma puede fragmentar lecciones extensas en **módulos más cortos y manejables**, incorporar **micro-descansos activos** con ejercicios de concentración, o activar **alertas visuales/auditivas sutiles** para ayudar a mantener el enfoque. Este enfoque garantiza una experiencia educativa que se siente hecha a la medida, minimizando las distracciones y potenciando al máximo la concentración y el disfrute del aprendizaje.
       </p>
 
       <h2>📋 Cuestionario Inicial: Tu Huella de Aprendizaje para una Personalización Óptima</h2>
-      <img src="https://placehold.co/100x100/eef5fb/3b5998?text=Quiz" alt="Icono de cuestionario" />
+      <img src="https://placehold.co/100x100/ecf0f1/2c3e50?text=Quiz" alt="Icono de cuestionario" />
       <p>
         Antes de iniciar tu viaje con MultiGenio, te invitamos a completar un **cuestionario interactivo y estratégico**. Este no es un simple test de conocimientos; es una herramienta fundamental para que nuestra IA comprenda tu perfil de aprendizaje único. Las preguntas están meticulosamente diseñadas para identificar tu estilo de aprendizaje predominante y posibles indicios relacionados con el **Trastorno por Déficit de Atención e Hiperactividad (TDAH)**. Este perfil inicial es la base sobre la cual nuestra IA construye y personaliza cada faceta de tu trayectoria de aprendizaje en MultiGenio, garantizando una experiencia óptima y libre de frustraciones.
       </p>
@@ -1372,24 +1617,24 @@
       <h2 id="materias-heading">Explora Nuestras Materias</h2>
       <p class="text-center">En MultiGenio, ofrecemos un currículo completo y adaptado para que domines las asignaturas más importantes.</p>
       <div class="cards">
-        <div class="card clickable-card" role="button" tabindex="0" onclick="window.showSubject('matematicas')" onkeypress="if(event.key === 'Enter') window.showSubject('matematicas')">
-          <img src="https://placehold.co/90x90/eef5fb/3b5998?text=MATH" alt="Icono de calculadora para Matemáticas" />
+        <div class="card clickable-card" role="button" tabindex="0" data-subject="matematicas">
+          <img src="https://placehold.co/90x90/ecf0f1/2c3e50?text=MATH" alt="Icono de calculadora para Matemáticas" />
           <h3>Matemáticas</h3>
           <p>Desde los fundamentos de aritmética hasta el álgebra avanzada para secundaria. Aprende con juegos mentales, visualizaciones interactivas y lógica adaptada a tu ritmo de aprendizaje.</p>
           <div class="card-overlay">
             <span>¡Acceder!</span>
           </div>
         </div>
-        <div class="card clickable-card" role="button" tabindex="0" onclick="window.showSubject('lengua')" onkeypress="if(event.key === 'Enter') window.showSubject('lengua')">
-          <img src="https://placehold.co/90x90/eef5fb/3b5998?text=LENG" alt="Icono de libro para Lengua" />
+        <div class="card clickable-card" role="button" tabindex="0" data-subject="lengua">
+          <img src="https://placehold.co/90x90/ecf0f1/2c3e50?text=LENG" alt="Icono de libro para Lengua" />
           <h3>Lengua</h3>
           <p>Domina la morfología, sintaxis, ortografía y redacción con ejemplos prácticos, ejercicios creativos y explicaciones que facilitan la memorización y comprensión profunda.</p>
           <div class="card-overlay">
             <span>¡Acceder!</span>
           </div>
         </div>
-        <div class="card clickable-card" role="button" tabindex="0" onclick="window.showSubject('ingles')" onkeypress="if(event.key === 'Enter') window.showLessonContent('ingles', 'basic-vocabulary')">
-          <img src="https://placehold.co/90x90/eef5fb/3b5998?text=ENG" alt="Icono de bandera de Reino Unido para Inglés" />
+        <div class="card clickable-card" role="button" tabindex="0" data-subject="ingles">
+          <img src="https://placehold.co/90x90/ecf0f1/2c3e50?text=ENG" alt="Icono de bandera de Reino Unido para Inglés" />
           <h3>Inglés</h3>
           <p>Desde el nivel básico A1 hasta el intermedio B1: expande tu vocabulario, perfecciona tu gramática, mejora tu comprensión auditiva y fluidez oral con contenido visual y audios interactivos.</p>
           <div class="card-overlay">
@@ -1403,10 +1648,10 @@
       <h2 id="beneficios-heading">¿Por qué elegir MultiGenio?</h2>
       <p class="text-center">Descubre las ventajas que te ofrece nuestra plataforma para un aprendizaje verdaderamente efectivo y motivador.</p>
       <ul>
-        <li><img src="https://img.icons8.com/color/48/star--v1.png" alt="Icono de estrella"/> Explicaciones adaptadas a estudiantes con TDA/TDAH y dificultades de atención.</li>
-        <li><img src="https://img.icons8.com/color/48/video-camera.png" alt="Icono de cámara de video"/> Contenido multimedia enriquecido: videos, ejemplos claros y material creativo.</li>
-        <li><img src="https://img.icons8.com/color/48/brain.png" alt="Icono de cerebro"/> Aprendizaje 100% personalizado, a tu propio ritmo y sin presiones.</li>
-        <li><img src="https://img.icons8.com/color/48/graduation-cap.png" alt="Icono de gorro de graduación"/> Una herramienta ideal para el apoyo educativo en casa, para padres, docentes y alumnos.</li>
+        <li><img src="https://img.icons8.com/ios-filled/50/2c3e50/star--v1.png" alt="Icono de estrella"/> Explicaciones adaptadas a estudiantes con TDA/TDAH y dificultades de atención.</li>
+        <li><img src="https://img.icons8.com/ios-filled/50/2c3e50/video-camera.png" alt="Icono de cámara de video"/> Contenido multimedia enriquecido: videos, ejemplos claros y material creativo.</li>
+        <li><img src="https://img.icons8.com/ios-filled/50/2c3e50/brain.png" alt="Icono de cerebro"/> Aprendizaje 100% personalizado, a tu propio ritmo y sin presiones.</li>
+        <li><img src="https://img.icons8.com/ios-filled/50/2c3e50/graduation-cap.png" alt="Icono de gorro de graduación"/> Una herramienta ideal para el apoyo educativo en casa, para padres, docentes y alumnos.</li>
       </ul>
     </section>
 
@@ -1415,19 +1660,19 @@
       <p class="text-center">Las experiencias reales de quienes ya están transformando su aprendizaje con MultiGenio.</p>
       <div class="cards testimonials-grid">
         <div class="card testimonial-card">
-          <img src="https://placehold.co/70x70/4CAF50/ffffff?text=LG" alt="Foto de perfil de Laura G." />
+          <img src="https://placehold.co/70x70/2ecc71/ffffff?text=LG" alt="Foto de perfil de Laura G." />
           <h3>Laura G.</h3>
           <p>"¡MultiGenio cambió por completo mi forma de ver las matemáticas! Siempre me frustraba, pero con sus explicaciones visuales y los juegos interactivos, ahora entiendo los conceptos más complejos de una forma mucho más sencilla y divertida. ¡Lo recomiendo a todos mis compañeros!"</p>
           <div class="rating">⭐⭐⭐⭐⭐</div>
         </div>
         <div class="card testimonial-card">
-          <img src="https://placehold.co/70x70/4CAF50/ffffff?text=PR" alt="Foto de perfil de Pablo R." />
+          <img src="https://placehold.co/70x70/2ecc71/ffffff?text=PR" alt="Foto de perfil de Pablo R." />
           <h3>Pablo R. (Padre)</h3>
           <p>"Como padre de un niño con TDAH, encontrar MultiGenio ha sido una verdadera bendición. La paciencia, el enfoque adaptado y las herramientas específicas que ofrece la plataforma son increíbles. Mi hijo está más motivado que nunca y aprendiendo sin el estrés de antes. ¡Estamos encantados!"</p>
           <div class="rating">⭐⭐⭐⭐⭐</div>
         </div>
         <div class="card testimonial-card">
-          <img src="https://placehold.co/70x70/4CAF50/ffffff?text=SM" alt="Foto de perfil de Sofía M." />
+          <img src="https://placehold.co/70x70/2ecc71/ffffff?text=SM" alt="Foto de perfil de Sofía M." />
           <h3>Sofía M. (Profesora)</h3>
           <p>"He tenido la oportunidad de probar muchas herramientas educativas, pero MultiGenio es única por su profunda capacidad de adaptación. La Inteligencia Artificial es una maravilla para detectar y apoyar a cada alumno según su estilo de aprendizaje y necesidades. La recomiendo sin dudarlo a todos mis colegas y sus estudiantes."</p>
           <div class="rating">⭐⭐⭐⭐⭐</div>
@@ -1441,7 +1686,7 @@
             <!-- Las reseñas se cargarán aquí dinámicamente desde Firestore -->
         </div>
         <div id="review-submit-area">
-            <h3 style="color: var(--primary-color); margin-top: 40px; font-size: 2em; font-weight: 600;">Deja tu Reseña</h3>
+            <h3 style="color: var(--primary-dark); margin-top: calc(var(--spacing-unit) * 2); font-size: 1.8em; font-weight: 600; text-align: center;">Deja tu Reseña</h3>
             <p class="review-submit-info" id="review-auth-message">Inicia sesión para poder dejar una reseña.</p>
             <form id="review-form" class="review-form" style="display: none;" aria-labelledby="review-form-heading">
                 <label for="review-text">Tu Experiencia:</label>
@@ -1462,16 +1707,100 @@
         </div>
     </section>
 
+    <section id="faq" class="faq-section" aria-labelledby="faq-heading">
+      <h2 id="faq-heading">Preguntas Frecuentes</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question">
+            ¿Cómo funciona la personalización de MultiGenio?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>MultiGenio utiliza un cuestionario inicial y el seguimiento de tu progreso en la plataforma para identificar tu estilo de aprendizaje (visual, auditivo, lectura/escritura, kinestésico) y posibles indicios de TDAH. Con esta información, la IA adapta el tipo de contenido (videos, audios, textos, ejercicios interactivos) y el ritmo de las lecciones para maximizar tu concentración y comprensión.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            ¿Es MultiGenio adecuado para estudiantes con TDAH?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>Sí, MultiGenio está diseñado con características que benefician específicamente a estudiantes con TDAH. Esto incluye lecciones fragmentadas, micro-descansos activos, alertas sutiles para mantener el enfoque y materiales didácticos que se ajustan a estilos de aprendizaje diversos para minimizar las distracciones y potenciar la absorción del conocimiento.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            ¿Qué materias puedo aprender en MultiGenio?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>Actualmente, MultiGenio se enfoca en materias clave como Matemáticas, Lengua Española e Inglés. Estamos constantemente trabajando para expandir nuestro catálogo de asignaturas en el futuro.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            ¿Necesito una cuenta para usar MultiGenio?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>Puedes explorar una parte de la plataforma en modo invitado, pero para acceder a la personalización completa, guardar tu progreso y disfrutar de todas las funcionalidades, es necesario registrarse y crear una cuenta. El registro es rápido y sencillo.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            ¿Cómo puedo dejar una reseña sobre MultiGenio?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>Para dejar una reseña, simplemente inicia sesión en tu cuenta. Luego, ve a la sección "Opiniones de Nuestros Usuarios" y encontrarás un formulario donde podrás compartir tu experiencia y calificar la plataforma. ¡Valoramos mucho tu opinión!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="blog-section" style="display: none;" aria-labelledby="blog-heading">
+      <h2 id="blog-heading">Nuestro Blog</h2>
+      <p class="text-center">Mantente al día con nuestros últimos artículos, consejos de estudio y novedades educativas.</p>
+      <div class="blog-actions">
+        <button id="generate-blog-ideas-button">
+          ✨ Generar Ideas para el Blog
+        </button>
+      </div>
+      <div id="blog-ideas-output" style="display: none;">
+        <h4>Ideas generadas:</h4>
+        <ul id="blog-ideas-list"></ul>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <img src="https://placehold.co/150x100/ecf0f1/2c3e50?text=Artículo+1" alt="Imagen de un blog con la etiqueta Artículo 1" />
+          <h3>5 Estrategias para Mejorar la Concentración</h3>
+          <p>Descubre técnicas probadas para potenciar tu enfoque y productividad en el estudio diario.</p>
+          <a href="#" class="btn-read-more" style="color: var(--accent-blue); text-decoration: none; font-weight: 600; margin-top: auto;">Leer más →</a>
+        </div>
+        <div class="card">
+          <img src="https://placehold.co/150x100/ecf0f1/2c3e50?text=Artículo+2" alt="Imagen de un blog con la etiqueta Artículo 2" />
+          <h3>El Poder del Aprendizaje Adaptativo</h3>
+          <p>Explora cómo la IA puede transformar tu experiencia educativa y ajustarse a tus necesidades únicas.</p>
+          <a href="#" class="btn-read-more" style="color: var(--accent-blue); text-decoration: none; font-weight: 600; margin-top: auto;">Leer más →</a>
+        </div>
+        <div class="card">
+          <img src="https://placehold.co/150x100/ecf0f1/2c3e50?text=Artículo+3" alt="Imagen de un blog con la etiqueta Artículo 3" />
+          <h3>Matemáticas Divertidas: Juegos para Aprender</h3>
+          <p>Conoce los mejores juegos y actividades que hacen que aprender matemáticas sea una aventura.</p>
+          <a href="#" class="btn-read-more" style="color: var(--accent-blue); text-decoration: none; font-weight: 600; margin-top: auto;">Leer más →</a>
+        </div>
+      </div>
+    </section>
 
     <section class="section" id="contacto" aria-labelledby="contacto-heading">
       <h2 id="contacto-heading">Contacta con Nosotros</h2>
       <div class="contact-form">
         <p>¿Quieres probar MultiGenio o tienes dudas? Envíanos un mensaje y te responderemos a la brevedad posible.</p>
         <form>
-          <input type="text" placeholder="Tu nombre" required aria-label="Tu nombre" /><br />
-          <input type="email" placeholder="Tu correo electrónico" required aria-label="Tu correo electrónico" /><br />
-          <textarea placeholder="Tu mensaje..." rows="5" required aria-label="Tu mensaje"></textarea><br />
-          <button type="submit">Enviar mensaje</button>
+          <input type="text" id="contact-name" placeholder="Tu nombre" required aria-label="Tu nombre" /><br />
+          <input type="email" id="contact-email" placeholder="Tu correo electrónico" required aria-label="Tu correo electrónico" /><br />
+          <textarea id="contact-message" placeholder="Tu mensaje..." rows="5" required aria-label="Tu mensaje"></textarea><br />
+          <button type="submit" id="contact-submit-button">Enviar mensaje</button>
         </form>
       </div>
     </section>
@@ -1486,9 +1815,23 @@
 
     <footer>
       <div class="footer-links">
-          <a href="#terminos">Términos y Condiciones</a>
-          <a href="#politicas">Política de Privacidad</a>
+          <a href="#" id="footer-terminos">Términos y Condiciones</a>
+          <a href="#" id="footer-politicas">Política de Privacidad</a>
           <a href="#contacto">Contacto</a>
+      </div>
+      <div class="social-icons">
+          <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+          </a>
+          <a href="https://twitter.com" target="_blank" aria-label="Twitter">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+          </a>
+          <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          </a>
+          <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+          </a>
       </div>
       <div class="payment-logos">
           <img src="https://www.svgrepo.com/show/303108/visa-logo.svg" alt="Logo de Visa" />
@@ -1501,8 +1844,8 @@
   </div>
 
   <div id="matematicas-page" class="subject-page section" style="display: none;" role="main" aria-labelledby="matematicas-heading">
-    <button class="back-button" onclick="window.showMainContent()" aria-label="Volver al inicio">← Volver al inicio</button>
-    <h1 id="matematicas-heading" style="text-align: center; color: var(--primary-color);">📊 Matemáticas</h1>
+    <button class="back-button" data-target="main" aria-label="Volver al inicio">← Volver al inicio</button>
+    <h1 id="matematicas-heading" style="text-align: center; color: var(--primary-dark);">📊 Matemáticas</h1>
     <div id="math-personalized-intro" aria-live="polite"></div>
 
     <div class="progress-bar-container" id="matematicas-progress-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso en Matemáticas">
@@ -1513,42 +1856,42 @@
     <div class="topic-list" aria-label="Temario de Matemáticas">
       <h2>Temario por niveles</h2>
       
-      <div class="topic-item" role="button" tabindex="0" onclick="window.showLessonContent('matematicas', 'operaciones-basicas')" onkeypress="if(event.key === 'Enter') window.showLessonContent('matematicas', 'operaciones-basicas')">
+      <div class="topic-item" role="button" tabindex="0" data-subject="matematicas" data-topic="operaciones-basicas">
         <div class="topic-title">Operaciones Básicas <span class="level-badge">Primaria</span>
           <span class="progress-indicator" id="progress-matematicas-operaciones-basicas"></span>
         </div>
         <div class="topic-description">Suma, resta, multiplicación y división. Problemas prácticos del día a día.</div>
       </div>
       
-      <div class="topic-item" role="button" tabindex="0" onclick="window.showLessonContent('matematicas', 'fracciones')" onkeypress="if(event.key === 'Enter') window.showLessonContent('matematicas', 'fracciones')">
+      <div class="topic-item" role="button" tabindex="0" data-subject="matematicas" data-topic="fracciones">
         <div class="topic-title">Fracciones y Decimales <span class="level-badge">6º Primaria</span>
           <span class="progress-indicator" id="progress-matematicas-fracciones"></span>
         </div>
         <div class="topic-description">Conceptos, operaciones y equivalencias. Con ejemplos visuales.</div>
       </div>
       
-      <div class="topic-item" role="button" tabindex="0" onclick="window.showLessonContent('matematicas', 'porcentajes')" onkeypress="if(event.key === 'Enter') window.showLessonContent('matematicas', 'porcentajes')">
+      <div class="topic-item" role="button" tabindex="0" data-subject="matematicas" data-topic="porcentajes">
         <div class="topic-title">Porcentajes <span class="level-badge">1º ESO</span>
           <span class="progress-indicator" id="progress-matematicas-porcentajes"></span>
         </div>
         <div class="topic-description">Cálculo de porcentajes, aumentos y descuentos.</div>
       </div>
       
-      <div class="topic-item" role="button" tabindex="0" onclick="window.showLessonContent('matematicas', 'ecuaciones')" onkeypress="if(event.key === 'Enter') window.showLessonContent('matematicas', 'ecuaciones')">
+      <div class="topic-item" role="button" tabindex="0" data-subject="matematicas" data-topic="ecuaciones">
         <div class="topic-title">Ecuaciones de Primer Grado <span class="level-badge">2º ESO</span>
           <span class="progress-indicator" id="progress-matematicas-ecuaciones"></span>
         </div>
         <div class="topic-description">Resolución paso a paso con métodos visuales.</div>
       </div>
       
-      <div class="topic-item" role="button" tabindex="0" onclick="window.showLessonContent('matematicas', 'sistemas')" onkeypress="if(event.key === 'Enter') window.showLessonContent('matematicas', 'sistemas')">
+      <div class="topic-item" role="button" tabindex="0" data-subject="matematicas" data-topic="sistemas">
         <div class="topic-title">Sistemas de Ecuaciones <span class="level-badge">3º ESO</span>
           <span class="progress-indicator" id="progress-matematicas-sistemas"></span>
         </div>
         <div class="topic-description">Métodos de sustitución, igualación y reducción.</div>
       </div>
       
-      <div class="topic-item" role="button" tabindex="0" onclick="window.showLessonContent('matematicas', 'geometria')" onkeypress="if(event.key === 'Enter') window.showLessonContent('matematicas', 'geometria')">
+      <div class="topic-item" role="button" tabindex="0" data-subject="matematicas" data-topic="geometria">
         <div class="topic-title">Geometría Básica <span class="level-badge">1º-2º ESO</span>
           <span class="progress-indicator" id="progress-matematicas-geometria"></span>
         </div>
@@ -1558,8 +1901,8 @@
   </div>
 
   <div id="lengua-page" class="subject-page section" style="display: none;" role="main" aria-labelledby="lengua-heading">
-    <button class="back-button" onclick="window.showMainContent()" aria-label="Volver al inicio">← Volver al inicio</button>
-    <h1 id="lengua-heading" style="text-align: center; color: var(--primary-color);">📚 Lengua Española</h1>
+    <button class="back-button" data-target="main" aria-label="Volver al inicio">← Volver al inicio</button>
+    <h1 id="lengua-heading" style="text-align: center; color: var(--primary-dark);">📚 Lengua Española</h1>
     <div id="lengua-personalized-intro" aria-live="polite"></div>
 
     <div class="progress-bar-container" id="lengua-progress-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso en Lengua Española">
@@ -1570,42 +1913,42 @@
     <div class="topic-list" aria-label="Temario de Lengua Española">
       <h2>Temario por niveles</h2>
       
-      <div class="topic-item" role="button" tabindex="0" onclick="window.showLessonContent('lengua', 'ortografia-basica')" onkeypress="if(event.key === 'Enter') window.showLessonContent('lengua', 'ortografia-basica')">
+      <div class="topic-item" role="button" tabindex="0" data-subject="lengua" data-topic="ortografia-basica">
         <div class="topic-title">Ortografía Básica <span class="level-badge">Primaria</span>
           <span class="progress-indicator" id="progress-lengua-ortografia-basica"></span>
         </div>
         <div class="topic-description">Acentuación, uso de b/v, g/j, h. Con ejercicios prácticos.</div>
       </div>
       
-      <div class="topic-item" role="button" tabindex="0" onclick="window.showLessonContent('lengua', 'morfologia')" onkeypress="if(event.key === 'Enter') window.showLessonContent('lengua', 'morfologia')">
+      <div class="topic-item" role="button" tabindex="0" data-subject="lengua" data-topic="morfologia">
         <div class="topic-title">Morfología <span class="level-badge">1º ESO</span>
           <span class="progress-indicator" id="progress-lengua-morfologia"></span>
         </div>
         <div class="topic-description">Categorías gramaticales: sustantivos, adjetivos, verbos, etc.</div>
       </div>
       
-      <div class="topic-item" role="button" tabindex="0" onclick="window.showLessonContent('lengua', 'sintaxis-simple')" onkeypress="if(event.key === 'Enter') window.showLessonContent('lengua', 'sintaxis-simple')">
+      <div class="topic-item" role="button" tabindex="0" data-subject="lengua" data-topic="sintaxis-simple">
         <div class="topic-title">Sintaxis - Oración Simple <span class="level-badge">2º ESO</span>
           <span class="progress-indicator" id="progress-lengua-sintaxis-simple"></span>
         </div>
         <div class="topic-description">Sujeto, predicado y complementos básicos.</div>
       </div>
       
-      <div class="topic-item" role="button" tabindex="0" onclick="window.showLessonContent('lengua', 'sintaxis-compuesta')" onkeypress="if(event.key === 'Enter') window.showLessonContent('lengua', 'sintaxis-compuesta')">
+      <div class="topic-item" role="button" tabindex="0" data-subject="lengua" data-topic="sintaxis-compuesta">
         <div class="topic-title">Sintaxis - Oración Compuesta <span class="level-badge">3º ESO</span>
           <span class="progress-indicator" id="progress-lengua-sintaxis-compuesta"></span>
         </div>
         <div class="topic-description">Oraciones coordinadas y subordinadas.</div>
       </div>
       
-      <div class="topic-item" role="button" tabindex="0" onclick="window.showLessonContent('lengua', 'literatura')" onkeypress="if(event.key === 'Enter') window.showLessonContent('lengua', 'literatura')">
+      <div class="topic-item" role="button" tabindex="0" data-subject="lengua" data-topic="literatura">
         <div class="topic-title">Literatura Española <span class="level-badge">2º-3º ESO</span>
           <span class="progress-indicator" id="progress-lengua-literatura"></span>
         </div>
         <div class="topic-description">Géneros literarios, métrica y autores principales.</div>
       </div>
       
-      <div class="topic-item" role="button" tabindex="0" onclick="window.showLessonContent('lengua', 'expresion-escrita')" onkeypress="if(event.key === 'Enter') window.showLessonContent('lengua', 'expresion-escrita')">
+      <div class="topic-item" role="button" tabindex="0" data-subject="lengua" data-topic="expresion-escrita">
         <div class="topic-title">Expresión Escrita <span class="level-badge">Todos</span>
           <span class="progress-indicator" id="progress-lengua-expresion-escrita"></span>
         </div>
@@ -1615,8 +1958,8 @@
   </div>
 
   <div id="ingles-page" class="subject-page section" style="display: none;" role="main" aria-labelledby="ingles-heading">
-    <button class="back-button" onclick="window.showMainContent()" aria-label="Volver al inicio">← Volver al inicio</button>
-    <h1 id="ingles-heading" style="text-align: center; color: var(--primary-color);">🇬🇧 English</h1>
+    <button class="back-button" data-target="main" aria-label="Volver al inicio">← Volver al inicio</button>
+    <h1 id="ingles-heading" style="text-align: center; color: var(--primary-dark);">🇬🇧 English</h1>
     <div id="ingles-personalized-intro" aria-live="polite"></div>
 
     <div class="progress-bar-container" id="ingles-progress-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso en Inglés">
@@ -1627,42 +1970,42 @@
     <div class="topic-list" aria-label="Temario de Inglés">
       <h2>Temario por niveles</h2>
       
-      <div class="topic-item" role="button" tabindex="0" onclick="window.showLessonContent('ingles', 'basic-vocabulary')" onkeypress="if(event.key === 'Enter') window.showLessonContent('ingles', 'basic-vocabulary')">
+      <div class="topic-item" role="button" tabindex="0" data-subject="ingles" data-topic="basic-vocabulary">
         <div class="topic-title">Basic Vocabulary <span class="level-badge">A1</span>
           <span class="progress-indicator" id="progress-ingles-basic-vocabulary"></span>
         </div>
         <div class="topic-description">Numbers, colors, family, daily routines. Con apoyo visual.</div>
       </div>
       
-      <div class="topic-item" role="button" tabindex="0" onclick="window.showLessonContent('ingles', 'present-tenses')" onkeypress="if(event.key === 'Enter') window.showLessonContent('ingles', 'present-tenses')">
+      <div class="topic-item" role="button" tabindex="0" data-subject="ingles" data-topic="present-tenses">
         <div class="topic-title">Present Simple & Continuous <span class="level-badge">A1-A2</span>
           <span class="progress-indicator" id="progress-ingles-present-tenses"></span>
         </div>
         <div class="topic-description">Tiempos verbales básicos con ejemplos prácticos.</div>
       </div>
       
-      <div class="topic-item" role="button" tabindex="0" onclick="window.showLessonContent('ingles', 'past-tenses')" onkeypress="if(event.key === 'Enter') window.showLessonContent('ingles', 'past-tenses')">
+      <div class="topic-item" role="button" tabindex="0" data-subject="ingles" data-topic="past-tenses">
         <div class="topic-title">Past Simple & Past Continuous <span class="level-badge">A2</span>
           <span class="progress-indicator" id="progress-ingles-past-tenses"></span>
         </div>
         <div class="topic-description">Narración en pasado, verbos regulares e irregulares.</div>
       </div>
       
-      <div class="topic-item" role="button" tabindex="0" onclick="window.showLessonContent('ingles', 'future-tenses')" onkeypress="if(event.key === 'Enter') window.showLessonContent('ingles', 'future-tenses')">
+      <div class="topic-item" role="button" tabindex="0" data-subject="ingles" data-topic="future-tenses">
         <div class="topic-title">Future Tenses <span class="level-badge">A2-B1</span>
           <span class="progress-indicator" id="progress-ingles-future-tenses"></span>
         </div>
         <div class="topic-description">Will, going to, present continuous for future.</div>
       </div>
       
-      <div class="topic-item" role="button" tabindex="0" onclick="window.showLessonContent('ingles', 'conditionals')" onkeypress="if(event.key === 'Enter') window.showLessonContent('ingles', 'conditionals')">
+      <div class="topic-item" role="button" tabindex="0" data-subject="ingles" data-topic="conditionals">
         <div class="topic-title">Conditionals <span class="level-badge">B1</span>
           <span class="progress-indicator" id="progress-ingles-conditionals"></span>
         </div>
         <div class="topic-description">First, second and third conditional sentences.</div>
       </div>
       
-      <div class="topic-item" role="button" tabindex="0" onclick="window.showLessonContent('ingles', 'listening-speaking')" onkeypress="if(event.key === 'Enter') window.showLessonContent('ingles', 'listening-speaking')">
+      <div class="topic-item" role="button" tabindex="0" data-subject="ingles" data-topic="listening-speaking">
         <div class="topic-title">Listening & Speaking <span class="level-badge">A1-B1</span>
           <span class="progress-indicator" id="progress-ingles-listening-speaking"></span>
         </div>
@@ -1672,14 +2015,21 @@
   </div>
 
   <div id="lesson-content-display" class="section" style="display: none;" role="main" aria-labelledby="lesson-title">
-    <button class="back-button" onclick="window.hideLessonContent()" aria-label="Volver al temario">← Volver al temario</button>
+    <button class="back-button" data-target="subject" aria-label="Volver al temario">← Volver al temario</button>
     <h2 id="lesson-title"></h2>
     <div id="lesson-material"></div>
+    <div class="lesson-actions">
+        <button id="summarize-lesson-button">✨ Resumir Lección</button>
+        <button id="generate-exercises-button">✨ Generar Ejercicios</button>
+        <button id="complete-lesson-button">Completar lección</button>
+    </div>
+    <div id="lesson-summary-output" class="gemini-output" style="display: none;"></div>
+    <div id="lesson-exercises-output" class="gemini-output" style="display: none;"></div>
   </diV>
 
   <!-- Términos y Condiciones -->
   <div id="terminos-page" class="legal-section" style="display: none;" role="main" aria-labelledby="terminos-heading">
-    <button class="back-button" onclick="window.showMainContent()">← Volver al inicio</button>
+    <button class="back-button" data-target="main">← Volver al inicio</button>
     <h2 id="terminos-heading">Términos y Condiciones</h2>
     <p>Última actualización: 11 de junio de 2025</p>
 
@@ -1733,7 +2083,7 @@
 
   <!-- Política de Privacidad -->
   <div id="politicas-page" class="legal-section" style="display: none;" role="main" aria-labelledby="politicas-heading">
-    <button class="back-button" onclick="window.showMainContent()">← Volver al inicio</button>
+    <button class="back-button" data-target="main">← Volver al inicio</button>
     <h2 id="politicas-heading">Política de Privacidad</h2>
     <p>Última actualización: 11 de junio de 2025</p>
 
@@ -1793,7 +2143,7 @@
     import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
-    // Your web app's Firebase configuration
+    // Default Firebase configuration (replace with your actual Firebase project config if not in Canvas)
     const firebaseConfig = {
       apiKey: "AIzaSyDklyhhZOV3c2KbbrvAZOpoUitPBWgRBOQ",
       authDomain: "multigenio-39890.firebaseapp.com",
@@ -1804,9 +2154,12 @@
       measurementId: "G-9SQX18GVH6"
     };
 
+    // Use environment provided config if available, otherwise fallback to default
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : defaultFirebaseConfig;
+
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
+    const analytics = getAnalytics(app); // Google Analytics initialization
     const auth = getAuth(app); // Initialize Firebase Auth service
     const db = getFirestore(app); // Initialize Firestore
 
@@ -1822,7 +2175,8 @@
     const logoutButton = document.getElementById('logout-button');
     const quizNavLink = document.getElementById('quiz-nav-link');
     const authNavLink = document.getElementById('auth-nav-link');
-    const guestModeButton = document.getElementById('guest-mode-button'); // New element for guest mode button
+    const guestModeButton = document.getElementById('guest-mode-button'); 
+    const userDisplayName = document.getElementById('user-display-name'); 
 
     const quizContainer = document.getElementById('quiz-container');
     const mainContent = document.getElementById('main-content');
@@ -1833,7 +2187,6 @@
     const studyAdvice = document.getElementById('study-advice');
     const lessonContentDisplay = document.getElementById('lesson-content-display');
     const customMessage = document.getElementById('custom-message');
-    const userIdDisplay = document.getElementById('user-id-display'); // New element for User ID
 
     // Review system elements
     const reviewsContainer = document.getElementById('reviews-container');
@@ -1843,26 +2196,45 @@
     const selectedRatingInput = document.getElementById('selected-rating');
     const reviewAuthMessage = document.getElementById('review-auth-message');
 
-    // New legal pages
+    // New page elements
     const terminosPage = document.getElementById('terminos-page');
     const politicasPage = document.getElementById('politicas-page');
+    const faqSection = document.getElementById('faq');
+    const blogSection = document.getElementById('blog-section'); // New blog section element
+    const generateBlogIdeasButton = document.getElementById('generate-blog-ideas-button');
+    const blogIdeasOutput = document.getElementById('blog-ideas-output');
+    const blogIdeasList = document.getElementById('blog-ideas-list');
 
-    let isAuthenticated = false; // Flag to track authentication status
-    let currentUserId = null; // Store the current user ID
-    let currentUserName = null; // Store the current user's display name or email prefix
-    let isGuestMode = false; // Flag for guest mode
-    let userLearningStyle = 'visual'; // Default learning style, updated by quiz or Firestore
-    let userTDAHStatus = 'no'; // Default TDAH status, updated by quiz or Firestore
-    let userQuizCompleted = false; // Track if quiz is completed
+    // Lesson content AI buttons and outputs
+    const summarizeLessonButton = document.getElementById('summarize-lesson-button');
+    const generateExercisesButton = document.getElementById('generate-exercises-button');
+    const lessonSummaryOutput = document.getElementById('lesson-summary-output');
+    const lessonExercisesOutput = document.getElementById('lesson-exercises-output');
+    const completeLessonButton = document.getElementById('complete-lesson-button'); // Also needs to be accessible
+
+    let isAuthenticated = false; 
+    let currentUserId = null; 
+    let currentUserName = null; 
+    let isGuestMode = false; 
+    let userLearningStyle = 'visual'; 
+    let userTDAHStatus = 'no'; 
+    let userQuizCompleted = false; 
+    let currentLessonContent = ''; // Store the raw lesson content for summarization/exercises
+    window.userProgress = {}; // Initialize userProgress object globally
 
     // Gemini API Configuration
     const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=";
-    // !! IMPORTANTE !! Si estás ejecutando esta aplicación fuera del entorno de Google Canvas,
-    // DEBES reemplazar "TU_API_KEY_DE_GEMINI_AQUI" con tu propia clave API de Gemini.
-    // Puedes obtener una clave API en Google AI Studio: https://makersuite.google.com/
-    const GEMINI_API_KEY = "AIzaSyBGKJQINcUZKVxCw8NI43bVmPsDqGVBsB0"; 
+    // !! IMPORTANT !! If you are running this application outside of the Google Canvas environment,
+    // you MUST replace "YOUR_GEMINI_API_KEY_HERE" with your own Gemini API key.
+    // You can get an API key from Google AI Studio: https://makersuite.google.com/
+    const GEMINI_API_KEY = "AIzaSyBGKJQINcUZKVxCw8NI43bVmPsDqGVBsB0"; // <--- REEMPLAZA CON TU CLAVE API DE GEMINI
 
     // --- Utility Functions ---
+    /**
+     * Muestra un mensaje personalizado en la parte superior de la pantalla.
+     * @param {string} message - El texto del mensaje.
+     * @param {number} duration - Duración en milisegundos que el mensaje estará visible.
+     */
     function showMessage(message, duration = 3000) {
         customMessage.textContent = message;
         customMessage.style.display = 'block';
@@ -1873,30 +2245,83 @@
         }, duration);
     }
 
+    /**
+     * Muestra un elemento HTML.
+     * @param {HTMLElement} element - El elemento a mostrar.
+     */
     function showElement(element) {
         element.style.display = 'block';
     }
 
+    /**
+     * Oculta un elemento HTML.
+     * @param {HTMLElement} element - El elemento a ocultar.
+     */
     function hideElement(element) {
         element.style.display = 'none';
     }
     
-    // Override for modal overlay to use flex for centering
+    /**
+     * Muestra una superposición modal, utilizando flexbox para centrar el contenido.
+     * @param {HTMLElement} element - La superposición modal a mostrar.
+     */
     function showModalOverlay(element) {
         element.style.display = 'flex';
         element.classList.add('active');
+        element.setAttribute('aria-hidden', 'false'); // Accessibility
     }
 
+    /**
+     * Oculta una superposición modal después de una transición.
+     * @param {HTMLElement} element - La superposición modal a ocultar.
+     */
     function hideModalOverlay(element) {
         element.classList.remove('active');
-        // Give time for transition before setting display to none
+        element.setAttribute('aria-hidden', 'true'); // Accessibility
         setTimeout(() => {
             element.style.display = 'none';
-        }, 300); // Match CSS transition duration
+        }, 300); // Coincide con la duración de la transición CSS
     }
 
+    /**
+     * Realiza una validación básica del formulario de contacto y muestra un mensaje.
+     * @param {Event} e - El evento de envío del formulario.
+     */
+    document.querySelector('.contact-form form').addEventListener('submit', function(e) {
+      e.preventDefault(); // Prevent default form submission
+
+      const name = document.getElementById('contact-name').value.trim();
+      const email = document.getElementById('contact-email').value.trim();
+      const message = document.getElementById('contact-message').value.trim();
+
+      if (name === '' || email === '' || message === '') {
+        showMessage('Por favor, completa todos los campos del formulario de contacto.', 4000);
+        return;
+      }
+
+      // Basic email validation
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        showMessage('Por favor, introduce un correo electrónico válido.', 4000);
+        return;
+      }
+
+      // If all validations pass
+      showMessage('¡Gracias por tu mensaje! Nos pondremos en contacto contigo pronto.', 5000);
+
+      // Clear the form
+      document.getElementById('contact-name').value = '';
+      document.getElementById('contact-email').value = '';
+      document.getElementById('contact-message').value = '';
+    });
+
+
     // --- Authentication Functions ---
-    window.toggleAuthForm = function(formToShow) {
+    /**
+     * Alterna entre el formulario de inicio de sesión y el de registro.
+     * @param {string} formToShow - 'login' para mostrar el formulario de inicio de sesión, 'register' para el de registro.
+     */
+    const toggleAuthForm = function(formToShow) {
       if (formToShow === 'login') {
         showElement(loginFormDiv);
         hideElement(registerFormDiv);
@@ -1904,25 +2329,36 @@
         hideElement(loginFormDiv);
         showElement(registerFormDiv);
       }
-    }
+    };
+    window.toggleAuthForm = toggleAuthForm; // Make it globally accessible for event listeners in DOM
 
-    window.showAuthModal = function() {
-        showModalOverlay(authModalOverlay); // Use new modal show function
+    /**
+     * Muestra el modal de autenticación y oculta el contenido principal.
+     */
+    const showAuthModal = function() {
+        showModalOverlay(authModalOverlay);
         hideElement(mainContent);
         hideElement(quizContainer);
         hideElement(lessonContentDisplay);
         document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
-        hideElement(terminosPage); // Ensure legal pages are hidden
-        hideElement(politicasPage); // Ensure legal pages are hidden
-        window.toggleAuthForm('login');
-    }
+        hideElement(terminosPage);
+        hideElement(politicasPage);
+        hideElement(faqSection);
+        hideElement(blogSection); 
+        toggleAuthForm('login'); 
+    };
+    window.showAuthModal = showAuthModal; // Make it globally accessible
 
-    window.hideAuthModal = function() {
-        hideModalOverlay(authModalOverlay); // Use new modal hide function
-        if (isAuthenticated || isGuestMode) { // Show main content for authenticated or guest users
+    /**
+     * Oculta el modal de autenticación y muestra el contenido principal si el usuario está autenticado o en modo invitado.
+     */
+    const hideAuthModal = function() {
+        hideModalOverlay(authModalOverlay);
+        if (isAuthenticated || isGuestMode) {
             showElement(mainContent);
         }
-    }
+    };
+    window.hideAuthModal = hideAuthModal; // Make it globally accessible
 
     // Register user with email and password
     document.getElementById('register-email-form').addEventListener('submit', async (e) => {
@@ -1933,7 +2369,7 @@
       try {
         await createUserWithEmailAndPassword(auth, email, password);
         showMessage('¡Registro exitoso! Has iniciado sesión.');
-        isGuestMode = false; // Exit guest mode if user registers
+        isGuestMode = false; 
       } catch (error) {
         let errorMessage = 'Error al registrar: ';
         switch (error.code) {
@@ -1963,7 +2399,7 @@
       try {
         await signInWithEmailAndPassword(auth, email, password);
         showMessage('¡Inicio de sesión exitoso!');
-        isGuestMode = false; // Exit guest mode if user logs in
+        isGuestMode = false; 
       } catch (error) {
         let errorMessage = 'Error al iniciar sesión: ';
         switch (error.code) {
@@ -1985,25 +2421,29 @@
       }
     });
 
-    // Guest mode button event listener
+    /**
+     * Activa el modo invitado, deshabilitando funciones de personalización y guardado.
+     */
     guestModeButton.addEventListener('click', () => {
         isGuestMode = true;
-        isAuthenticated = false; // Ensure not authenticated if guest
-        currentUserId = null; // No specific user ID for guest mode
+        isAuthenticated = false; 
+        currentUserId = null; 
         currentUserName = "Invitado";
-        window.hideAuthModal();
+        hideAuthModal();
         showElement(mainContent);
         showMessage('Modo invitado activado. Algunas funciones de personalización y guardado no están disponibles.', 5000);
         updateNavigationVisibility();
-        window.updateQuizResultDisplay(); // Clear quiz result display
-        updateReviewFormVisibility(); // Update review form for guests
+        updateQuizResultDisplay();
+        updateReviewFormVisibility();
     });
 
-    // Logout button event listener
+    /**
+     * Cierra la sesión del usuario.
+     */
     logoutButton.addEventListener('click', async () => {
       try {
         await signOut(auth);
-        isGuestMode = false; // Exit guest mode on logout
+        isGuestMode = false; 
         showMessage('Has cerrado sesión.');
       } catch (error) {
         showMessage('Error al cerrar sesión: ' + error.message, 5000);
@@ -2011,42 +2451,45 @@
       }
     });
 
+    /**
+     * Actualiza la visibilidad de los elementos de navegación basados en el estado de autenticación.
+     */
     function updateNavigationVisibility() {
+        hideElement(quizNavLink);
+        hideElement(logoutButton);
+        hideElement(authNavLink);
+        hideElement(guestModeButton);
+        hideElement(userDisplayName);
+
         if (isAuthenticated) {
-            showElement(quizNavLink);
+            if (currentUserName) {
+                userDisplayName.textContent = `Hola, ${currentUserName}`;
+                showElement(userDisplayName);
+            }
             showElement(logoutButton);
-            hideElement(authNavLink);
-            hideElement(guestModeButton); // Hide guest button when logged in
             
-            // Show/hide quiz nav link based on quiz completion status
             if (userQuizCompleted) {
-                hideElement(quizNavLink);
+                // If quiz completed, no need to show quiz nav link
             } else {
                 showElement(quizNavLink);
             }
 
-            hideElement(userIdDisplay); // Still keep user ID hidden
-
         } else if (isGuestMode) {
-            hideElement(quizNavLink); // Guests cannot take quiz or save progress
-            hideElement(logoutButton);
-            hideElement(authNavLink); // Hide auth link if already in guest mode
-            showElement(guestModeButton); // Keep guest button visible if it's the current mode
-            hideElement(userIdDisplay);
-            // Reset to default learning style for guest mode
-            userLearningStyle = 'visual';
-            userTDAHStatus = 'no';
+            showElement(guestModeButton); 
+            // Quiz link is always visible for guests, as their state isn't saved.
+            // If they click it, it just restarts the quiz.
+            showElement(quizNavLink); 
+            userLearningStyle = 'visual'; // Reset to default for guests
+            userTDAHStatus = 'no'; // Reset to default for guests
             resultMessage.textContent = '';
             studyAdvice.textContent = '';
             hideElement(tdahWarning);
-        } else { // Not authenticated, not guest mode (initial state or after logout)
-            hideElement(quizNavLink);
-            hideElement(logoutButton);
+        } else { 
             showElement(authNavLink);
-            showElement(guestModeButton); // Show guest button
-            hideElement(userIdDisplay);
+            showElement(guestModeButton); 
+            showElement(quizNavLink); // Always show quiz link if not logged in, as it leads to login/guest mode.
         }
-        updateReviewFormVisibility(); // Ensure review form visibility is updated on auth state change
+        updateReviewFormVisibility();
     }
 
     // Listen for authentication state changes
@@ -2054,29 +2497,26 @@
       if (user) {
         isAuthenticated = true;
         currentUserId = user.uid;
-        currentUserName = user.email ? user.email.split('@')[0] : "Usuario"; // Set username from email prefix
-        isGuestMode = false; // Ensure not in guest mode if authenticated
-        window.hideAuthModal(); // Hide modal, show main content
+        // Check if user.email exists before splitting
+        currentUserName = user.email ? user.email.split('@')[0] : "Usuario"; 
+        isGuestMode = false; 
+        hideAuthModal();
         
-        // Load user preferences BEFORE updating nav visibility
-        await window.loadUserPreferences(user.uid); 
-        updateNavigationVisibility(); // Update visibility based on auth status and loaded preferences
+        await loadUserPreferences(user.uid); 
+        updateNavigationVisibility();
         showMessage('¡Bienvenido de nuevo!');
 
-        window.loadProgressAndDisplay(); // Refresh UI based on loaded progress
-        window.updateAllProgressBars(); // Recalculate and update all progress bars
+        loadProgressAndDisplay(); 
+        updateAllProgressBars(); 
       } else {
         isAuthenticated = false;
         currentUserId = null;
-        currentUserName = null; // Clear username on logout
-        // Do not force show mainContent here, let specific functions handle it
-        // based on guest mode or initial state.
-        updateNavigationVisibility(); // Update visibility based on auth status (not authenticated)
-        // Reset user preferences to default only if not in guest mode.
-        if (!isGuestMode) {
+        currentUserName = null; 
+        updateNavigationVisibility(); 
+        if (!isGuestMode) { // Only reset if not in guest mode
             userLearningStyle = 'visual';
             userTDAHStatus = 'no';
-            userQuizCompleted = false; // Reset quiz status
+            userQuizCompleted = false; 
             resultMessage.textContent = '';
             studyAdvice.textContent = '';
             hideElement(tdahWarning);
@@ -2086,6 +2526,9 @@
     });
 
     // --- Firestore Functions for User Preferences and Progress ---
+    /**
+     * Guarda las preferencias de aprendizaje y el estado del cuestionario del usuario en Firestore.
+     */
     async function saveUserPreferences() {
         if (!isAuthenticated) {
             console.error("No user ID to save preferences. User is not authenticated.");
@@ -2097,17 +2540,23 @@
             await setDoc(userRef, {
                 learningStyle: userLearningStyle,
                 tdahStatus: userTDAHStatus,
-                quizCompleted: true // Mark quiz as completed
+                quizCompleted: true 
             }, { merge: true });
-            userQuizCompleted = true; // Update local state
+            userQuizCompleted = true; 
             console.log("User preferences saved to Firestore.");
+            updateNavigationVisibility(); // Update nav to hide quiz link if completed
         } catch (e) {
             console.error("Error saving user preferences: ", e);
             showMessage("Error al guardar tus preferencias.", 3000);
         }
     }
+    window.saveUserPreferences = saveUserPreferences;
 
-    window.loadUserPreferences = async function(uid) { // Made global
+    /**
+     * Carga las preferencias de aprendizaje y el estado del cuestionario del usuario desde Firestore.
+     * @param {string} uid - El ID del usuario.
+     */
+    const loadUserPreferences = async function(uid) { 
         if (!isAuthenticated) {
             console.warn("Cannot load user preferences: User is not authenticated.");
             return;
@@ -2119,44 +2568,59 @@
                 const data = userSnap.data();
                 userLearningStyle = data.learningStyle || 'visual';
                 userTDAHStatus = data.tdahStatus || 'no';
-                userQuizCompleted = data.quizCompleted || false; // Load quiz completion status
+                userQuizCompleted = data.quizCompleted || false; 
                 console.log("User preferences loaded from Firestore:", data);
                 
-                // Update UI based on loaded preferences
-                window.updateQuizResultDisplay(); // Call global version
+                updateQuizResultDisplay();
             } else {
                 console.log("No user preferences found in Firestore. User is new or quiz not completed.");
-                // For new users, or users without preferences saved, the default 'visual' and 'no' will be used.
-                userQuizCompleted = false; // Ensure it's false if no preferences found
+                userQuizCompleted = false; 
             }
         } catch (e) {
             console.error("Error loading user preferences: ", e);
             showMessage("Error al cargar tus preferencias.", 3000);
         }
-    }
+    };
+    window.loadUserPreferences = loadUserPreferences;
 
-    window.saveProgress = async function(subject, topicId, status) { // Made global
+    /**
+     * Guarda el progreso de un tema específico para el usuario actual en Firestore.
+     * @param {string} subject - La materia (ej. 'matematicas').
+     * @param {string} topicId - El ID del tema (ej. 'operaciones-basicas').
+     * @param {string} status - El estado del progreso (ej. 'completed').
+     */
+    const saveProgress = async function(subject, topicId, status) { 
         if (!isAuthenticated) {
             console.error("No user ID to save progress. User is not authenticated.");
             showMessage("Por favor, inicia sesión para guardar tu progreso.", 3000);
             return;
         }
-        const progressRef = doc(db, `users/${currentUserId}/progress`, `${subject}-${topicId}`);
+        // Construct the path based on private data rules: /artifacts/{appId}/users/{userId}/{your_collection_name}
+        // Here, {your_collection_name} is 'progress' and document ID is `${subject}-${topicId}`
+        // The `__app_id` global variable is provided by the Canvas environment.
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id'; // Fallback for testing outside Canvas
+        const progressPath = `artifacts/${appId}/users/${currentUserId}/progress`;
+        const progressRef = doc(db, progressPath, `${subject}-${topicId}`);
+
         try {
             await setDoc(progressRef, { status: status, timestamp: new Date() }, { merge: true });
             console.log(`Progress for ${subject}-${topicId} saved.`);
-            window.loadProgressAndDisplay(); // Call global version
-            window.updateAllProgressBars(); // Call global version
+            loadProgressAndDisplay(); 
+            updateAllProgressBars(); 
         } catch (e) {
             console.error("Error al guardar el progreso: ", e);
             showMessage("Error al guardar tu progreso.", 3000);
         }
-    }
+    };
+    window.saveProgress = saveProgress;
 
-    window.loadProgressAndDisplay = async function() { // Made global
+    /**
+     * Carga el progreso del usuario desde Firestore y actualiza la interfaz de usuario.
+     */
+    const loadProgressAndDisplay = async function() { 
         if (!isAuthenticated) {
             console.warn("No user ID to load progress. Displaying default progress.");
-            // If not authenticated, ensure progress indicators are cleared.
+            // Reset indicators for guest mode/unauthenticated users
             [
               ...mathTopics.map(t => ({ subject: 'matematicas', topic: t })),
               ...lenguaTopics.map(t => ({ subject: 'lengua', topic: t })),
@@ -2167,21 +2631,22 @@
                 indicator.innerHTML = '';
               }
             });
+            window.userProgress = {}; // Ensure userProgress is empty for unauthenticated state
+            updateAllProgressBars(); // Reset progress bars to 0%
             return;
         }
 
         try {
-            const progressCollectionRef = collection(db, `users/${currentUserId}/progress`);
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+            const progressCollectionRef = collection(db, `artifacts/${appId}/users/${currentUserId}/progress`);
             const querySnapshot = await getDocs(progressCollectionRef);
             const userProgress = {};
             querySnapshot.forEach((doc) => {
                 userProgress[doc.id] = doc.data().status;
             });
 
-            // Make userProgress globally accessible for window.updateSubjectProgress
             window.userProgress = userProgress; 
 
-            // Update individual topic indicators
             [
                 ...mathTopics.map(t => ({ subject: 'matematicas', topic: t })),
                 ...lenguaTopics.map(t => ({ subject: 'lengua', topic: t })),
@@ -2192,23 +2657,32 @@
                 const indicator = document.getElementById(`progress-${subject}-${topic.id}`);
                 if (indicator) {
                     if (status === 'completed') {
-                        indicator.innerHTML = '<span style="color: green; font-weight: bold; margin-left: 10px;">✅ Completado</span>';
+                        indicator.innerHTML = '<span style="color: var(--accent-green); font-weight: bold; margin-left: 10px;">✅ Completado</span>';
                     } else {
-                        indicator.innerHTML = ''; // Limpiar si no está completado
+                        indicator.innerHTML = ''; 
                     }
                 }
             });
-            window.updateAllProgressBars(); // Call global version after loading all individual progress
+            updateAllProgressBars(); 
         } catch (e) {
             console.error("Error al cargar el progreso: ", e);
             showMessage("Error al cargar tu progreso.", 3000);
         }
-    }
+    };
+    window.loadProgressAndDisplay = loadProgressAndDisplay;
 
-    window.updateSubjectProgress = function(subject, topicsArray, progressFillId, progressTextId, progressContainerId) { // Added progressContainerId parameter
+    /**
+     * Actualiza la barra de progreso de una materia específica.
+     * @param {string} subject - La materia.
+     * @param {Array<Object>} topicsArray - Array de objetos de temas para la materia.
+     * @param {string} progressFillId - ID del elemento de llenado de la barra de progreso.
+     * @param {string} progressTextId - ID del elemento de texto de la barra de progreso.
+     * @param {string} progressContainerId - ID del elemento contenedor de la barra de progreso.
+     */
+    const updateSubjectProgress = function(subject, topicsArray, progressFillId, progressTextId, progressContainerId) { 
       let completedCount = 0;
       topicsArray.forEach(topic => {
-          const progressKey = `${subject}-${topic.id}`; // This matches doc ID in Firestore
+          const progressKey = `${subject}-${topic.id}`; 
           if (window.userProgress && window.userProgress[progressKey] === 'completed') {
               completedCount++;
           }
@@ -2219,22 +2693,30 @@
 
       const progressBarFill = document.getElementById(progressFillId);
       const progressBarText = document.getElementById(progressTextId);
-      const progressBarContainer = document.getElementById(progressContainerId); // Get the container element
+      const progressBarContainer = document.getElementById(progressContainerId); 
 
-      if (progressBarFill && progressBarText && progressBarContainer) { // Check if container exists
+      if (progressBarFill && progressBarText && progressBarContainer) { 
         progressBarFill.style.width = `${percentage}%`;
         progressBarText.textContent = `${Math.round(percentage)}% completado`;
-        progressBarContainer.setAttribute('aria-valuenow', Math.round(percentage)); // Update ARIA attribute
+        progressBarContainer.setAttribute('aria-valuenow', Math.round(percentage)); 
       }
-    }
+    };
+    window.updateSubjectProgress = updateSubjectProgress;
 
-    window.updateAllProgressBars = function() { // Made global
-      window.updateSubjectProgress('matematicas', mathTopics, 'matematicas-progress-fill', 'matematicas-progress-text', 'matematicas-progress-container'); // Pass container ID
-      window.updateSubjectProgress('lengua', lenguaTopics, 'lengua-progress-fill', 'lengua-progress-text', 'lengua-progress-container'); // Pass container ID
-      window.updateSubjectProgress('ingles', inglesTopics, 'ingles-progress-fill', 'ingles-progress-text', 'ingles-progress-container'); // Pass container ID
-    }
+    /**
+     * Actualiza todas las barras de progreso de las materias.
+     */
+    const updateAllProgressBars = function() { 
+      updateSubjectProgress('matematicas', mathTopics, 'matematicas-progress-fill', 'matematicas-progress-text', 'matematicas-progress-container'); 
+      updateSubjectProgress('lengua', lenguaTopics, 'lengua-progress-fill', 'lengua-progress-text', 'lengua-progress-container'); 
+      updateSubjectProgress('ingles', inglesTopics, 'ingles-progress-fill', 'ingles-progress-text', 'ingles-progress-container'); 
+    };
+    window.updateAllProgressBars = updateAllProgressBars;
 
-    window.updateQuizResultDisplay = function() { // Made global
+    /**
+     * Actualiza la visualización de los resultados del cuestionario de estilo de aprendizaje.
+     */
+    const updateQuizResultDisplay = function() { 
         const styleNames = {
             visual: "Visual",
             auditivo: "Auditivo",
@@ -2242,7 +2724,7 @@
             kinestesico: "Kinestésico"
         };
 
-        if (isAuthenticated) { // Only show personalized message if authenticated
+        if (isAuthenticated) { 
             if (userLearningStyle) {
                 resultMessage.textContent = `🎯 Tu estilo de aprendizaje principal detectado: ${styleNames[userLearningStyle]}.`;
                 const adviceByStyle = {
@@ -2254,7 +2736,7 @@
                 studyAdvice.textContent = `Consejo de estudio para tu estilo: ${adviceByStyle[userLearningStyle] || "No se encontró un consejo específico para tu estilo de aprendizaje."}`;
                 showElement(resultMessage);
                 showElement(studyAdvice);
-            } else { // No personalized style found for authenticated user, hide
+            } else { 
                 hideElement(resultMessage);
                 hideElement(studyAdvice);
             }
@@ -2264,42 +2746,31 @@
             } else {
                 hideElement(tdahWarning);
             }
-        } else { // Hide for guests or logged out users
+        } else { 
             hideElement(resultMessage);
             hideElement(studyAdvice);
             hideElement(tdahWarning);
         }
-    }
+    };
+    window.updateQuizResultDisplay = updateQuizResultDisplay;
 
     // --- LLM Integration for Content Generation ---
-    async function generateLessonContent(subject, topicId, learningStyle) {
-        if (!GEMINI_API_KEY) {
-            showMessage("Error: La clave API de Gemini no está configurada. Por favor, añádela para generar contenido con IA.", 10000);
-            return "<p>Contenido no disponible. Por favor, configura tu clave API de Gemini.</p>";
+    /**
+     * Realiza una llamada a la API de Gemini para generar contenido.
+     * @param {string} prompt - El prompt para la generación de contenido.
+     * @returns {Promise<string>} - Una promesa que resuelve con el texto generado.
+     */
+    async function callGeminiApi(prompt) {
+        if (!GEMINI_API_KEY || GEMINI_API_KEY === "AIzaSyBGKJQINcUZKVxCw8NI43bVmPsDqGVBsB0") {
+            showMessage("API Key de Gemini no configurada. Por favor, actualiza el código con tu clave.", 7000);
+            throw new Error("API Key de Gemini no configurada.");
         }
-
-        showMessage("Generando contenido de lección con IA...", 5000);
-        let effectiveLearningStyle = learningStyle;
-        if (isGuestMode) {
-             effectiveLearningStyle = 'general'; // Use a general style for guests
-        }
-        const prompt = `Genera un contenido de lección interactivo y conciso sobre "${topicId.replace(/-/g, ' ')}" dentro del tema de "${subject}" para un estudiante con estilo de aprendizaje "${effectiveLearningStyle}".
-Incluye los siguientes elementos de forma relevante para el estilo de aprendizaje:
-- **Imágenes y esquemas visuales**: Usa etiquetas <img> con URLs de placehold.co (por ejemplo, https://placehold.co/600x400/eef5fb/34495e?text=Esquema+del+Tema). Para cada imagen, incluye un atributo alt que describa la imagen en español.
-- **Videos explicativos**: Usa etiquetas <video> con URLs de video de ejemplo (por ejemplo, https://www.w3schools.com/html/mov_bbb.mp4). Asegúrate de incluir los atributos controls and poster (una imagen de placeholder para el poster).
-- **Audios o podcasts**: Usa etiquetas <audio> con URLs de audio de ejemplo (por ejemplo, https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3). Incluye el atributo controls.
-- **Ejercicios interactivos**: Incluye áreas de texto (<textarea>) para respuestas o pequeños problemas, y descripciones claras de cómo el usuario puede interactuar.
-- **Un placeholder para un juego interactivo**: Usa una div con la clase 'interactive-game-placeholder' para describir el juego (ej: <div class='interactive-game-placeholder'><p>Aquí iría un juego de arrastrar y soltar.</p></div>).
-- **Contenido textual didáctico**: Usa etiquetas <h3>, <p> para explicaciones claras y concisas.
-
-Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido debe ser didáctico y atractivo, adaptado al estilo de aprendizaje especificado. Al final de la lección, incluye un botón para simular la finalización de la lección con el texto 'Completar lección' o 'Simular Completar Juego'.`;
-
+        const payload = {
+            contents: [{ role: "user", parts: [{ text: prompt }] }],
+        };
+        const apiUrl = `${GEMINI_API_URL}${GEMINI_API_KEY}`;
+        
         try {
-            const payload = {
-                contents: [{ role: "user", parts: [{ text: prompt }] }],
-            };
-            const apiUrl = `${GEMINI_API_URL}${GEMINI_API_KEY}`;
-            console.log("Calling Gemini API with prompt:", prompt); // Log the prompt for debugging
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -2308,31 +2779,140 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
 
             if (!response.ok) {
                 const errorText = await response.text();
-                console.error("Gemini API network response was not ok:", response.status, errorText);
-                showMessage(`Error al generar contenido (código: ${response.status}). Inténtalo de nuevo.`, 5000);
-                return "<p>Error al cargar el contenido de la lección debido a un problema de red.</p>";
+                throw new Error(`Error de red con la API de Gemini: ${response.status} - ${errorText}`);
             }
 
             const result = await response.json();
-            console.log("Gemini API response:", result); // Log the full response
-
             if (result.candidates && result.candidates.length > 0 &&
                 result.candidates[0].content && result.candidates[0].content.parts &&
                 result.candidates[0].content.parts.length > 0) {
-                const htmlContent = result.candidates[0].content.parts[0].text;
-                // Clean markdown backticks if LLM adds them
-                return htmlContent.replace(/```html\n?|\n?```/g, '');
+                return result.candidates[0].content.parts[0].text;
             } else {
-                console.error("Unexpected LLM response structure or missing content:", result);
-                showMessage("No se pudo generar el contenido de la lección (estructura inesperada).", 5000);
-                return "<p>Error: No se pudo generar el contenido. La IA no proporcionó una respuesta válida.</p>";
+                throw new Error("Estructura de respuesta inesperada o contenido faltante de la IA.");
             }
         } catch (error) {
-            console.error("Error calling Gemini API:", error);
-            showMessage("Error de conexión con la IA. Verifica tu clave API y conexión a internet.", 7000);
-            return "<p>Error de conexión al generar el contenido. Por favor, verifica tu clave API y conexión a internet.</p>";
+            console.error("Error al llamar a la API de Gemini:", error);
+            throw error; // Re-throw to be caught by the calling function
         }
     }
+
+    /**
+     * Genera contenido de lección utilizando la API de Gemini.
+     * @param {string} subject - La materia de la lección.
+     * @param {string} topicId - El ID del tema de la lección.
+     * @param {string} learningStyle - El estilo de aprendizaje para personalizar el contenido.
+     * @returns {Promise<string>} - Una promesa que resuelve con el contenido HTML generado.
+     */
+    async function generateLessonContent(subject, topicId, learningStyle) {
+        showMessage("Generando contenido de lección con IA...", 5000);
+        let effectiveLearningStyle = learningStyle;
+        if (isGuestMode) {
+             effectiveLearningStyle = 'general'; 
+        }
+        const prompt = `Genera un contenido de lección interactivo y conciso sobre "${topicId.replace(/-/g, ' ')}" dentro del tema de "${subject}" para un estudiante con estilo de aprendizaje "${effectiveLearningStyle}".
+Incluye los siguientes elementos de forma relevante para el estilo de aprendizaje:
+- **Imágenes y esquemas visuales**: Usa etiquetas <img> con URLs de placehold.co (por ejemplo, https://placehold.co/600x400/ecf0f1/2c3e50?text=Esquema+del+Tema). Para cada imagen, incluye un atributo alt que describa la imagen en español.
+- **Videos explicativos**: Usa etiquetas <video> con URLs de video de ejemplo (por ejemplo, https://www.w3schools.com/html/mov_bbb.mp4). Asegúrate de incluir los atributos controls and poster (una imagen de placeholder para el poster).
+- **Audios o podcasts**: Usa etiquetas <audio> con URLs de audio de ejemplo (por ejemplo, https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp4). Incluye el atributo controls.
+- **Ejercicios interactivos**: Incluye áreas de texto (<textarea>) para respuestas o pequeños problemas, y descripciones claras de cómo el usuario puede interactuar.
+- **Un placeholder para un juego interactivo**: Usa una div con la clase 'interactive-game-placeholder' para describir el juego (ej: <div class='interactive-game-placeholder'><p>Aquí iría un juego de arrastrar y soltar.</p></div>).
+- **Contenido textual didáctico**: Usa etiquetas <h3>, <p> para explicaciones claras y concisas.
+
+Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido debe ser didáctico y atractivo, adaptado al estilo de aprendizaje especificado.`; 
+
+        try {
+            const htmlContent = await callGeminiApi(prompt);
+            return htmlContent.replace(/```html\n?|\n?```/g, ''); // Clean markdown backticks
+        } catch (error) {
+            showMessage(`Error al generar contenido: ${error.message}`, 7000);
+            return "<p>Error al cargar el contenido de la lección. Por favor, inténtalo de nuevo más tarde.</p>";
+        }
+    }
+
+    /**
+     * Resume el contenido de la lección actual utilizando la API de Gemini.
+     */
+    summarizeLessonButton.addEventListener('click', async () => {
+        if (!currentLessonContent) {
+            showMessage('No hay contenido de lección para resumir.', 3000);
+            return;
+        }
+
+        lessonSummaryOutput.innerHTML = '<p style="text-align: center;">Resumiendo lección con IA... ✨</p>';
+        showElement(lessonSummaryOutput);
+        hideElement(lessonExercisesOutput); // Hide other AI outputs
+
+        const prompt = `Resume el siguiente contenido de lección de manera concisa y clara, extrayendo los puntos clave. El resumen debe tener entre 3 y 5 oraciones.
+Contenido:
+${currentLessonContent}`;
+
+        try {
+            const summary = await callGeminiApi(prompt);
+            lessonSummaryOutput.innerHTML = `<h4>Resumen de la Lección:</h4><p>${summary}</p>`;
+            showMessage('Resumen generado exitosamente.', 3000);
+        } catch (error) {
+            lessonSummaryOutput.innerHTML = `<p>Error al generar el resumen: ${error.message}</p>`;
+            showMessage(`Error al generar el resumen: ${error.message}`, 7000);
+        }
+    });
+
+    /**
+     * Genera ejercicios adicionales basados en el contenido de la lección actual y el estilo de aprendizaje del usuario.
+     */
+    generateExercisesButton.addEventListener('click', async () => {
+        if (!currentLessonContent) {
+            showMessage('No hay contenido de lección para generar ejercicios.', 3000);
+            return;
+        }
+
+        lessonExercisesOutput.innerHTML = '<p style="text-align: center;">Generando ejercicios adicionales con IA... ✨</p>';
+        showElement(lessonExercisesOutput);
+        hideElement(lessonSummaryOutput); // Hide other AI outputs
+
+        const prompt = `Basado en el siguiente contenido de lección y considerando que el estilo de aprendizaje del estudiante es "${userLearningStyle}", genera 2-3 ejercicios adicionales. Los ejercicios deben ser prácticos y relevantes al contenido.
+Contenido de la lección:
+${currentLessonContent}`;
+
+        try {
+            const exercises = await callGeminiApi(prompt);
+            lessonExercisesOutput.innerHTML = `<h4>Ejercicios Adicionales:</h4><p>${exercises}</p>`;
+            showMessage('Ejercicios generados exitosamente.', 3000);
+        } catch (error) {
+            lessonExercisesOutput.innerHTML = `<p>Error al generar ejercicios: ${error.message}</p>`;
+            showMessage(`Error al generar ejercicios: ${error.message}`, 7000);
+        }
+    });
+
+    /**
+     * Genera ideas para artículos de blog utilizando la API de Gemini.
+     */
+    generateBlogIdeasButton.addEventListener('click', async () => {
+        if (!isAuthenticated) {
+            showMessage('Por favor, inicia sesión para generar ideas de blog.', 3000);
+            return;
+        }
+
+        blogIdeasList.innerHTML = '';
+        blogIdeasOutput.innerHTML = '<p style="text-align: center;">Generando ideas para el blog con IA... ✨</p>';
+        showElement(blogIdeasOutput);
+
+        const prompt = `Genera 5 ideas de artículos para un blog educativo sobre aprendizaje, matemáticas, lengua, inglés, y herramientas para estudiantes con TDAH. Para cada idea, incluye un título y una breve descripción. Formatea la respuesta como una lista numerada.`;
+
+        try {
+            const ideasText = await callGeminiApi(prompt);
+            // Assuming the AI returns a numbered list, parse it into an actual HTML list
+            const ideasArray = ideasText.split('\n').filter(line => line.trim().length > 0);
+            let htmlIdeas = '';
+            ideasArray.forEach(idea => {
+                htmlIdeas += `<li>${idea.replace(/^\d+\.\s*/, '')}</li>`; // Remove numbering if present
+            });
+            blogIdeasOutput.innerHTML = `<h4>Ideas generadas:</h4><ul id="blog-ideas-list">${htmlIdeas}</ul>`;
+            showMessage('Ideas de blog generadas.', 3000);
+        } catch (error) {
+            blogIdeasOutput.innerHTML = `<p>Error al generar ideas de blog: ${error.message}</p>`;
+            showMessage(`Error al generar ideas de blog: ${error.message}`, 7000);
+        }
+    });
 
 
     // --- Quiz Functions ---
@@ -2460,31 +3040,34 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
     ];
 
     let currentQuestionIndex = 0;
-    let selectedAnswersScores = {}; // To store the numerical score for each question
+    let selectedAnswersScores = {}; 
 
-    window.showQuestion = function() {
-      if (!isAuthenticated) {
+    /**
+     * Muestra la siguiente pregunta del cuestionario o finaliza el cuestionario si se han respondido todas las preguntas.
+     */
+    const showQuestion = function() {
+      if (!isAuthenticated && !isGuestMode) {
         showMessage('Por favor, inicia sesión para acceder al cuestionario y guardar tus preferencias.', 4000);
-        window.showAuthModal();
+        showAuthModal();
         return;
       }
-      if (userQuizCompleted) {
+      if (isAuthenticated && userQuizCompleted) {
           showMessage('Ya has completado el cuestionario de estilo de aprendizaje. Puedes continuar explorando las materias.', 4000);
-          window.showMainContent(); // Return to main content if quiz already done
+          showMainContent();
           return;
       }
       console.log('--- showQuestion called ---');
       console.log('Current index:', currentQuestionIndex);
 
-      // Hide all other content explicitly
       hideElement(mainContent);
       document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
       hideElement(lessonContentDisplay);
-      hideModalOverlay(authModalOverlay); // Ensure modal is not active
-      hideElement(terminosPage); // Ensure legal pages are hidden
-      hideElement(politicasPage); // Ensure legal pages are hidden
+      hideModalOverlay(authModalOverlay); 
+      hideElement(terminosPage); 
+      hideElement(politicasPage); 
+      hideElement(faqSection); 
+      hideElement(blogSection); 
 
-      // Show quiz container
       showElement(quizContainer);
       console.log('Quiz container display set to block.');
 
@@ -2499,7 +3082,6 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
       optionsDiv.innerHTML = '';
       console.log('Displaying question:', currentQ.question);
       
-      // Create 1-5 scale buttons
       const scaleOptions = [
           "Totalmente en desacuerdo",
           "En desacuerdo",
@@ -2511,22 +3093,26 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
       for (let i = 1; i <= 5; i++) {
         const btn = document.createElement('button');
         btn.textContent = `${i} - ${scaleOptions[i-1]}`;
-        btn.onclick = () => {
-          selectedAnswersScores[currentQuestionIndex] = i; // Store the numerical score
+        btn.addEventListener('click', () => { // Use addEventListener
+          selectedAnswersScores[currentQuestionIndex] = i; 
           currentQuestionIndex++;
           console.log('Option selected. Next question index:', currentQuestionIndex);
-          window.showQuestion();
-        };
-        btn.setAttribute('aria-label', `${i} ${scaleOptions[i-1]}`); // Accessibility
+          showQuestion();
+        });
+        btn.setAttribute('aria-label', `${i} ${scaleOptions[i-1]}`);
         optionsDiv.appendChild(btn);
         console.log('Added option button:', btn.textContent);
       }
-    }
+    };
+    window.showQuestion = showQuestion; // Make it globally accessible
 
+    /**
+     * Finaliza el cuestionario, calcula el estilo de aprendizaje y el estado de TDAH, y guarda las preferencias.
+     */
     async function finishQuiz() {
       console.log('--- finishQuiz called ---');
       hideElement(quizContainer);
-      showElement(mainContent); // Ensure main content is shown
+      showElement(mainContent); 
 
       const learningStyleScores = {
         visual: 0,
@@ -2537,8 +3123,6 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
       let tdahSeverityScore = 0;
       let tdahQuestionsCount = 0;
 
-
-      // Calculate scores for learning styles and TDAH
       for (let i = 0; i < quizQuestions.length; i++) {
           const question = quizQuestions[i];
           const score = selectedAnswersScores[i];
@@ -2546,35 +3130,33 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
           if (question.type === 'learning-style') {
               learningStyleScores[question.style] += score;
           } else if (question.type === 'tdah') {
-              tdahSeverityScore += score; // Add the 1-5 score to TDAH
+              tdahSeverityScore += score; 
               tdahQuestionsCount++;
           }
       }
 
-      // Determine the main learning style
       let maxStyle = 'visual';
-      let maxScore = -1; // Initialize with a value lower than any possible score
+      let maxScore = -1; 
       for (const style in learningStyleScores) {
           if (learningStyleScores[style] > maxScore) {
               maxScore = learningStyleScores[style];
               maxStyle = style;
           }
       }
-      userLearningStyle = maxStyle; // Update global variable
+      userLearningStyle = maxStyle; 
 
-      // Determine TDAH status based on a threshold
-      // The threshold can be adjusted based on desired sensitivity and number of TDAH questions
-      // For example, if avg score is 3.5 or higher (out of 5) on TDAH questions
       const averageTDAHScore = tdahQuestionsCount > 0 ? tdahSeverityScore / tdahQuestionsCount : 0;
-      const tdahThresholdAverage = 3.5; // Adjust this value as needed (e.g., 3 = neutral, 4 = leaning towards agreement)
-      userTDAHStatus = averageTDAHScore >= tdahThresholdAverage ? 'tdah' : 'no'; // Update global variable
+      const tdahThresholdAverage = 3.5; 
+      userTDAHStatus = averageTDAHScore >= tdahThresholdAverage ? 'tdah' : 'no'; 
 
-      window.updateQuizResultDisplay(); // Update UI based on final style and TDAH status
-      await saveUserPreferences(); // Save preferences to Firestore
-      updateNavigationVisibility(); // Update navigation after quiz completion
+      updateQuizResultDisplay(); 
+      if (isAuthenticated) { // Only save if authenticated
+        await saveUserPreferences(); 
+      }
+      updateNavigationVisibility(); 
 
-      window.loadProgressAndDisplay(); // Use global version
-      window.updateAllProgressBars(); // Use global version
+      loadProgressAndDisplay(); 
+      updateAllProgressBars(); 
     }
 
     // --- Data de Temas para Cálculo de Progreso ---
@@ -2607,11 +3189,14 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
 
 
     // --- Funciones de Navegación y Contenido ---
-    window.showSubject = function(subject) {
-      // Allow guests to see subjects, but warn about personalization
+    /**
+     * Muestra la página de una materia específica.
+     * @param {string} subject - El ID de la materia a mostrar (ej. 'matematicas').
+     */
+    const showSubject = function(subject) {
       if (!isAuthenticated && !isGuestMode) {
         showMessage('Por favor, inicia sesión o usa el modo invitado para acceder a las materias.', 4000);
-        window.showAuthModal();
+        showAuthModal();
         return;
       }
       console.log('--- showSubject called ---');
@@ -2619,9 +3204,11 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
       hideElement(quizContainer);
       document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
       hideElement(lessonContentDisplay);
-      hideModalOverlay(authModalOverlay); // Ensure modal is not active
-      hideElement(terminosPage); // Ensure legal pages are hidden
-      hideElement(politicasPage); // Ensure legal pages are hidden
+      hideModalOverlay(authModalOverlay); 
+      hideElement(terminosPage); 
+      hideElement(politicasPage); 
+      hideElement(faqSection); 
+      hideElement(blogSection); 
 
       const subjectPage = document.getElementById(subject + '-page');
       if (subjectPage) {
@@ -2629,10 +3216,9 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
       }
       
       personalizeSubjectIntro(subject);
-      // Only load and update progress if authenticated, otherwise it's just topic list
       if (isAuthenticated) {
-          window.loadProgressAndDisplay(); // Call global version to load and display individual topic progress checks
-          window.updateAllProgressBars(); // Call global version to update overall subject progress bars
+          loadProgressAndDisplay(); 
+          updateAllProgressBars(); 
       } else {
           // Clear progress indicators for guest mode
           [
@@ -2650,44 +3236,106 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
             const allProgressTexts = document.querySelectorAll('.progress-text');
             allProgressTexts.forEach(text => text.textContent = '0% completado');
       }
-    }
+    };
+    window.showSubject = showSubject; // Make it globally accessible
 
-    window.showMainContent = function() {
+    /**
+     * Muestra el contenido principal de la página.
+     */
+    const showMainContent = function() {
       console.log('--- showMainContent called ---');
       document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
       hideElement(quizContainer);
       hideElement(lessonContentDisplay);
-      hideModalOverlay(authModalOverlay); // Ensure modal is not active
-      hideElement(terminosPage); // Ensure legal pages are hidden
-      hideElement(politicasPage); // Ensure legal pages are hidden
+      hideModalOverlay(authModalOverlay); 
+      hideElement(terminosPage); 
+      hideElement(politicasPage); 
+      hideElement(faqSection); 
+      hideElement(blogSection); 
       
       showElement(mainContent);
-    }
+    };
+    window.showMainContent = showMainContent; // Make it globally accessible
 
-    // New functions to show legal pages
-    window.showTerminos = function() {
+    /**
+     * Muestra la página de Términos y Condiciones.
+     */
+    const showTerminos = function() {
         hideElement(mainContent);
         hideElement(quizContainer);
         document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
         hideElement(lessonContentDisplay);
         hideModalOverlay(authModalOverlay);
         hideElement(politicasPage);
+        hideElement(faqSection);
+        hideElement(blogSection); 
         showElement(terminosPage);
-        window.scrollTo(0,0); // Scroll to top
-    }
+        window.scrollTo(0,0); 
+    };
+    window.showTerminos = showTerminos; // Make it globally accessible
 
-    window.showPoliticas = function() {
+    /**
+     * Muestra la página de Política de Privacidad.
+     */
+    const showPoliticas = function() {
         hideElement(mainContent);
         hideElement(quizContainer);
         document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
         hideElement(lessonContentDisplay);
         hideModalOverlay(authModalOverlay);
         hideElement(terminosPage);
+        hideElement(faqSection);
+        hideElement(blogSection); 
         showElement(politicasPage);
-        window.scrollTo(0,0); // Scroll to top
-    }
+        window.scrollTo(0,0); 
+    };
+    window.showPoliticas = showPoliticas; // Make it globally accessible
+    
+    /**
+     * Muestra la sección de Preguntas Frecuentes (FAQ).
+     */
+    const showFAQ = function() {
+        hideElement(mainContent);
+        hideElement(quizContainer);
+        document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
+        hideElement(lessonContentDisplay);
+        hideModalOverlay(authModalOverlay);
+        hideElement(terminosPage);
+        hideElement(politicasPage);
+        hideElement(blogSection); 
+        showElement(faqSection);
+        window.scrollTo(0,0); 
+    };
+    window.showFAQ = showFAQ; // Make it globally accessible
 
+    /**
+     * Muestra la sección del Blog.
+     */
+    const showBlog = function() {
+        hideElement(mainContent);
+        hideElement(quizContainer);
+        document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
+        hideElement(lessonContentDisplay);
+        hideModalOverlay(authModalOverlay);
+        hideElement(terminosPage);
+        hideElement(politicasPage);
+        hideElement(faqSection);
+        showElement(blogSection);
+        // Toggle visibility of blog ideas generation button based on auth state
+        if (isAuthenticated) {
+            showElement(generateBlogIdeasButton);
+        } else {
+            hideElement(generateBlogIdeasButton);
+            hideElement(blogIdeasOutput); // Hide any generated ideas if not authenticated
+        }
+        window.scrollTo(0,0); 
+    };
+    window.showBlog = showBlog; // Make it globally accessible
 
+    /**
+     * Personaliza el texto de introducción de una materia según el estilo de aprendizaje del usuario.
+     * @param {string} subject - La materia para personalizar.
+     */
     function personalizeSubjectIntro(subject) {
       const introElement = document.getElementById(subject + '-personalized-intro');
       if (!introElement) return;
@@ -2724,23 +3372,30 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
           introText = "¡Bienvenido a la sección de " + subject.charAt(0).toUpperCase() + subject.slice(1) + "! Para una experiencia de aprendizaje personalizada, inicia sesión o regístrate.";
       }
       
-      introElement.innerHTML = `<div style="background: #eef5fb; padding: 25px; border-radius: var(--border-radius-soft); margin-bottom: 30px; border-left: 6px solid var(--secondary-color); font-size: 1.05em; line-height: 1.6; color: var(--text-dark); box-shadow: 0 2px 10px rgba(0,0,0,0.05);">${introText}</div>`;
+      introElement.innerHTML = `<div style="background: ${isGuestMode ? '#f8fbfc' : '#e6f7ff'}; padding: 20px; border-radius: var(--border-radius-sm); margin-bottom: 20px; border-left: 5px solid ${isGuestMode ? 'var(--border-light)' : 'var(--accent-blue)'}; font-size: 0.95em; line-height: 1.5; color: var(--text-main); box-shadow: var(--shadow-sm);">${introText}</div>`;
     }
 
     // --- Lesson Content Display (uses LLM for content) ---
-    window.showLessonContent = async function(subject, topicId) {
+    /**
+     * Muestra el contenido de una lección generada por IA.
+     * @param {string} subject - La materia de la lección.
+     * @param {string} topicId - El ID del tema de la lección.
+     */
+    const showLessonContent = async function(subject, topicId) {
         if (!isAuthenticated && !isGuestMode) {
             showMessage('Por favor, inicia sesión o usa el modo invitado para acceder al contenido de las lecciones.', 4000);
-            window.showAuthModal();
+            showAuthModal();
             return;
         }
         console.log('--- showLessonContent called ---');
         hideElement(mainContent);
         hideElement(quizContainer);
         document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
-        hideModalOverlay(authModalOverlay); // Ensure modal is not active
-        hideElement(terminosPage); // Ensure legal pages are hidden
-        hideElement(politicasPage); // Ensure legal pages are hidden
+        hideModalOverlay(authModalOverlay); 
+        hideElement(terminosPage); 
+        hideElement(politicasPage); 
+        hideElement(faqSection); 
+        hideElement(blogSection); 
 
         showElement(lessonContentDisplay);
 
@@ -2750,61 +3405,75 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
         const topicName = topicId.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
         const subjectName = subject.charAt(0).toUpperCase() + subject.slice(1);
         lessonTitleElement.textContent = `Lección: ${topicName} de ${subjectName}`;
-        lessonMaterialElement.innerHTML = '<p style="text-align: center; margin-top: 50px; font-size: 1.2em; color: var(--text-light);">Cargando contenido de la lección...</p>'; // Loading indicator
+        lessonMaterialElement.innerHTML = '<p style="text-align: center; margin-top: 50px; font-size: 1.1em; color: var(--text-secondary);">Cargando contenido de la lección...</p>'; // Loading indicator
+        
+        // Hide AI outputs when new lesson loads
+        hideElement(lessonSummaryOutput);
+        hideElement(lessonExercisesOutput);
 
-        // Generate content using LLM
         const generatedContent = await generateLessonContent(subject, topicId, userLearningStyle);
         lessonMaterialElement.innerHTML = generatedContent;
+        
+        // Store raw content for LLM features
+        currentLessonContent = lessonMaterialElement.textContent || lessonMaterialElement.innerText;
 
-        // Add event listener to the "Completar lección" button within the generated content
-        // This assumes the generated content will include a button with this specific text and purpose.
-        const completeLessonButton = lessonMaterialElement.querySelector('button');
-        if (completeLessonButton && (completeLessonButton.textContent.includes('Completar lección') || completeLessonButton.textContent.includes('Simular Completar Juego'))) {
-            // Only allow completion if authenticated
-            if (isAuthenticated) {
-                completeLessonButton.onclick = () => window.simulateGameCompletion(subject, topicId);
-            } else {
-                completeLessonButton.style.display = 'none'; // Hide button for guests
-                const completeMessage = document.createElement('p');
-                completeMessage.textContent = 'Inicia sesión para guardar tu progreso de esta lección.';
-                completeMessage.style.color = 'var(--accent-color)';
-                completeMessage.style.fontWeight = 'bold';
-                lessonMaterialElement.appendChild(completeMessage);
-            }
+        // Set up the "Completar lección" button logic
+        if (isAuthenticated) {
+            completeLessonButton.style.display = 'inline-flex';
+            completeLessonButton.onclick = () => simulateGameCompletion(subject, topicId); // Re-assign onclick to avoid multiple listeners
+            // Show AI buttons if authenticated
+            showElement(summarizeLessonButton);
+            showElement(generateExercisesButton);
+        } else {
+            completeLessonButton.style.display = 'none';
+            // Hide AI buttons for guests
+            hideElement(summarizeLessonButton);
+            hideElement(generateExercisesButton);
+            const completeMessage = document.createElement('p');
+            completeMessage.textContent = 'Inicia sesión para guardar tu progreso de esta lección.';
+            completeMessage.style.color = 'var(--accent-blue)';
+            completeMessage.style.fontWeight = 'bold';
+            lessonMaterialElement.appendChild(completeMessage);
         }
-    }
+    };
+    window.showLessonContent = showLessonContent; // Make it globally accessible
 
-    window.hideLessonContent = function() {
+    /**
+     * Oculta el contenido de la lección y vuelve a la vista anterior (materia o contenido principal).
+     */
+    const hideLessonContent = function() {
         console.log('--- hideLessonContent called ---');
         hideElement(lessonContentDisplay);
 
         let previouslyActiveSubjectId = null;
+        // Iterate through all subject pages to find the one that was previously shown
+        // This is a more robust way to find the active subject before showing lesson content
         document.querySelectorAll('.subject-page').forEach(page => {
-            if (page.style.display === 'block') { // Check for active display
+            if (page.style.display === 'block' && page.id !== 'lesson-content-display') { // Ensure it's a subject page and not the lesson page itself
                 previouslyActiveSubjectId = page.id.replace('-page', '');
-                // No se remueve la clase 'active' aquí, ya que `showSubject` la gestionará.
-                // Simplemente marcamos que existía una página activa.
             }
         });
         
-        // Si había una página de asignatura activa, mostrarla de nuevo.
-        // Si no, volver al contenido principal.
+        // If there was an active subject page, show it again.
+        // Otherwise, return to the main content.
         if (previouslyActiveSubjectId) {
-            window.showSubject(previouslyActiveSubjectId); // Re-activa la página de asignatura específica
+            showSubject(previouslyActiveSubjectId); // Re-activate the specific subject page
         } else {
-            window.showMainContent(); // Vuelve a la página principal
+            showMainContent(); // Return to the main page
         }
-    }
+    };
+    window.hideLessonContent = hideLessonContent; // Make it globally accessible
 
-    window.simulateGameCompletion = function(subject, topicId) {
+    const simulateGameCompletion = function(subject, topicId) {
         if (!isAuthenticated) {
             showMessage("Necesitas iniciar sesión para guardar el progreso.", 3000);
             return;
         }
         showMessage('¡Felicidades! Has completado el juego interactivo. Tu progreso ha sido guardado.', 4000);
-        window.saveProgress(subject, topicId, 'completed'); // Call global version
-        window.hideLessonContent();
-    }
+        saveProgress(subject, topicId, 'completed'); // Call global version
+        hideLessonContent();
+    };
+    window.simulateGameCompletion = simulateGameCompletion; // Make it globally accessible
 
     // --- Review System Functions ---
     let currentRating = 0; // To store the selected rating for a new review
@@ -2846,7 +3515,8 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
         }
 
         try {
-            const reviewsCollectionRef = collection(db, "reviews");
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+            const reviewsCollectionRef = collection(db, `artifacts/${appId}/public/data/reviews`);
             await addDoc(reviewsCollectionRef, {
                 userId: currentUserId,
                 userName: currentUserName, // Use the stored user name
@@ -2865,24 +3535,39 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
         }
     });
 
+    /**
+     * Renderiza las reseñas en el contenedor de reseñas.
+     * @param {Array<Object>} reviews - Un array de objetos de reseña.
+     */
     function renderReviews(reviews) {
         reviewsContainer.innerHTML = ''; // Clear previous reviews
         if (reviews.length === 0) {
-            reviewsContainer.innerHTML = '<p style="text-align: center; color: var(--text-light);">Aún no hay reseñas. ¡Sé el primero en dejar una!</p>';
+            reviewsContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Aún no hay reseñas. ¡Sé el primero en dejar una!</p>';
             return;
         }
+        // Sort reviews by timestamp descending
+        reviews.sort((a, b) => {
+            if (a.timestamp && b.timestamp) {
+                return b.timestamp.toDate() - a.timestamp.toDate();
+            }
+            return 0; // Maintain current order if timestamps are missing
+        });
+
         reviews.forEach(review => {
             const reviewCard = document.createElement('div');
             reviewCard.classList.add('review-card');
             reviewCard.innerHTML = `
                 <p class="review-text">"${review.text}"</p>
                 <div class="review-rating">${'⭐'.repeat(review.rating)}</div>
-                <p class="reviewer-name">${review.userName || 'Anónimo'}</p>
+                <p class="reviewer-name">${review.userName}</p>
             `;
             reviewsContainer.appendChild(reviewCard);
         });
     }
 
+    /**
+     * Actualiza la visibilidad del formulario de reseñas.
+     */
     function updateReviewFormVisibility() {
         if (isAuthenticated) {
             showElement(reviewForm);
@@ -2893,49 +3578,138 @@ Asegúrate de que el HTML generado sea válido, limpio y atractivo. El contenido
         }
     }
 
-    // --- Initial setup on page load ---
-    document.addEventListener('DOMContentLoaded', async function() {
-        // Explicitly hide all content areas that are not the main content by default
-        hideElement(quizContainer);
-        document.querySelectorAll('.subject-page').forEach(page => hideElement(page));
-        hideElement(lessonContentDisplay);
-        hideElement(customMessage); // Ensure custom message is hidden
-        hideModalOverlay(authModalOverlay); // Ensure modal is hidden using its CSS class
-        hideElement(terminosPage); // Ensure legal pages are hidden
-        hideElement(politicasPage); // Ensure legal pages are hidden
-
-        // Try to sign in anonymously for a seamless guest experience or if no auth token is available (e.g., GitHub)
-        try {
-            await signInAnonymously(auth);
-            // onAuthStateChanged will handle setting isAuthenticated/isGuestMode and visibility
-        } catch (error) {
-            console.warn("Failed to sign in anonymously:", error);
-            isAuthenticated = false;
-            currentUserId = null;
-            isGuestMode = false;
-            updateNavigationVisibility(); // Ensure correct nav state if anonymous fails
-            showElement(mainContent); // Show main content if no auth possible
-        }
-
-        // Display the main content initially until Firebase auth state determines otherwise.
-        showElement(mainContent);
+    /**
+     * Carga las reseñas desde Firestore y las renderiza en tiempo real.
+     */
+    function loadReviews() {
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const reviewsCollectionRef = collection(db, `artifacts/${appId}/public/data/reviews`);
         
-        // Load reviews initially and listen for real-time updates
-        const reviewsCollectionRef = collection(db, "reviews");
-        onSnapshot(query(reviewsCollectionRef, orderBy("timestamp", "desc")), (snapshot) => {
+        // Set up real-time listener for reviews
+        onSnapshot(reviewsCollectionRef, (snapshot) => {
             const reviews = [];
             snapshot.forEach(doc => {
                 reviews.push(doc.data());
             });
             renderReviews(reviews);
         }, (error) => {
-            console.error("Error al cargar las reseñas en tiempo real: ", error);
-            showMessage("Error al cargar las reseñas.", 3000);
+            console.error("Error al cargar las reseñas en tiempo real:", error);
+            reviewsContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Error al cargar las reseñas. Por favor, inténtalo de nuevo más tarde.</p>';
         });
+    }
 
-        updateStarDisplay(); // Initialize star display
+    // --- Event Listeners ---
+    // Navigation Links
+    document.getElementById('nav-faq').addEventListener('click', (e) => {
+        e.preventDefault();
+        showFAQ();
     });
-  
+    document.getElementById('nav-blog').addEventListener('click', (e) => {
+        e.preventDefault();
+        showBlog();
+    });
+    document.getElementById('footer-terminos').addEventListener('click', (e) => {
+        e.preventDefault();
+        showTerminos();
+    });
+    document.getElementById('footer-politicas').addEventListener('click', (e) => {
+        e.preventDefault();
+        showPoliticas();
+    });
+
+    // Back buttons
+    document.querySelectorAll('.back-button').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const target = e.target.dataset.target;
+            if (target === 'main') {
+                showMainContent();
+            } else if (target === 'subject') {
+                hideLessonContent(); 
+            }
+        });
+    });
+
+    // Hero buttons
+    document.getElementById('hero-quiz-button').addEventListener('click', () => {
+      showQuestion();
+    });
+
+    // Subject cards click listener
+    document.querySelectorAll('.clickable-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        const subject = e.currentTarget.dataset.subject;
+        if (subject) {
+          showSubject(subject);
+        }
+      });
+    });
+
+    // Topic items click listener (to show lesson content)
+    document.querySelectorAll('.topic-item').forEach(topicItem => {
+        topicItem.addEventListener('click', (e) => {
+            const subject = e.currentTarget.dataset.subject;
+            const topicId = e.currentTarget.dataset.topic;
+            if (subject && topicId) {
+                showLessonContent(subject, topicId);
+            }
+        });
+    });
+
+    // Auth modal toggles
+    document.querySelectorAll('.toggle-form-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const targetForm = e.target.dataset.formTarget;
+        toggleAuthForm(targetForm);
+      });
+    });
+
+    authNavLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        showAuthModal();
+    });
+
+    document.querySelector('#auth-modal-overlay .close-modal-button').addEventListener('click', () => {
+        hideAuthModal();
+    });
+
+    // FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(button => {
+        button.addEventListener('click', () => {
+            const answer = button.nextElementSibling;
+            // Toggle active class on the button
+            button.classList.toggle('active');
+            // Toggle active class on the answer to control max-height and padding
+            answer.classList.toggle('active');
+        });
+    });
+
+    // Call initial functions on window load
+    window.onload = async function() {
+        // Initial authentication token check (for Canvas environment)
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            try {
+                await signInWithCustomToken(auth, __initial_auth_token);
+                console.log("Signed in with custom token from Canvas environment.");
+            } catch (error) {
+                console.error("Error signing in with custom token from Canvas:", error);
+                // Fallback to anonymous if custom token fails
+                await signInAnonymously(auth);
+                console.log("Signed in anonymously as fallback.");
+            }
+        } else {
+            // If no custom token, sign in anonymously for basic functionality
+            await signInAnonymously(auth);
+            console.log("Signed in anonymously (no custom token found).");
+        }
+        
+        updateNavigationVisibility(); // Ensure correct initial nav state
+        updateQuizResultDisplay(); // Display quiz results if already completed
+        updateReviewFormVisibility(); // Set initial review form visibility
+        loadReviews(); // Start listening for reviews
+        loadProgressAndDisplay(); // Load and display user progress
+        updateAllProgressBars(); // Update all progress bars based on loaded data
+    };
+
   </script>
 </body>
 </html>
