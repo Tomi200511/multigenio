@@ -626,7 +626,7 @@
     .footer-section {
       flex: 0 0 30%; /* Less flexible, more fixed width */
       min-width: 180px; /* Even smaller min-width for sections */
-      margin: var(--spacing-unit) * 0.8; /* Smaller margin */
+      margin: var(--spacing-unit) * 0.8;
       text-align: left;
     }
     .footer-section h3 {
@@ -640,7 +640,7 @@
       color: var(--text-light);
       text-decoration: none;
       display: block;
-      margin-bottom: 3px; /* Smaller margin */
+      margin-bottom: 3px;
     }
     .footer-section a:hover {
       color: var(--primary-color);
@@ -2175,6 +2175,7 @@
 
   <!-- Sección del Blog (ahora una "página" separada) -->
   <section id="blog-page" class="hidden section">
+    <button class="back-button" id="back-from-blog"><i class="fas fa-arrow-left"></i> Volver al Inicio</button>
     <h2>Nuestro <span style="color: var(--primary-color);">Blog de Aprendizaje</span></h2>
     <p class="text-center">Mantente al día con los últimos consejos, trucos y novedades sobre educación y tecnología.</p>
     <div id="blog-actions" class="blog-actions">
@@ -2218,7 +2219,7 @@
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInAnonymously, signInWithCustomToken, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, signInAnonymously, signInWithCustomToken, sendPasswordResetEmail, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
     // Default Firebase configuration (replace with your actual Firebase project config if not in Canvas)
@@ -2255,7 +2256,7 @@
     let completeLessonButton, geminiOutputLessonDiv, generateTopicTestButton, lessonQuizArea;
     let currentLessonQuestion, currentLessonOptions, submitLessonQuizButton, lessonQuizFeedback;
     let nextLessonQuizQuestionButton, restartLessonQuizButton;
-    let blogPage, blogIdeasOutput, generateBlogIdeasButton, generatedIdeasList;
+    let blogPage, blogIdeasOutput, generateBlogIdeasButton, generatedIdeasList, backFromBlogButton;
     let mainContent, homeSections, cursosSection, reviewsAndContactSection, chatbotFab;
     let testimonialsSlidesContainer, prevTestimonialBtn, nextTestimonialBtn;
     let searchBarInput, searchBarButton;
@@ -2485,6 +2486,7 @@
         blogIdeasOutput = document.getElementById('blog-ideas-output');
         generateBlogIdeasButton = document.getElementById('generate-blog-ideas');
         generatedIdeasList = document.getElementById('generated-ideas-list');
+        backFromBlogButton = document.getElementById('back-from-blog'); // Nuevo botón de regreso para el blog
         mainContent = document.getElementById('main-content');
         homeSections = document.getElementById('home-sections');
         cursosSection = document.getElementById('cursos');
@@ -2495,7 +2497,7 @@
         nextTestimonialBtn = document.querySelector('.testimonial-carousel-nav.next');
         searchBarInput = document.querySelector('.search-bar input');
         searchBarButton = document.querySelector('.search-bar button');
-        reviewFormContactForm = document.querySelector('#reviews-and-contact .contact-form'); // Assuming this class points to the contact form
+        // This element wasn't in the HTML, removed: reviewFormContactForm = document.querySelector('#reviews-and-contact .contact-form');
 
 
         // Asignar totales para carruseles después de que los elementos estén disponibles
@@ -2641,6 +2643,13 @@
                 showSection('home-sections');
             });
         }
+        
+        if (backFromBlogButton) { // Event listener for the new back button on the blog page
+            backFromBlogButton.addEventListener('click', () => {
+                showSection('home-sections');
+            });
+        }
+
 
         if (submitQuizButton) {
             submitQuizButton.addEventListener('click', async () => {
@@ -2674,6 +2683,9 @@
 
                 if (quizContainer) quizContainer.classList.add('hidden');
                 
+                // Set userQuizCompleted to true after the quiz is submitted
+                userQuizCompleted = true;
+
                 updateQuizResultDisplay();
 
                 if (currentUser && !currentUser.isAnonymous && db) {
@@ -2765,14 +2777,15 @@
         if (subjectToggleHeaders) {
             subjectToggleHeaders.forEach(header => {
                 header.addEventListener('click', () => {
+                    // Check if user is logged in AND has completed the quiz
                     if (!currentUser || currentUser.isAnonymous) {
-                        showMessage("Inicia sesión y completa el test para ver los temarios.", 'info');
+                        showMessage("Inicia sesión para ver los temarios.", 'info');
                         toggleModal(true);
                         return;
                     }
                     if (!userQuizCompleted) {
                         showMessage("Por favor, completa primero el Cuestionario de Estilo de Aprendizaje para desbloquear los temarios.", 'info');
-                        showSection('quiz-page');
+                        showSection('quiz-page'); // Navigate to quiz page if not completed
                         return;
                     }
 
@@ -2793,6 +2806,13 @@
                 button.addEventListener('click', async () => {
                     const topicId = button.dataset.topicId;
                     const subject = button.dataset.subject;
+
+                    // Re-check conditions here too for safety
+                    if (!currentUser || currentUser.isAnonymous || !userQuizCompleted) {
+                        showMessage("Debes iniciar sesión y completar el cuestionario para acceder a las lecciones.", 'error');
+                        toggleModal(true);
+                        return;
+                    }
 
                     const selectedTopicDetails = fullTemarios[subject].find(t => t.id === topicId);
                     if (!selectedTopicDetails) {
@@ -3043,7 +3063,7 @@
                 });
 
                 if (isCorrect) {
-                    lessonQuizFeedback.textContent = "¡Correcto! 🎉";
+                    lessonQuizFeedback.textContent = "¡Correcto! �";
                     lessonQuizFeedback.style.color = 'var(--secondary-color)';
                 } else {
                     lessonQuizFeedback.textContent = `Incorrecto. La respuesta correcta era: ${currentQ.options[currentQ.correctAnswerIndex]}.`;
@@ -3058,6 +3078,8 @@
         if (nextLessonQuizQuestionButton) {
             nextLessonQuizQuestionButton.addEventListener('click', () => {
                 currentLessonQuizQuestionIndex++;
+                selectedLessonQuizAnswer = null; // Reset selection for next question
+                lessonQuizFeedback.classList.add('hidden'); // Hide feedback
                 displayLessonQuizQuestion();
             });
         }
@@ -3130,13 +3152,13 @@
             });
         }
 
-        if (reviewFormContactForm) {
-            reviewFormContactForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                showMessage("Mensaje enviado. Nos pondremos en contacto contigo pronto.", 'success');
-                e.target.reset();
-            });
-        }
+        // if (reviewFormContactForm) { // This element was removed as it was not present in the HTML
+        //     reviewFormContactForm.addEventListener('submit', (e) => {
+        //         e.preventDefault();
+        //         showMessage("Mensaje enviado. Nos pondremos en contacto contigo pronto.", 'success');
+        //         e.target.reset();
+        //     });
+        // }
 
         document.querySelectorAll('.nav-link, #discover-blog-button').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -3231,7 +3253,8 @@
             completeLessonButton, geminiOutputLessonDiv, generateTopicTestButton, lessonQuizArea,
             currentLessonQuestion, currentLessonOptions, submitLessonQuizButton, lessonQuizFeedback,
             nextLessonQuizQuestionButton, restartLessonQuizButton, blogPage, blogIdeasOutput, generateBlogIdeasButton,
-            generatedIdeasList, mainContent, homeSections, cursosSection, reviewsAndContactSection, chatbotFab,
+            generatedIdeasList, backFromBlogButton, // Added backFromBlogButton
+            mainContent, homeSections, cursosSection, reviewsAndContactSection, chatbotFab,
             testimonialsSlidesContainer, prevTestimonialBtn, nextTestimonialBtn, searchBarInput, searchBarButton
         ];
 
@@ -3422,6 +3445,7 @@
       });
       document.querySelectorAll('.subject-toggle-header').forEach(header => {
           header.classList.remove('expanded');
+          // Subject headers are clickable only if user is logged in AND quiz completed
           if (isLoggedIn && userQuizCompleted) {
               header.style.pointerEvents = 'auto';
               header.style.opacity = '1';
@@ -3443,6 +3467,12 @@
                 console.log("Usuario autenticado:", user.uid, user.email || "Anónimo");
                 if (db && !user.isAnonymous) {
                     await loadUserPreferences(user.uid); // Load user preferences only for non-anonymous users
+                    if (userQuizCompleted) {
+                        // If quiz is completed, and user is logged in, hide quiz page if currently visible
+                        if (quizPage && !quizPage.classList.contains('hidden')) {
+                            showSection('home-sections', 'quiz-results-display-area'); // Redirect to home results
+                        }
+                    }
                 }
                 toggleModal(false); // Close modal on successful auth
                 if (db && !user.isAnonymous) {
@@ -3473,14 +3503,12 @@
           showMessage("Error: No se pudo obtener el estado del usuario. Intenta recargar la página.", 'error');
           return;
       }
-      if (currentUser.isAnonymous && userQuizCompleted) {
-          showMessage('Ya has completado el cuestionario de estilo de aprendizaje en modo invitado. Inicia sesión para guardar tus resultados.', 'info', 6000);
-          updateQuizResultDisplay();
-          return;
-      }
+      // If user is already authenticated AND quiz completed, show results instead
       if (currentUser && !currentUser.isAnonymous && userQuizCompleted) {
           showMessage('Ya has completado el cuestionario de estilo de aprendizaje. Puedes revisar tus resultados o explorar otras funciones.', 'info', 4000);
           updateQuizResultDisplay();
+          // Optionally, redirect away from the quiz page if user tries to access it directly
+          showSection('home-sections', 'quiz-results-display-area');
           return;
       }
 
@@ -3537,10 +3565,11 @@
         }
       });
 
+      // Automatically advance to the next question after a short delay
       setTimeout(() => {
-        currentQuizIndex++;
-        displayQuizQuestion();
-      }, 300);
+          currentQuizIndex++;
+          displayQuizQuestion();
+      }, 300); // 300ms delay to show selected option
     }
 
     function updateQuizResultDisplay() {
@@ -3558,9 +3587,10 @@
       }
       
       // Logic for the quiz results section on the homepage
+      // Only show if authenticated AND quiz completed
       if (currentUser && !currentUser.isAnonymous && userQuizCompleted) {
           resultMessage.textContent = `🎯 Tu estilo de aprendizaje principal: ${styleNames[userLearningStyle]}.`;
-          resultMessage.className = 'result-card';
+          resultMessage.className = 'result-card'; // Ensure class is applied
           resultMessage.style.backgroundColor = '#e6f7ff';
           resultMessage.style.borderLeft = '5px solid var(--primary-color)';
 
@@ -3571,7 +3601,7 @@
               kinestesico: "Para ti, es ideal aprender haciendo. Prefieres actividades prácticas, experimentos y el movimiento físico durante el estudio para asimilar el conocimiento."
           };
           studyAdvice.textContent = `Consejo de estudio para tu estilo: ${adviceByStyle[userLearningStyle] || "No se encontró un consejo específico para tu estilo de aprendizaje."}`;
-          studyAdvice.className = 'result-card';
+          studyAdvice.className = 'result-card'; // Ensure class is applied
           studyAdvice.style.backgroundColor = '#e6ffe6';
           studyAdvice.style.borderLeft = '5px solid var(--secondary-color)';
           
@@ -3581,37 +3611,43 @@
           if (userTDAHStatus === 'tdah') {
               tdahWarning.textContent = `⚠️ Ten en cuenta: Se han detectado indicadores de TDAH. Te recomendamos buscar apoyo profesional y considerar estrategias de estudio especializadas.`;
               tdahWarning.classList.remove('hidden');
-              tdahWarning.className = 'result-card';
+              tdahWarning.className = 'result-card'; // Ensure class is applied
               tdahWarning.style.backgroundColor = '#fffacd';
               tdahWarning.style.borderLeft = '5px solid var(--accent-color)';
           } else {
               tdahWarning.classList.add('hidden');
           }
 
-          quizResultsDisplayArea.classList.remove('hidden');
+          quizResultsDisplayArea.classList.remove('hidden'); // Show the results section on homepage
           
           // Also update the hidden quiz page elements in case they become visible
+          // These are usually on the quiz page itself after completion, so they mirror the main results
           resultMessageQuizPage.textContent = resultMessage.textContent;
           resultMessageQuizPage.className = resultMessage.className;
           resultMessageQuizPage.style.backgroundColor = resultMessage.style.backgroundColor;
           resultMessageQuizPage.style.borderLeft = resultMessage.style.borderLeft;
+          resultMessageQuizPage.classList.remove('hidden'); // Ensure visible if on quiz page
 
           tdahWarningQuizPage.textContent = tdahWarning.textContent;
           tdahWarningQuizPage.className = tdahWarning.className;
           tdahWarningQuizPage.style.backgroundColor = tdahWarning.style.backgroundColor;
           tdahWarningQuizPage.style.borderLeft = tdahWarning.style.borderLeft;
+          if (userTDAHStatus === 'tdah') { tdahWarningQuizPage.classList.remove('hidden'); } else { tdahWarningQuizPage.classList.add('hidden'); }
+
 
           studyAdviceQuizPage.textContent = studyAdvice.textContent;
           studyAdviceQuizPage.className = studyAdvice.className;
           studyAdviceQuizPage.style.backgroundColor = studyAdvice.style.backgroundColor;
           studyAdviceQuizPage.style.borderLeft = studyAdvice.style.borderLeft;
+          studyAdviceQuizPage.classList.remove('hidden'); // Ensure visible if on quiz page
 
-      } else { // Hide quiz results if user is not authenticated and quiz completed
+      } else { // Hide quiz results if user is not authenticated or quiz not completed
           resultMessage.classList.add('hidden');
           tdahWarning.classList.add('hidden');
           studyAdvice.classList.add('hidden');
           quizResultsDisplayArea.classList.add('hidden');
           
+          // Also ensure quiz page result elements are hidden if quiz is not completed
           resultMessageQuizPage.classList.add('hidden');
           tdahWarningQuizPage.classList.add('hidden');
           studyAdviceQuizPage.classList.add('hidden');
@@ -3622,8 +3658,11 @@
           quizContainer.classList.add('hidden');
       }
       if (submitQuizButton) submitQuizButton.classList.add('hidden');
-      if (questionText) questionText.textContent = '';
-      if (optionsDiv) optionsDiv.innerHTML = '';
+      // If quiz is completed, clear question/options on quiz page itself to prevent re-displaying them
+      if (userQuizCompleted) {
+          if (questionText) questionText.textContent = '';
+          if (optionsDiv) optionsDiv.innerHTML = '';
+      }
     }
 
 
@@ -3634,8 +3673,8 @@
         if (currentUser && !currentUser.isAnonymous) {
           toggleReviewFormButton.classList.remove('hidden');
         } else {
-          reviewForm.classList.add('hidden');
-          toggleReviewFormButton.classList.add('hidden');
+          reviewForm.classList.add('hidden'); // Hide form if not logged in
+          toggleReviewFormButton.classList.add('hidden'); // Hide toggle button if not logged in
         }
       }
     }
@@ -3650,7 +3689,7 @@
       const reviewsCollectionRef = collection(db, `artifacts/${appId}/public/data/reviews`);
       
       onSnapshot(query(reviewsCollectionRef, orderBy("timestamp", "desc")), (snapshot) => {
-        if (reviewsContainer) reviewsContainer.innerHTML = '';
+        if (reviewsContainer) reviewsContainer.innerHTML = ''; // Clear existing reviews
         if (snapshot.empty) {
           if (reviewsContainer) reviewsContainer.innerHTML = '<p class="text-center" style="color: var(--text-light);">Aún no hay reseñas. ¡Sé el primero en dejar una!</p>';
           return;
@@ -3690,12 +3729,12 @@
             await setDoc(userPreferencesRef, {
                 learningStyle: userLearningStyle,
                 tdahStatus: userTDAHStatus,
-                quizCompleted: true,
+                quizCompleted: true, // Mark quiz as completed
                 lastUpdated: serverTimestamp()
             }, { merge: true });
             userQuizCompleted = true; // Update local state after saving
             console.log("User preferences saved to Firestore.");
-            updateNavigationVisibility();
+            updateNavigationVisibility(); // Update UI after saving preferences
         }
         catch (e) {
             console.error("Error saving user preferences: ", e);
@@ -3720,9 +3759,9 @@
                 console.log("User preferences loaded from Firestore:", data);
             } else {
                 console.log("No user preferences found in Firestore. User is new or quiz not completed.");
-                userQuizCompleted = false;
-                userLearningStyle = 'visual';
-                userTDAHStatus = 'no';
+                userQuizCompleted = false; // Ensure it's false if no preferences exist
+                userLearningStyle = 'visual'; // Reset to default if no data
+                userTDAHStatus = 'no'; // Reset to default if no data
             }
         } catch (e) {
             console.error("Error loading user preferences: ", e);
@@ -3737,18 +3776,18 @@
         try {
           const progressCollectionRef = collection(db, `artifacts/${appId}/users/${userId}/progress`);
           const querySnapshot = await getDocs(progressCollectionRef);
-          topicsData = {};
+          topicsData = {}; // Clear previous data
           querySnapshot.forEach((doc) => {
               topicsData[doc.id] = doc.data().percentage;
           });
           updateAllProgressBars();
         } catch (error) {
           console.error("Error cargando datos de progreso:", error);
-          topicsData = {};
+          topicsData = {}; // Ensure topicsData is empty on error
         }
       } else {
-        topicsData = {};
-        updateAllProgressBars();
+        topicsData = {}; // Clear data if no authenticated user
+        updateAllProgressBars(); // Still update to show 0% if logged out
       }
     }
 
@@ -3756,11 +3795,11 @@
       if (currentUser && !currentUser.isAnonymous && db) {
         const userId = currentUser.uid;
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        topicsData[topicId] = progressPercentage;
+        topicsData[topicId] = progressPercentage; // Update local state immediately
         const progressDocRef = doc(db, `artifacts/${appId}/users/${userId}/progress`, topicId);
         try {
           await setDoc(progressDocRef, { percentage: progressPercentage, lastUpdated: serverTimestamp() }, { merge: true });
-          updateAllProgressBars();
+          updateAllProgressBars(); // Visually update progress bars
         } catch (error) {
           console.error("Error actualizando progreso:", error);
           showMessage("Error al guardar tu progreso.", 'error');
@@ -3791,35 +3830,36 @@
     // Lesson-based Quiz Functions
     function displayLessonQuizQuestion() {
         if (!currentLessonQuizData || currentLessonQuizData.length === 0) {
-            lessonQuizArea.classList.add('hidden');
+            if (lessonQuizArea) lessonQuizArea.classList.add('hidden');
             return;
         }
 
         const question = currentLessonQuizData[currentLessonQuizQuestionIndex];
         if (!question) {
-            currentLessonQuestion.textContent = "¡Test completado!";
+            // All questions answered
+            currentLessonQuestion.textContent = "¡Test completado! Puedes reiniciar el test o volver a los cursos.";
             currentLessonOptions.innerHTML = '';
-            submitLessonQuizButton.classList.add('hidden');
-            nextLessonQuizQuestionButton.classList.add('hidden');
-            lessonQuizFeedback.classList.add('hidden');
-            restartLessonQuizButton.classList.remove('hidden');
+            if (submitLessonQuizButton) submitLessonQuizButton.classList.add('hidden');
+            if (nextLessonQuizQuestionButton) nextLessonQuizQuestionButton.classList.add('hidden');
+            if (lessonQuizFeedback) lessonQuizFeedback.classList.add('hidden');
+            if (restartLessonQuizButton) restartLessonQuizButton.classList.remove('hidden'); // Show restart
             return;
         }
 
         currentLessonQuestion.textContent = question.question;
         currentLessonOptions.innerHTML = '';
-        selectedLessonQuizAnswer = null;
-        lessonQuizFeedback.classList.add('hidden');
-        submitLessonQuizButton.classList.remove('hidden');
-        nextLessonQuizQuestionButton.classList.add('hidden');
-        restartLessonQuizButton.classList.add('hidden');
+        selectedLessonQuizAnswer = null; // Reset selection
+        if (lessonQuizFeedback) lessonQuizFeedback.classList.add('hidden'); // Hide feedback
+        if (submitLessonQuizButton) submitLessonQuizButton.classList.remove('hidden'); // Show submit button
+        if (nextLessonQuizQuestionButton) nextLessonQuizQuestionButton.classList.add('hidden'); // Hide next button
+        if (restartLessonQuizButton) restartLessonQuizButton.classList.add('hidden'); // Hide restart button
 
         question.options.forEach((option, index) => {
             const btn = document.createElement('button');
             btn.textContent = option;
             btn.dataset.index = index;
             btn.addEventListener('click', () => {
-                currentLessonOptions.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+                currentLessonOptions.querySelectorAll('button').forEach(b => b.classList.remove('selected', 'correct', 'incorrect')); // Clear previous states
                 btn.classList.add('selected');
                 selectedLessonQuizAnswer = index;
             });
