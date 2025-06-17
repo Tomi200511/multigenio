@@ -2187,8 +2187,28 @@
         <!-- Las ideas del blog se generarán aquí -->
       </ul>
     </div>
+    <!-- Placeholder para artículos diarios (conceptual, la generación de contenido en vivo y persistente es compleja y requiere backend) -->
+    <div id="daily-articles-section" class="section" style="box-shadow: none; margin-top: 40px; padding-top: 0; border-top: 1px solid var(--border-color);">
+        <h3>Artículos Diarios Recientes</h3>
+        <p class="text-center" style="font-style: italic; color: var(--text-light);">Aquí aparecerán los artículos diarios generados por nuestra IA, basados en las últimas investigaciones y noticias educativas. ¡Vuelve pronto para nuevas lecturas!</p>
+        <div class="cards">
+            <!-- Ejemplos de artículos dinámicos (estáticos por ahora, pero representativos) -->
+            <div class="card">
+                <img src="https://placehold.co/150x100/A2E3D0/2C3E50?text=IA+en+Educación" alt="Imagen de Inteligencia Artificial en Educación" />
+                <h3>El Futuro del Aprendizaje con IA Adaptativa</h3>
+                <p>Descubre cómo la inteligencia artificial está personalizando la educación y adaptándose a cada estudiante.</p>
+                <a href="#" class="btn-read-more" style="color: var(--primary-color); text-decoration: none; font-weight: 600; margin-top: auto;">Leer más →</a>
+            </div>
+            <div class="card">
+                <img src="https://placehold.co/150x100/FFD966/2C3E50?text=Noticias+Educativas" alt="Imagen de Noticias Educativas" />
+                <h3>Noticias: Avances en Métodos de Estudio y Neurociencia</h3>
+                <p>Exploramos los últimos descubrimientos en cómo funciona el cerebro y las técnicas de estudio más efectivas.</p>
+                <a href="#" class="btn-read-more" style="color: var(--primary-color); text-decoration: none; font-weight: 600; margin-top: auto;">Leer más →</a>
+            </div>
+        </div>
+    </div>
     <!-- Existing blog cards can stay or be loaded dynamically as well -->
-    <div class="cards">
+    <div class="cards" style="margin-top: 40px;">
         <div class="card">
           <img src="https://placehold.co/150x100/ecf0f1/2c3e50?text=Artículo+1" alt="Imagen de un blog con la etiqueta Artículo 1" />
           <h3>5 Estrategias para Mejorar la Concentración</h3>
@@ -2260,7 +2280,7 @@
     let mainContent, homeSections, cursosSection, reviewsAndContactSection, chatbotFab;
     let testimonialsSlidesContainer, prevTestimonialBtn, nextTestimonialBtn;
     let searchBarInput, searchBarButton;
-    let reviewFormContactForm; // Used for contact form at bottom
+    // The reviewFormContactForm was removed as it's not in the HTML structure
 
 
     // Global variables for carousels
@@ -2497,7 +2517,6 @@
         nextTestimonialBtn = document.querySelector('.testimonial-carousel-nav.next');
         searchBarInput = document.querySelector('.search-bar input');
         searchBarButton = document.querySelector('.search-bar button');
-        // This element wasn't in the HTML, removed: reviewFormContactForm = document.querySelector('#reviews-and-contact .contact-form');
 
 
         // Asignar totales para carruseles después de que los elementos estén disponibles
@@ -2837,7 +2856,7 @@
                         return;
                     }
 
-                    const prompt = `Genera un contenido de lección detallado y conciso sobre el tema específico "${selectedTopicDetails.name}" de la materia "${subject}" (nivel: ${selectedTopicDetails.level}) para un estudiante con estilo de aprendizaje "${userLearningStyle}".
+                    const prompt = `Genera un contenido de lección detallado, CONCISO y EXTENSO sobre el tema específico "${selectedTopicDetails.name}" de la materia "${subject}" (nivel: ${selectedTopicDetails.level}) para un estudiante con estilo de aprendizaje "${userLearningStyle}".
                                     Incluye:
                                     - Varias subsecciones con encabezados (<h3>).
                                     - Párrafos explicativos claros.
@@ -3059,11 +3078,11 @@
                     } else if (idx === selectedLessonQuizAnswer && !isCorrect) {
                         btn.classList.add('incorrect');
                     }
-                    btn.disabled = true;
+                    btn.disabled = true; // Disable buttons after answering
                 });
 
                 if (isCorrect) {
-                    lessonQuizFeedback.textContent = "¡Correcto! �";
+                    lessonQuizFeedback.textContent = "¡Correcto! ✅"; // Changed emoji
                     lessonQuizFeedback.style.color = 'var(--secondary-color)';
                 } else {
                     lessonQuizFeedback.textContent = `Incorrecto. La respuesta correcta era: ${currentQ.options[currentQ.correctAnswerIndex]}.`;
@@ -3071,7 +3090,13 @@
                 }
                 lessonQuizFeedback.classList.remove('hidden');
                 submitLessonQuizButton.classList.add('hidden');
-                nextLessonQuizQuestionButton.classList.remove('hidden');
+                
+                // If there are more questions, show next button, else show restart
+                if (currentLessonQuizQuestionIndex < currentLessonQuizData.length - 1) {
+                    nextLessonQuizQuestionButton.classList.remove('hidden');
+                } else {
+                    restartLessonQuizButton.classList.remove('hidden');
+                }
             });
         }
 
@@ -3117,7 +3142,7 @@
                 blogIdeasOutput.classList.remove('hidden');
                 generatedIdeasList.innerHTML = `<li><i class="fas fa-spinner fa-spin"></i> Generando ideas...</li>`;
 
-                const prompt = `Genera 5 ideas de artículos para un blog educativo centrado en el aprendizaje, matemáticas, lengua, inglés, y herramientas para estudiantes con TDAH. Para cada idea, incluye un título y una breve descripción. Formatea la respuesta como una lista numerada en español.`;
+                const prompt = `Genera 5 ideas de artículos para un blog educativo centrado en el aprendizaje, matemáticas, lengua, inglés, y herramientas para estudiantes con TDAH, IA en educación, y noticias interesantes en los diferentes campos trabajados en la pagina. Para cada idea, incluye un título y una breve descripción. Formatea la respuesta como una lista numerada en español.`;
 
                 try {
                     const response = await fetch(`${GEMINI_API_BASE_URL}?key=${GEMINI_API_KEY}`, {
@@ -3152,13 +3177,6 @@
             });
         }
 
-        // if (reviewFormContactForm) { // This element was removed as it was not present in the HTML
-        //     reviewFormContactForm.addEventListener('submit', (e) => {
-        //         e.preventDefault();
-        //         showMessage("Mensaje enviado. Nos pondremos en contacto contigo pronto.", 'success');
-        //         e.target.reset();
-        //     });
-        // }
 
         document.querySelectorAll('.nav-link, #discover-blog-button').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -3465,6 +3483,15 @@
             currentUser = user;
             if (user) {
                 console.log("Usuario autenticado:", user.uid, user.email || "Anónimo");
+                // Set persistence for authenticated users (not anonymous)
+                if (!user.isAnonymous) {
+                  try {
+                    await setPersistence(auth, browserLocalPersistence);
+                    console.log("Persistence set to local for authenticated user.");
+                  } catch (error) {
+                    console.error("Error setting persistence:", error);
+                  }
+                }
                 if (db && !user.isAnonymous) {
                     await loadUserPreferences(user.uid); // Load user preferences only for non-anonymous users
                     if (userQuizCompleted) {
@@ -3484,6 +3511,9 @@
                 userTDAHStatus = 'no';
                 userQuizCompleted = false;
                 topicsData = {}; // Clear progress data
+                // Ensure current quiz index and answers are reset on logout
+                currentQuizIndex = 0;
+                userAnswers = {};
             }
             updateNavigationVisibility(); // Update UI based on new user state
             updateReviewFormVisibility(); // Update review form visibility
@@ -3783,11 +3813,8 @@
           updateAllProgressBars();
         } catch (error) {
           console.error("Error cargando datos de progreso:", error);
-          topicsData = {}; // Ensure topicsData is empty on error
-        }
-      } else {
-        topicsData = {}; // Clear data if no authenticated user
-        updateAllProgressBars(); // Still update to show 0% if logged out
+          topicsData = {};
+        updateAllProgressBars();
       }
     }
 
@@ -3795,11 +3822,11 @@
       if (currentUser && !currentUser.isAnonymous && db) {
         const userId = currentUser.uid;
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        topicsData[topicId] = progressPercentage; // Update local state immediately
+        topicsData[topicId] = progressPercentage;
         const progressDocRef = doc(db, `artifacts/${appId}/users/${userId}/progress`, topicId);
         try {
           await setDoc(progressDocRef, { percentage: progressPercentage, lastUpdated: serverTimestamp() }, { merge: true });
-          updateAllProgressBars(); // Visually update progress bars
+          updateAllProgressBars();
         } catch (error) {
           console.error("Error actualizando progreso:", error);
           showMessage("Error al guardar tu progreso.", 'error');
@@ -3830,36 +3857,35 @@
     // Lesson-based Quiz Functions
     function displayLessonQuizQuestion() {
         if (!currentLessonQuizData || currentLessonQuizData.length === 0) {
-            if (lessonQuizArea) lessonQuizArea.classList.add('hidden');
+            lessonQuizArea.classList.add('hidden');
             return;
         }
 
         const question = currentLessonQuizData[currentLessonQuizQuestionIndex];
         if (!question) {
-            // All questions answered
-            currentLessonQuestion.textContent = "¡Test completado! Puedes reiniciar el test o volver a los cursos.";
+            currentLessonQuestion.textContent = "¡Test completado!";
             currentLessonOptions.innerHTML = '';
-            if (submitLessonQuizButton) submitLessonQuizButton.classList.add('hidden');
-            if (nextLessonQuizQuestionButton) nextLessonQuizQuestionButton.classList.add('hidden');
-            if (lessonQuizFeedback) lessonQuizFeedback.classList.add('hidden');
-            if (restartLessonQuizButton) restartLessonQuizButton.classList.remove('hidden'); // Show restart
+            submitLessonQuizButton.classList.add('hidden');
+            nextLessonQuizQuestionButton.classList.add('hidden');
+            lessonQuizFeedback.classList.add('hidden');
+            restartLessonQuizButton.classList.remove('hidden');
             return;
         }
 
         currentLessonQuestion.textContent = question.question;
         currentLessonOptions.innerHTML = '';
-        selectedLessonQuizAnswer = null; // Reset selection
-        if (lessonQuizFeedback) lessonQuizFeedback.classList.add('hidden'); // Hide feedback
-        if (submitLessonQuizButton) submitLessonQuizButton.classList.remove('hidden'); // Show submit button
-        if (nextLessonQuizQuestionButton) nextLessonQuizQuestionButton.classList.add('hidden'); // Hide next button
-        if (restartLessonQuizButton) restartLessonQuizButton.classList.add('hidden'); // Hide restart button
+        selectedLessonQuizAnswer = null;
+        lessonQuizFeedback.classList.add('hidden');
+        submitLessonQuizButton.classList.remove('hidden');
+        nextLessonQuizQuestionButton.classList.add('hidden');
+        restartLessonQuizButton.classList.add('hidden');
 
         question.options.forEach((option, index) => {
             const btn = document.createElement('button');
             btn.textContent = option;
             btn.dataset.index = index;
             btn.addEventListener('click', () => {
-                currentLessonOptions.querySelectorAll('button').forEach(b => b.classList.remove('selected', 'correct', 'incorrect')); // Clear previous states
+                currentLessonOptions.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
                 btn.classList.add('selected');
                 selectedLessonQuizAnswer = index;
             });
