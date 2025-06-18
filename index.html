@@ -2307,7 +2307,7 @@
 
     // Configuración de la API de Gemini
     const GEMINI_API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
-    const GEMINI_API_KEY = ""; 
+    const GEMINI_API_KEY = "AIzaSyBGKJQINcUZKVxCw8NI43bVmPsDqGVBsB0"; 
 
     // Quiz Data (for learning style test)
     const quizData = [
@@ -3379,7 +3379,7 @@
      * @param {string} [subsectionIdToScroll] - Opcional. ID de una subsección dentro de home-sections o de otra página a la que hacer scroll.
      */
     function showSection(sectionIdToShow, subsectionIdToScroll = null) {
-        console.log(`Attempting to show section: ${sectionIdToShow}, subsection: ${subsectionIdToScroll || 'none'}`);
+        console.log(`[showSection] Attempting to show section: ${sectionIdToShow}, subsection: ${subsectionIdToScroll || 'none'}`);
         const allMainPages = [homeSections, quizPage, cursosSection, lessonContentDisplay, blogPage];
         
         allMainPages.forEach(page => {
@@ -3391,7 +3391,7 @@
         const targetPage = document.getElementById(sectionIdToShow);
         if (targetPage) {
             targetPage.classList.remove('hidden');
-            console.log(`Section '${sectionIdToShow}' visibility set to SHOW.`);
+            console.log(`[showSection] Section '${sectionIdToShow}' visibility set to SHOW.`);
             
             if (sectionIdToShow === 'home-sections') {
                 document.getElementById('visual-presentation').classList.remove('hidden');
@@ -3414,7 +3414,7 @@
                 targetPage.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         } else {
-            console.error(`Error: Target section element with ID '${sectionIdToShow}' not found.`);
+            console.error(`[showSection] Error: Target section element with ID '${sectionIdToShow}' not found.`);
         }
     }
 
@@ -3423,9 +3423,12 @@
      * Actualiza la visibilidad de los elementos de navegación y botones según el estado de autenticación.
      */
     function updateNavigationVisibility() {
-      console.log("Updating navigation visibility...");
+      console.log("[updateNavigationVisibility] Updating navigation visibility...");
       const isLoggedIn = currentUser !== null && !currentUser.isAnonymous; // Is logged in (non-anonymous)
       const isAnyUserLoggedIn = currentUser !== null; // Is any user logged in (anonymous or non-anonymous)
+
+      console.log(`[updateNavigationVisibility] isLoggedIn: ${isLoggedIn}, isAnyUserLoggedIn: ${isAnyUserLoggedIn}, userQuizCompleted: ${userQuizCompleted}`);
+
 
       // Top bar access/logout buttons
       if (accessButton) accessButton.classList.toggle('hidden', isLoggedIn);
@@ -3468,10 +3471,12 @@
             link.classList.add('disabled');
             link.style.pointerEvents = 'none';
             link.style.opacity = '0.6';
+            console.log(`[updateNavigationVisibility] Link disabled: ${targetSection} (${subsectionId}), Reason: Not logged in or quiz not completed.`);
         } else {
             link.classList.remove('disabled');
             link.style.pointerEvents = 'auto';
             link.style.opacity = '1';
+            console.log(`[updateNavigationVisibility] Link enabled: ${targetSection} (${subsectionId})`);
         }
       });
 
@@ -3502,9 +3507,11 @@
           if (isLoggedIn && userQuizCompleted) {
               header.style.pointerEvents = 'auto';
               header.style.opacity = '1';
+              console.log(`[updateNavigationVisibility] Subject header enabled: ${header.dataset.subjectId}`);
           } else {
               header.style.pointerEvents = 'none';
               header.style.opacity = '0.6';
+              console.log(`[updateNavigationVisibility] Subject header disabled: ${header.dataset.subjectId}`);
           }
       });
     }
@@ -3516,22 +3523,25 @@
     if (auth) {
         onAuthStateChanged(auth, async (user) => {
             currentUser = user;
-            console.log("onAuthStateChanged triggered. User:", user ? user.uid : "None", "isAnonymous:", user ? user.isAnonymous : "N/A");
+            console.log("[onAuthStateChanged] Triggered. User:", user ? user.uid : "None", "isAnonymous:", user ? user.isAnonymous : "N/A");
+            
             if (user) {
                 // Set persistence for authenticated users (not anonymous)
                 if (!user.isAnonymous) {
                   try {
                     await setPersistence(auth, browserLocalPersistence); // Persist login
-                    console.log("Persistence set to local for authenticated user.");
+                    console.log("[onAuthStateChanged] Persistence set to local for authenticated user.");
                   } catch (error) {
-                    console.error("Error setting persistence:", error);
+                    console.error("[onAuthStateChanged] Error setting persistence:", error);
                   }
                   // Load preferences only for non-anonymous users
                   if (db) {
                     await loadUserPreferences(user.uid); // This sets userQuizCompleted, userLearningStyle, userTDAHStatus
+                    console.log(`[onAuthStateChanged] After loadUserPreferences: userQuizCompleted=${userQuizCompleted}`);
                     await loadProgressAndDisplay(); // Load user's topic progress
                   }
                 } else { // Handle anonymous user case explicitly
+                  console.log("[onAuthStateChanged] Anonymous user detected. Resetting local preferences and progress.");
                   userLearningStyle = 'visual'; // Reset defaults on anonymous login/state
                   userTDAHStatus = 'no';
                   userQuizCompleted = false; // Anonymous users do not have a completed quiz persisted
@@ -3541,7 +3551,7 @@
                 }
                 toggleModal(false); // Close modal on successful auth or if already logged in
             } else { // No user authenticated (logged out)
-                console.log("No hay usuario autenticado (logged out).");
+                console.log("[onAuthStateChanged] No user authenticated (logged out). Resetting local preferences and progress.");
                 userLearningStyle = 'visual'; // Reset defaults on logout
                 userTDAHStatus = 'no';
                 userQuizCompleted = false;
@@ -3556,7 +3566,7 @@
             updateQuizResultDisplay(); // Update quiz results display
         });
     } else {
-        console.warn("Firebase Auth no disponible. onAuthStateChanged no se ejecutará.");
+        console.warn("Firebase Auth no disponible. onAuthStateChanged no se ejecutará. La aplicación funcionará en modo invitado local sin persistencia.");
         // If auth is truly not initialized, manually set currentUser for guest-like experience
         currentUser = { uid: 'guest', isAnonymous: true, email: null, displayName: 'Invitado' };
         updateNavigationVisibility(); // Still call to update UI for guest mode
@@ -3565,6 +3575,8 @@
     // --- Funcionalidad del Cuestionario (Modificada) ---
 
     function displayQuizQuestion() {
+      console.log(`[displayQuizQuestion] Called. currentUser: ${currentUser ? currentUser.uid : 'None'}, isAnonymous: ${currentUser ? currentUser.isAnonymous : 'N/A'}, userQuizCompleted: ${userQuizCompleted}`);
+
       if (!currentUser) { // Check if currentUser is null (e.g., Firebase not ready)
           showMessage("Error: No se pudo obtener el estado del usuario. Intenta recargar la página.", 'error');
           return;
@@ -3574,6 +3586,7 @@
           showMessage('Ya has completado el cuestionario de estilo de aprendizaje. Puedes revisar tus resultados o explorar otras funciones.', 'info', 4000);
           updateQuizResultDisplay(); // Ensure results are displayed
           showSection('home-sections', 'quiz-results-display-area'); // Redirect to home results
+          console.log("[displayQuizQuestion] Quiz already completed and user authenticated. Redirecting to results.");
           return; // Crucial to stop quiz display logic
       }
 
@@ -3638,7 +3651,7 @@
     }
 
     function updateQuizResultDisplay() {
-      console.log("Updating quiz result display. userQuizCompleted:", userQuizCompleted, "currentUser logged in:", currentUser && !currentUser.isAnonymous);
+      console.log("[updateQuizResultDisplay] Updating quiz result display. userQuizCompleted:", userQuizCompleted, "currentUser logged in (non-anonymous):", currentUser && !currentUser.isAnonymous);
       const styleNames = {
           visual: "Visual",
           auditivo: "Auditivo",
@@ -3648,7 +3661,7 @@
 
       if (!resultMessage || !tdahWarning || !studyAdvice || !quizResultsDisplayArea || 
           !resultMessageQuizPage || !tdahWarningQuizPage || !studyAdviceQuizPage) {
-        console.warn("Elementos de visualización de resultados del quiz no encontrados. Saltando la actualización.");
+        console.warn("[updateQuizResultDisplay] Elementos de visualización de resultados del quiz no encontrados. Saltando la actualización.");
         return;
       }
       
@@ -3685,6 +3698,7 @@
           }
 
           quizResultsDisplayArea.classList.remove('hidden'); // Show the results section on homepage
+          console.log("[updateQuizResultDisplay] Quiz results area on homepage SHOWN.");
           
           // Also update the hidden quiz page elements in case they become visible
           // These are usually on the quiz page itself after completion, so they mirror the main results
@@ -3712,6 +3726,7 @@
           tdahWarning.classList.add('hidden');
           studyAdvice.classList.add('hidden');
           quizResultsDisplayArea.classList.add('hidden');
+          console.log("[updateQuizResultDisplay] Quiz results area on homepage HIDDEN.");
           
           // Also ensure quiz page result elements are hidden if quiz is not completed
           resultMessageQuizPage.classList.add('hidden');
@@ -3785,7 +3800,7 @@
 
     async function saveUserPreferences() {
         if (!currentUser || currentUser.isAnonymous || !db) {
-            console.error("No user ID or Firestore not initialized to save preferences. User is not authenticated or is anonymous.");
+            console.error("[saveUserPreferences] No user ID or Firestore not initialized to save preferences. User is not authenticated or is anonymous.");
             showMessage("Por favor, inicia sesión para guardar tus preferencias.", 'error', 3000);
             return;
         }
@@ -3799,17 +3814,17 @@
                 lastUpdated: serverTimestamp()
             }, { merge: true });
             userQuizCompleted = true; // Update local state after saving
-            console.log("User preferences saved to Firestore.");
+            console.log("[saveUserPreferences] User preferences saved to Firestore.");
         }
         catch (e) {
-            console.error("Error saving user preferences: ", e);
+            console.error("[saveUserPreferences] Error saving user preferences: ", e);
             showMessage("Error al guardar tus preferencias.", 'error', 3000);
         }
     }
 
     async function loadUserPreferences(uid) {
         if (!db) {
-            console.warn("Firestore no inicializado. No se pueden cargar las preferencias del usuario.");
+            console.warn("[loadUserPreferences] Firestore no inicializado. No se pueden cargar las preferencias del usuario.");
             return;
         }
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -3821,21 +3836,21 @@
                 userLearningStyle = data.learningStyle || 'visual';
                 userTDAHStatus = data.tdahStatus || 'no';
                 userQuizCompleted = data.quizCompleted || false;
-                console.log("User preferences loaded from Firestore:", data);
+                console.log("[loadUserPreferences] User preferences loaded from Firestore:", data);
             } else {
-                console.log("No user preferences found in Firestore. User is new or quiz not completed.");
+                console.log("[loadUserPreferences] No user preferences found in Firestore. User is new or quiz not completed.");
                 userQuizCompleted = false; // Ensure it's false if no preferences exist
                 userLearningStyle = 'visual'; // Reset to default if no data
                 userTDAHStatus = 'no'; // Reset to default if no data
             }
         } catch (e) {
-            console.error("Error loading user preferences: ", e);
+            console.error("[loadUserPreferences] Error loading user preferences: ", e);
             showMessage("Error al cargar tus preferencias.", 'error', 3000);
         }
     }
 
     async function loadProgressAndDisplay() {
-      console.log("Loading progress and display. Current user:", currentUser ? currentUser.uid : "None", "isAnonymous:", currentUser ? currentUser.isAnonymous : "N/A");
+      console.log("[loadProgressAndDisplay] Loading progress and display. Current user:", currentUser ? currentUser.uid : "None", "isAnonymous:", currentUser ? currentUser.isAnonymous : "N/A");
       if (currentUser && !currentUser.isAnonymous && db) {
         const userId = currentUser.uid;
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -3846,15 +3861,16 @@
           querySnapshot.forEach((doc) => {
               topicsData[doc.id] = doc.data().percentage;
           });
-          console.log("Progress data loaded:", topicsData);
+          console.log("[loadProgressAndDisplay] Progress data loaded:", topicsData);
           updateAllProgressBars();
         } catch (error) {
-          console.error("Error cargando datos de progreso:", error);
+          console.error("[loadProgressAndDisplay] Error cargando datos de progreso:", error);
           topicsData = {};
           updateAllProgressBars(); // Ensure bars are updated even on error to reset
         }
       } else {
         // If no authenticated user, reset progress bars to 0% and clear local data
+        console.log("[loadProgressAndDisplay] No authenticated user. Resetting progress bars to 0%.");
         topicsData = {};
         updateAllProgressBars();
       }
@@ -3869,12 +3885,14 @@
         try {
           await setDoc(progressDocRef, { percentage: progressPercentage, lastUpdated: serverTimestamp() }, { merge: true });
           updateAllProgressBars();
+          console.log(`[updateProgress] Progress for ${topicId} updated to ${progressPercentage}%.`);
         } catch (error) {
-          console.error("Error actualizando progreso:", error);
+          console.error("[updateProgress] Error actualizando progreso:", error);
           showMessage("Error al guardar tu progreso.", 'error');
         }
       } else {
         showMessage("Debes iniciar sesión para guardar tu progreso.", 'error');
+        console.warn("[updateProgress] Attempted to update progress without authenticated user.");
       }
     }
 
@@ -3976,26 +3994,28 @@
 
     // --- Inicialización al Cargar la Ventana ---
     window.onload = async function() {
+        console.log("[window.onload] Page loaded. Starting initialization.");
         try {
             // Assign DOM elements and attach all listeners FIRST
             assignDOMElementsAndAttachListeners();
+            console.log("[window.onload] DOM elements assigned and listeners attached.");
 
             // Then, check if critical elements are present
             const elementsReady = checkRequiredElements();
             if (!elementsReady) {
-                console.error("Faltan elementos DOM críticos. La inicialización puede ser incompleta. Algunas funcionalidades no estarán disponibles.");
+                console.error("[window.onload] Faltan elementos DOM críticos. La inicialización puede ser incompleta. Algunas funcionalidades no estarán disponibles.");
                 showMessage("Error crítico al cargar la aplicación. Algunos elementos no están disponibles.", 'error', 10000);
                 // Optionally halt further execution if truly critical elements are missing
-                // return;
+                // return; // Uncomment to halt if crucial DOM elements are missing
             }
 
             // Initialize Firebase services
             try {
                 if (typeof __firebase_config !== 'undefined' && __firebase_config) {
                     firebaseConfig = JSON.parse(__firebase_config);
-                    console.log("Firebase config loaded from Canvas environment.");
+                    console.log("[window.onload] Firebase config loaded from Canvas environment.");
                 } else {
-                    console.warn("Firebase config (__firebase_config) no encontrada o vacía. Usando configuración por defecto.");
+                    console.warn("[window.onload] Firebase config (__firebase_config) no encontrada o vacía. Usando configuración por defecto.");
                     firebaseConfig = defaultFirebaseConfig;
                 }
 
@@ -4004,34 +4024,42 @@
                     analytics = getAnalytics(app);
                     auth = getAuth(app);
                     db = getFirestore(app);
-                    console.log("Firebase inicializado correctamente.");
+                    console.log("[window.onload] Firebase inicializado correctamente.");
                 } else {
-                    console.error("La configuración de Firebase está incompleta o es inválida. Saltando la inicialización de Firebase.");
+                    console.error("[window.onload] La configuración de Firebase está incompleta o es inválida. Saltando la inicialización de Firebase.");
                     showMessage("Configuración de Firebase faltante o inválida. Las funciones de guardado no estarán disponibles.", 'error', 10000);
                 }
             } catch (e) {
-                console.error("Error al inicializar Firebase:", e);
+                console.error("[window.onload] Error al inicializar Firebase:", e);
                 showMessage("Error grave al inicializar Firebase. Consulta la consola para más detalles.", 'error', 10000);
                 app = null; analytics = null; auth = null; db = null;
             }
 
             // Attempt initial sign-in (anonymous or with custom token)
+            // The onAuthStateChanged listener will handle UI updates after auth state is determined
             if (auth) {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     try {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                        console.log("Sesión iniciada con token personalizado del entorno Canvas.");
+                        // Using a timeout to ensure onAuthStateChanged listener has time to set up
+                        setTimeout(async () => {
+                          await signInWithCustomToken(auth, __initial_auth_token);
+                          console.log("[window.onload] Sesión iniciada con token personalizado del entorno Canvas.");
+                        }, 100); 
                     } catch (error) {
-                        console.error("Error al iniciar sesión con token personalizado de Canvas:", error);
-                        await signInAnonymously(auth);
-                        console.log("Sesión iniciada anónimamente como respaldo.");
+                        console.error("[window.onload] Error al iniciar sesión con token personalizado de Canvas:", error);
+                        setTimeout(async () => {
+                          await signInAnonymously(auth);
+                          console.log("[window.onload] Sesión iniciada anónimamente como respaldo.");
+                        }, 100);
                     }
                 } else {
-                    await signInAnonymously(auth);
-                    console.log("Sesión iniciada anónimamente (no se encontró token personalizado).");
+                    setTimeout(async () => {
+                      await signInAnonymously(auth);
+                      console.log("[window.onload] Sesión iniciada anónimamente (no se encontró token personalizado).");
+                    }, 100);
                 }
             } else {
-                console.warn("Firebase Auth no inicializado. La autenticación será limitada o no disponible.");
+                console.warn("[window.onload] Firebase Auth no inicializado. La autenticación será limitada o no disponible.");
                 currentUser = { uid: 'guest', isAnonymous: true, email: null, displayName: 'Invitado' };
                 updateNavigationVisibility(); // Update UI for guest mode if Auth isn't ready
             }
