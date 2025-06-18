@@ -105,8 +105,6 @@
       gap: 10px;
     }
     .top-bar button#access-button {
-    .top-bar button#access-button,
-    .top-bar button#logout-top-bar-button { /* Apply styles to both */
       background: var(--primary-color);
       padding: 8px 15px;
       border-radius: var(--border-radius-sm);
@@ -115,8 +113,6 @@
       transition: background 0.3s ease, transform 0.2s ease;
     }
     .top-bar button#access-button:hover {
-    .top-bar button#access-button:hover,
-    .top-bar button#logout-top-bar-button:hover { /* Apply hover to both */
       background: var(--secondary-color);
       transform: translateY(-2px);
     }
@@ -1628,7 +1624,7 @@
   <div id="auth-modal-overlay" class="modal-overlay">
     <div id="auth-container">
       <button class="close-button" id="close-auth-modal" aria-label="Cerrar modal"><i class="fas fa-times"></i></button>
-
+      
       <!-- Unified Login Form (default view) -->
       <div id="login-form">
         <h2>Iniciar Sesión</h2>
@@ -1638,7 +1634,7 @@
           <button type="submit">Iniciar Sesión</button>
         </form>
         <p class="toggle-form-link" role="button" tabindex="0" data-form-target="recover">¿Olvidaste tu contraseña?</p>
-
+        
         <div class="alternative-options">
             <p>¿No tienes cuenta o prefieres explorar?</p>
             <button id="show-register-form">Registrarse</button>
@@ -1684,7 +1680,6 @@
         <a href="#reviews-and-contact" data-subsection="contacto-section">Contacto, Reclamaciones y Sugerencias</a>
         <a href="#">Ayuda</a>
         <button id="access-button">Acceso Personalizado</button>
-        <button id="logout-top-bar-button" class="hidden">Cerrar Sesión</button>
       </div>
     </div>
 
@@ -2267,7 +2262,6 @@
 
     // Elementos del DOM (declarados con 'let' para asignación posterior)
     let authModalOverlay, closeAuthModal, accessButton, hamburgerMenuIcon, sidebarMenu, closeSidebarMenu;
-    let authModalOverlay, closeAuthModal, accessButton, logoutTopBarButton, hamburgerMenuIcon, sidebarMenu, closeSidebarMenu;
     let loginFormDiv, registerFormDiv, recoverPasswordFormDiv, showRegisterFormButton, startGuestModeButton;
     let loginEmailInput, loginPasswordInput, registerEmailInput, registerPasswordInput, recoverEmailInput;
     let userDisplayName, customMessage;
@@ -2289,7 +2283,6 @@
     // The reviewFormContactForm was removed as it's not in the HTML structure
 
 
-    
     // Global variables for carousels
     let currentCarouselIndex = 0;
     let totalCarouselImages = 0; // Will be set after DOM load
@@ -2453,7 +2446,6 @@
         authModalOverlay = document.getElementById('auth-modal-overlay');
         closeAuthModal = document.getElementById('close-auth-modal');
         accessButton = document.getElementById('access-button');
-        logoutTopBarButton = document.getElementById('logout-top-bar-button'); // Added new button
         hamburgerMenuIcon = document.getElementById('hamburger-menu-icon');
         sidebarMenu = document.getElementById('sidebar-menu');
         closeSidebarMenu = document.getElementById('close-sidebar-menu');
@@ -2537,25 +2529,8 @@
 
         // Use a more robust way to get logoutButton after it's assigned
         const logoutButton = document.getElementById('logout-button');
-        const logoutButton = document.getElementById('logout-button'); // Sidebar logout button
         if (logoutButton) {
             logoutButton.addEventListener('click', async () => {
-                if (!auth) {
-                    showMessage("Servicio de autenticación no disponible.", 'error');
-                    return;
-                }
-                try {
-                    await signOut(auth);
-                    showMessage("Sesión cerrada correctamente.", 'success');
-                } catch (error) {
-                    console.error("Error al cerrar sesión:", error);
-                    showMessage("Error al cerrar sesión.", 'error');
-                }
-            });
-        }
-        // New: Top bar logout button
-        if (logoutTopBarButton) {
-            logoutTopBarButton.addEventListener('click', async () => {
                 if (!auth) {
                     showMessage("Servicio de autenticación no disponible.", 'error');
                     return;
@@ -2687,7 +2662,7 @@
                 showSection('home-sections');
             });
         }
-
+        
         if (backFromBlogButton) { // Event listener for the new back button on the blog page
             backFromBlogButton.addEventListener('click', () => {
                 showSection('home-sections');
@@ -2708,8 +2683,6 @@
                             learningStyleScores[style]++;
                         }
                         if (question.tdahOptionIndex && question.tdahOptionIndex.includes(selectedOption)) {
-                        // Check if tdahOptionIndex is an array and includes the selected option
-                        if (Array.isArray(question.tdahOptionIndex) && question.tdahOptionIndex.includes(selectedOption)) {
                             tdahIndicationCount++;
                         }
                     }
@@ -2726,11 +2699,9 @@
                 userLearningStyle = primaryLearningStyle;
 
                 userTDAHStatus = tdahIndicationCount > 0 ? 'tdah' : 'no';
-                // Threshold for TDAH indication (e.g., more than 2 affirmative answers to TDAH-related questions)
-                userTDAHStatus = tdahIndicationCount >= 2 ? 'tdah' : 'no'; // Adjusted threshold
 
                 if (quizContainer) quizContainer.classList.add('hidden');
-
+                
                 // Set userQuizCompleted to true after the quiz is submitted
                 userQuizCompleted = true;
 
@@ -2867,7 +2838,7 @@
                         showMessage("Error: Información del tema no encontrada.", 'error');
                         return;
                     }
-
+                    
                     showSection('lesson-content-display');
                     if (document.querySelector('main')) document.querySelector('main').scrollIntoView({ behavior: 'smooth' });
 
@@ -2897,7 +2868,7 @@
                                     Asegúrate de que el contenido sea preciso, educativo y adaptado al nivel de dificultad especificado.
                                     El contenido debe ser en español.
                                     `;
-
+                    
                     try {
                         const response = await fetch(`${GEMINI_API_BASE_URL}?key=${GEMINI_API_KEY}`, {
                             method: 'POST',
@@ -2905,7 +2876,7 @@
                             body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }] }] })
                         });
                         const data = await response.json();
-
+                        
                         if (data.candidates && data.candidates.length > 0 &&
                             data.candidates[0].content && data.candidates[0].content.parts &&
                             Array.isArray(data.candidates[0].content.parts) &&
@@ -2913,7 +2884,6 @@
                             const generatedHtml = data.candidates[0].content.parts[0].text;
                             if (lessonMaterialDiv) lessonMaterialDiv.innerHTML = generatedHtml.replace(/```html\n?|\n?```/g, '');
                             currentLessonContent = lessonMaterialDiv ? lessonMaterialDiv.textContent : ''; // Store raw text for AI questions
-                            currentLessonContent = lessonMaterialDiv ? lessonMaterialDiv.textContent : ''; // Store raw text for AI features like quiz generation
                         } else {
                             console.error("Estructura de respuesta de Gemini inesperada:", data);
                             if (lessonMaterialDiv) lessonMaterialDiv.innerHTML = `<p class="text-center" style="color: red;">Error: La IA no pudo generar el contenido de la lección.</p>`;
@@ -2938,7 +2908,7 @@
                                     return;
                                 }
                                 const geminiInput = lessonTextarea.value;
-
+                                
                                 if (!geminiOutputLessonDiv) {
                                     console.error("Elemento 'gemini-output-lesson' no encontrado.");
                                     showMessage("Error: No se puede mostrar la respuesta de la IA.", 'error');
@@ -3047,11 +3017,11 @@
                                       })
                                   });
                                   const testData = await testResponse.json();
-
+                                  
                                   if (testData.candidates && testData.candidates.length > 0 &&
                                       testData.candidates[0].content && testData.candidates[0].content.parts &&
                                       testData.candidates[0].content.parts.length > 0) {
-
+                                      
                                       const jsonString = testData.candidates[0].content.parts[0].text;
                                       try {
                                           currentLessonQuizData = JSON.parse(jsonString);
@@ -3120,7 +3090,7 @@
                 }
                 lessonQuizFeedback.classList.remove('hidden');
                 submitLessonQuizButton.classList.add('hidden');
-
+                
                 // If there are more questions, show next button, else show restart
                 if (currentLessonQuizQuestionIndex < currentLessonQuizData.length - 1) {
                     nextLessonQuizQuestionButton.classList.remove('hidden');
@@ -3291,7 +3261,6 @@
         // Reducir la lista a elementos verdaderamente críticos para la funcionalidad inicial
         const criticalElements = [
             authModalOverlay, closeAuthModal, accessButton, hamburgerMenuIcon, sidebarMenu, closeSidebarMenu,
-            authModalOverlay, closeAuthModal, accessButton, logoutTopBarButton, hamburgerMenuIcon, sidebarMenu, closeSidebarMenu, // Added logoutTopBarButton
             loginFormDiv, registerFormDiv, recoverPasswordFormDiv, showRegisterFormButton, startGuestModeButton,
             loginEmailInput, loginPasswordInput, registerEmailInput, registerPasswordInput, recoverEmailInput,
             userDisplayName, customMessage, visualCarousel, dailyCuriosityElement, discoverBlogButton,
@@ -3303,7 +3272,6 @@
             currentLessonQuestion, currentLessonOptions, submitLessonQuizButton, lessonQuizFeedback,
             nextLessonQuizQuestionButton, restartLessonQuizButton, blogPage, blogIdeasOutput, generateBlogIdeasButton,
             generatedIdeasList, backFromBlogButton, // Added backFromBlogButton
-            generatedIdeasList, backFromBlogButton, 
             mainContent, homeSections, cursosSection, reviewsAndContactSection, chatbotFab,
             testimonialsSlidesContainer, prevTestimonialBtn, nextTestimonialBtn, searchBarInput, searchBarButton
         ];
@@ -3386,7 +3354,7 @@
      */
     function showSection(sectionIdToShow, subsectionIdToScroll = null) {
         const allMainPages = [homeSections, quizPage, cursosSection, lessonContentDisplay, blogPage];
-
+        
         allMainPages.forEach(page => {
             if (page) {
                 page.classList.add('hidden');
@@ -3396,7 +3364,7 @@
         const targetPage = document.getElementById(sectionIdToShow);
         if (targetPage) {
             targetPage.classList.remove('hidden');
-
+            
             if (sectionIdToShow === 'home-sections') {
                 document.getElementById('visual-presentation').classList.remove('hidden');
                 document.getElementById('subjects-and-ai').classList.remove('hidden');
@@ -3427,10 +3395,8 @@
       const isLoggedIn = currentUser !== null && !currentUser.isAnonymous; // Is logged in (non-anonymous)
       const isAnyUserLoggedIn = currentUser !== null; // Is any user logged in (anonymous or non-anonymous)
 
-      // Top bar access/logout buttons
       if (accessButton) accessButton.classList.toggle('hidden', isLoggedIn);
-      if (logoutTopBarButton) logoutTopBarButton.classList.toggle('hidden', !isLoggedIn); // Show only if logged in (non-anonymous)
-
+      
       if (userDisplayName) {
         userDisplayName.classList.toggle('hidden', !isAnyUserLoggedIn);
         if (isAnyUserLoggedIn) {
@@ -3444,22 +3410,15 @@
       // Re-fetch logoutButton here to ensure it's always the latest reference
       const logoutButton = document.getElementById('logout-button');
       if (logoutButton) logoutButton.classList.toggle('hidden', !isAnyUserLoggedIn);
-      // Sidebar logout button
-      const logoutButtonSidebar = document.getElementById('logout-button');
-      if (logoutButtonSidebar) logoutButtonSidebar.classList.toggle('hidden', !isAnyUserLoggedIn);
 
       document.querySelectorAll('#sidebar-menu a').forEach(link => {
         const targetSection = link.dataset.targetSection;
         let shouldBeDisabled = true; // Default to disabled
-        const subsectionId = link.dataset.subsection;
-        let shouldBeDisabled = false; // Default to accessible, then disable if conditions met
 
         if (targetSection === 'blog-page') {
             shouldBeDisabled = false; // Blog page is accessible to all
         } else if (targetSection === 'quiz-page') {
             // Quiz page is always accessible if any user is logged in (to potentially complete it)
-        if (targetSection === 'quiz-page') {
-            // Quiz page is accessible to any logged-in user (including anonymous)
             shouldBeDisabled = !isAnyUserLoggedIn;
         }
         else if (targetSection === 'home-sections' && link.dataset.subsection === 'quiz-results-display-area') {
@@ -3469,15 +3428,6 @@
             // Courses are accessible if quiz completed by authenticated user.
             // If anonymous, they can view course structure but progress won't save.
             shouldBeDisabled = !(isLoggedIn && userQuizCompleted); // Only for logged in and quiz completed
-        } else if (targetSection === 'home-sections' && subsectionId === 'quiz-results-display-area') {
-            // Results page is accessible only if authenticated AND quiz completed
-            shouldBeDisabled = !(isLoggedIn && userQuizCompleted);
-        } else if (targetSection === 'cursos' && subsectionId === 'avances-cursos') {
-            // Courses are accessible only if authenticated AND quiz completed
-            shouldBeDisabled = !(isLoggedIn && userQuizCompleted);
-        } else if (targetSection === 'blog-page') {
-            // Blog is accessible to all (even anonymous or not logged in at all)
-            shouldBeDisabled = false;
         }
 
         if (shouldBeDisabled) {
@@ -3494,10 +3444,6 @@
       if (discoverBlogButton) { 
         discoverBlogButton.style.pointerEvents = isAnyUserLoggedIn ? 'auto' : 'none';
         discoverBlogButton.style.opacity = isAnyUserLoggedIn ? '1' : '0.6';
-      // Make sure discoverBlogButton is accessible to all
-      if (discoverBlogButton) {
-        discoverBlogButton.style.pointerEvents = 'auto'; // Everyone can access blog
-        discoverBlogButton.style.opacity = '1';
       }
 
       if (toggleReviewFormButton) {
@@ -3541,7 +3487,6 @@
                 if (!user.isAnonymous) {
                   try {
                     await setPersistence(auth, browserLocalPersistence);
-                    await setPersistence(auth, browserLocalPersistence); // Persist login
                     console.log("Persistence set to local for authenticated user.");
                   } catch (error) {
                     console.error("Error setting persistence:", error);
@@ -3555,8 +3500,6 @@
                             showSection('home-sections', 'quiz-results-display-area'); // Redirect to home results
                         }
                     }
-                  // Load preferences only for non-anonymous users
-                  if (db) await loadUserPreferences(user.uid);
                 }
                 toggleModal(false); // Close modal on successful auth
                 if (db && !user.isAnonymous) {
@@ -3571,16 +3514,10 @@
                 // Ensure current quiz index and answers are reset on logout
                 currentQuizIndex = 0;
                 userAnswers = {};
-                currentQuizIndex = 0; // Reset quiz state
-                userAnswers = {}; // Reset quiz answers
-                // Clear any displayed quiz results on logout
-                if (quizResultsDisplayArea) quizResultsDisplayArea.classList.add('hidden'); // Ensure quiz results disappear
             }
-            // These updates should happen after the user state and preferences are fully loaded/reset
             updateNavigationVisibility(); // Update UI based on new user state
             updateReviewFormVisibility(); // Update review form visibility
             updateQuizResultDisplay(); // Update quiz results display
-            loadProgressAndDisplay(); // Load user progress bars (if logged in)
         });
     } else {
         console.warn("Firebase Auth no disponible. onAuthStateChanged no se ejecutará.");
@@ -3588,7 +3525,7 @@
         currentUser = { uid: 'guest', isAnonymous: true, email: null, displayName: 'Invitado' };
         updateNavigationVisibility(); // Still call to update UI for guest mode
     }
-
+    
     // --- Funcionalidad del Cuestionario (Modificada) ---
 
     function displayQuizQuestion() {
@@ -3603,9 +3540,6 @@
           // Optionally, redirect away from the quiz page if user tries to access it directly
           showSection('home-sections', 'quiz-results-display-area');
           return;
-          updateQuizResultDisplay(); // Ensure results are displayed
-          showSection('home-sections', 'quiz-results-display-area'); // Redirect to home results
-          return; // Crucial to stop quiz display logic
       }
 
       if (!quizContainer || !questionText || !optionsDiv || !submitQuizButton) {
@@ -3619,7 +3553,7 @@
       if (resultMessageQuizPage) resultMessageQuizPage.classList.add('hidden');
       if (tdahWarningQuizPage) tdahWarningQuizPage.classList.add('hidden');
       if (studyAdviceQuizPage) studyAdviceQuizPage.classList.add('hidden');
-
+      
       // Initially hide submit button until last question
       if (submitQuizButton) submitQuizButton.classList.add('hidden');
 
@@ -3681,7 +3615,7 @@
         console.warn("Elementos de visualización de resultados del quiz no encontrados. Saltando la actualización.");
         return;
       }
-
+      
       // Logic for the quiz results section on the homepage
       // Only show if authenticated AND quiz completed
       if (currentUser && !currentUser.isAnonymous && userQuizCompleted) {
@@ -3700,10 +3634,10 @@
           studyAdvice.className = 'result-card'; // Ensure class is applied
           studyAdvice.style.backgroundColor = '#e6ffe6';
           studyAdvice.style.borderLeft = '5px solid var(--secondary-color)';
-
+          
           resultMessage.classList.remove('hidden');
           studyAdvice.classList.remove('hidden');
-
+          
           if (userTDAHStatus === 'tdah') {
               tdahWarning.textContent = `⚠️ Ten en cuenta: Se han detectado indicadores de TDAH. Te recomendamos buscar apoyo profesional y considerar estrategias de estudio especializadas.`;
               tdahWarning.classList.remove('hidden');
@@ -3715,7 +3649,7 @@
           }
 
           quizResultsDisplayArea.classList.remove('hidden'); // Show the results section on homepage
-
+          
           // Also update the hidden quiz page elements in case they become visible
           // These are usually on the quiz page itself after completion, so they mirror the main results
           resultMessageQuizPage.textContent = resultMessage.textContent;
@@ -3742,7 +3676,7 @@
           tdahWarning.classList.add('hidden');
           studyAdvice.classList.add('hidden');
           quizResultsDisplayArea.classList.add('hidden');
-
+          
           // Also ensure quiz page result elements are hidden if quiz is not completed
           resultMessageQuizPage.classList.add('hidden');
           tdahWarningQuizPage.classList.add('hidden');
@@ -3783,7 +3717,7 @@
       }
       const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
       const reviewsCollectionRef = collection(db, `artifacts/${appId}/public/data/reviews`);
-
+      
       onSnapshot(query(reviewsCollectionRef, orderBy("timestamp", "desc")), (snapshot) => {
         if (reviewsContainer) reviewsContainer.innerHTML = ''; // Clear existing reviews
         if (snapshot.empty) {
@@ -3817,7 +3751,6 @@
         if (!currentUser || currentUser.isAnonymous || !db) {
             console.error("No user ID or Firestore not initialized to save preferences. User is not authenticated or is anonymous.");
             showMessage("Por favor, inicia sesión para guardar tus preferencias.", 3000);
-            showMessage("Por favor, inicia sesión para guardar tus preferencias.", 'error', 3000);
             return;
         }
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -3836,7 +3769,6 @@
         catch (e) {
             console.error("Error saving user preferences: ", e);
             showMessage("Error al guardar tus preferencias.", 3000);
-            showMessage("Error al guardar tus preferencias.", 'error', 3000);
         }
     }
 
@@ -3864,7 +3796,6 @@
         } catch (e) {
             console.error("Error loading user preferences: ", e);
             showMessage("Error al cargar tus preferencias.", 3000);
-            showMessage("Error al cargar tus preferencias.", 'error', 3000);
         }
     }
 
@@ -3883,11 +3814,6 @@
         } catch (error) {
           console.error("Error cargando datos de progreso:", error);
           topicsData = {};
-          updateAllProgressBars(); // Ensure bars are updated even on error to reset
-        }
-      } else {
-        // If no authenticated user, reset progress bars to 0% and clear local data
-        topicsData = {};
         updateAllProgressBars();
       }
     }
@@ -4067,13 +3993,13 @@
                 currentUser = { uid: 'guest', isAnonymous: true, email: null, displayName: 'Invitado' };
                 updateNavigationVisibility(); // Update UI for guest mode if Auth isn't ready
             }
-
+            
             if (db) {
                 loadReviews(); // Load reviews once Firestore is ready
             } else {
                 console.warn("Firestore no inicializado. Saltando la carga de reseñas.");
             }
-
+            
             showSection('home-sections'); // Show the redesigned home page
 
             // Initialize carousels after content is loaded and element counts are set
