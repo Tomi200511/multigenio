@@ -104,6 +104,7 @@
       flex-wrap: wrap;
       gap: 10px;
     }
+    .top-bar button#access-button {
     .top-bar button#access-button,
     .top-bar button#logout-top-bar-button { /* Apply styles to both */
       background: var(--primary-color);
@@ -113,6 +114,7 @@
       box-shadow: var(--shadow-sm);
       transition: background 0.3s ease, transform 0.2s ease;
     }
+    .top-bar button#access-button:hover {
     .top-bar button#access-button:hover,
     .top-bar button#logout-top-bar-button:hover { /* Apply hover to both */
       background: var(--secondary-color);
@@ -1616,37 +1618,9 @@
         color: var(--text-dark);
         font-weight: 500;
     }
-
-    /* Loading screen */
-    #loading-screen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(255, 255, 255, 0.9);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 2001;
-        font-size: 1.5em;
-        color: var(--text-dark);
-        transition: opacity 0.5s ease-out;
-    }
-    #loading-screen p {
-        margin-top: 15px;
-        font-weight: 600;
-    }
   </style>
 </head>
 <body>
-  <!-- Loading Screen -->
-  <div id="loading-screen">
-    <i class="fas fa-spinner fa-spin fa-4x" style="color: var(--primary-color);"></i>
-    <p>Cargando MultiGenio...</p>
-  </div>
-
   <!-- Custom Message Box -->
   <div id="custom-message" class="hidden"></div>
 
@@ -1654,7 +1628,7 @@
   <div id="auth-modal-overlay" class="modal-overlay">
     <div id="auth-container">
       <button class="close-button" id="close-auth-modal" aria-label="Cerrar modal"><i class="fas fa-times"></i></button>
-      
+
       <!-- Unified Login Form (default view) -->
       <div id="login-form">
         <h2>Iniciar Sesión</h2>
@@ -1664,7 +1638,7 @@
           <button type="submit">Iniciar Sesión</button>
         </form>
         <p class="toggle-form-link" role="button" tabindex="0" data-form-target="recover">¿Olvidaste tu contraseña?</p>
-        
+
         <div class="alternative-options">
             <p>¿No tienes cuenta o prefieres explorar?</p>
             <button id="show-register-form">Registrarse</button>
@@ -2278,7 +2252,7 @@
       apiKey: "AIzaSyDklyhhZOV3c2KbbrvAZOpoUitPBWgRBOQ", // <<--- REEMPLAZA CON TU CLAVE API DE FIREBASE
       authDomain: "multigenio-39890.firebaseapp.com",
       projectId: "multigenio-39890",
-      storageBucket: "multigenio-39890.firebaseapp.com",
+      storageBucket: "multigenio-39890.firebasestorage.app",
       messagingSenderId: "881137429405",
       appId: "1:881137429405:web:9f061138bdf43b00dd5d74",
       measurementId: "G-9SQX18GVH6"
@@ -2292,10 +2266,11 @@
     let db = null;
 
     // Elementos del DOM (declarados con 'let' para asignación posterior)
+    let authModalOverlay, closeAuthModal, accessButton, hamburgerMenuIcon, sidebarMenu, closeSidebarMenu;
     let authModalOverlay, closeAuthModal, accessButton, logoutTopBarButton, hamburgerMenuIcon, sidebarMenu, closeSidebarMenu;
     let loginFormDiv, registerFormDiv, recoverPasswordFormDiv, showRegisterFormButton, startGuestModeButton;
     let loginEmailInput, loginPasswordInput, registerEmailInput, registerPasswordInput, recoverEmailInput;
-    let userDisplayName, customMessage, loadingScreen; // Added loadingScreen
+    let userDisplayName, customMessage;
     let visualCarousel, carouselImagesContainer, prevCarouselBtn, nextCarouselBtn;
     let dailyCuriosityElement, discoverBlogButton;
     let subjectToggleHeaders, topicSelectionButtons;
@@ -2311,6 +2286,9 @@
     let mainContent, homeSections, cursosSection, reviewsAndContactSection, chatbotFab;
     let testimonialsSlidesContainer, prevTestimonialBtn, nextTestimonialBtn;
     let searchBarInput, searchBarButton;
+    // The reviewFormContactForm was removed as it's not in the HTML structure
+
+
     
     // Global variables for carousels
     let currentCarouselIndex = 0;
@@ -2335,7 +2313,7 @@
 
     // Configuración de la API de Gemini
     const GEMINI_API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
-    const GEMINI_API_KEY = "AIzaSyBGKJQINcUZKVxCw8NI43bVmPsDqGVBsB0"; 
+    const GEMINI_API_KEY = ""; 
 
     // Quiz Data (for learning style test)
     const quizData = [
@@ -2472,7 +2450,6 @@
      */
     function assignDOMElementsAndAttachListeners() {
         // Asignación de elementos del DOM
-        loadingScreen = document.getElementById('loading-screen'); // Get loading screen
         authModalOverlay = document.getElementById('auth-modal-overlay');
         closeAuthModal = document.getElementById('close-auth-modal');
         accessButton = document.getElementById('access-button');
@@ -2559,6 +2536,7 @@
         if (closeAuthModal) closeAuthModal.addEventListener('click', () => toggleModal(false));
 
         // Use a more robust way to get logoutButton after it's assigned
+        const logoutButton = document.getElementById('logout-button');
         const logoutButton = document.getElementById('logout-button'); // Sidebar logout button
         if (logoutButton) {
             logoutButton.addEventListener('click', async () => {
@@ -2709,7 +2687,7 @@
                 showSection('home-sections');
             });
         }
-        
+
         if (backFromBlogButton) { // Event listener for the new back button on the blog page
             backFromBlogButton.addEventListener('click', () => {
                 showSection('home-sections');
@@ -2729,6 +2707,7 @@
                         if (style) {
                             learningStyleScores[style]++;
                         }
+                        if (question.tdahOptionIndex && question.tdahOptionIndex.includes(selectedOption)) {
                         // Check if tdahOptionIndex is an array and includes the selected option
                         if (Array.isArray(question.tdahOptionIndex) && question.tdahOptionIndex.includes(selectedOption)) {
                             tdahIndicationCount++;
@@ -2746,25 +2725,25 @@
                 }
                 userLearningStyle = primaryLearningStyle;
 
+                userTDAHStatus = tdahIndicationCount > 0 ? 'tdah' : 'no';
                 // Threshold for TDAH indication (e.g., more than 2 affirmative answers to TDAH-related questions)
                 userTDAHStatus = tdahIndicationCount >= 2 ? 'tdah' : 'no'; // Adjusted threshold
 
                 if (quizContainer) quizContainer.classList.add('hidden');
-                
+
                 // Set userQuizCompleted to true after the quiz is submitted
-                userQuizCompleted = true; // Mark as completed locally immediately
+                userQuizCompleted = true;
+
+                updateQuizResultDisplay();
 
                 if (currentUser && !currentUser.isAnonymous && db) {
-                    await saveUserPreferences(); // This also updates userQuizCompleted local state
+                    await saveUserPreferences();
                     showMessage("Resultado del test guardado.", 'success');
                 } else if (!currentUser || currentUser.isAnonymous) {
                     showMessage("Tu resultado no se guardará en modo invitado. Inicia sesión para guardar.", 'info');
                 } else {
                     showMessage("Error: Firebase no inicializado. No se pudo guardar el resultado.", 'error');
                 }
-                // Update display AFTER preferences are saved and local state updated
-                updateQuizResultDisplay();
-                updateNavigationVisibility(); // Ensure navigation updates immediately
                 showSection('home-sections', 'quiz-results-display-area');
             });
         }
@@ -2888,7 +2867,7 @@
                         showMessage("Error: Información del tema no encontrada.", 'error');
                         return;
                     }
-                    
+
                     showSection('lesson-content-display');
                     if (document.querySelector('main')) document.querySelector('main').scrollIntoView({ behavior: 'smooth' });
 
@@ -2918,7 +2897,7 @@
                                     Asegúrate de que el contenido sea preciso, educativo y adaptado al nivel de dificultad especificado.
                                     El contenido debe ser en español.
                                     `;
-                    
+
                     try {
                         const response = await fetch(`${GEMINI_API_BASE_URL}?key=${GEMINI_API_KEY}`, {
                             method: 'POST',
@@ -2926,13 +2905,14 @@
                             body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }] }] })
                         });
                         const data = await response.json();
-                        
+
                         if (data.candidates && data.candidates.length > 0 &&
                             data.candidates[0].content && data.candidates[0].content.parts &&
                             Array.isArray(data.candidates[0].content.parts) &&
                             data.candidates[0].content.parts.length > 0) {
                             const generatedHtml = data.candidates[0].content.parts[0].text;
                             if (lessonMaterialDiv) lessonMaterialDiv.innerHTML = generatedHtml.replace(/```html\n?|\n?```/g, '');
+                            currentLessonContent = lessonMaterialDiv ? lessonMaterialDiv.textContent : ''; // Store raw text for AI questions
                             currentLessonContent = lessonMaterialDiv ? lessonMaterialDiv.textContent : ''; // Store raw text for AI features like quiz generation
                         } else {
                             console.error("Estructura de respuesta de Gemini inesperada:", data);
@@ -2958,7 +2938,7 @@
                                     return;
                                 }
                                 const geminiInput = lessonTextarea.value;
-                                
+
                                 if (!geminiOutputLessonDiv) {
                                     console.error("Elemento 'gemini-output-lesson' no encontrado.");
                                     showMessage("Error: No se puede mostrar la respuesta de la IA.", 'error');
@@ -3067,11 +3047,11 @@
                                       })
                                   });
                                   const testData = await testResponse.json();
-                                  
+
                                   if (testData.candidates && testData.candidates.length > 0 &&
                                       testData.candidates[0].content && testData.candidates[0].content.parts &&
                                       testData.candidates[0].content.parts.length > 0) {
-                                      
+
                                       const jsonString = testData.candidates[0].content.parts[0].text;
                                       try {
                                           currentLessonQuizData = JSON.parse(jsonString);
@@ -3140,7 +3120,7 @@
                 }
                 lessonQuizFeedback.classList.remove('hidden');
                 submitLessonQuizButton.classList.add('hidden');
-                
+
                 // If there are more questions, show next button, else show restart
                 if (currentLessonQuizQuestionIndex < currentLessonQuizData.length - 1) {
                     nextLessonQuizQuestionButton.classList.remove('hidden');
@@ -3233,7 +3213,6 @@
                 e.preventDefault();
                 const targetSectionId = this.dataset.targetSection;
                 const subsectionId = this.dataset.subsection;
-                console.log(`Navegando a la sección: ${targetSectionId}, subsección: ${subsectionId}`);
                 showSection(targetSectionId, subsectionId);
                 if (sidebarMenu && sidebarMenu.classList.contains('active')) {
                   sidebarMenu.classList.remove('active');
@@ -3268,35 +3247,31 @@
         }
 
         // Auto-play para el carrusel visual
-        if (carouselImagesContainer) { // Check if element exists before setting interval
-          if (totalCarouselImages > 1) {
-            setInterval(() => {
-              if (carouselImagesContainer) {
-                if (currentCarouselIndex < totalCarouselImages - 1) {
-                    currentCarouselIndex++;
-                } else {
-                    currentCarouselIndex = 0;
-                }
-                updateCarousel();
+        if (totalCarouselImages > 1) {
+          setInterval(() => {
+            if (carouselImagesContainer) {
+              if (currentCarouselIndex < totalCarouselImages - 1) {
+                  currentCarouselIndex++;
+              } else {
+                  currentCarouselIndex = 0;
               }
-            }, 5000);
-          }
+              updateCarousel();
+            }
+          }, 5000);
         }
 
         // Auto-play para el carrusel de testimonios
-        if (testimonialsSlidesContainer) { // Check if element exists before setting interval
-          if (totalTestimonials > 1) {
-            setInterval(() => {
-              if (testimonialsSlidesContainer) {
-                if (currentTestimonialIndex < totalTestimonials - 1) {
-                    currentTestimonialIndex++;
-                } else {
-                    currentTestimonialIndex = 0;
-                }
-                updateTestimonialsCarousel();
+        if (totalTestimonials > 1) {
+          setInterval(() => {
+            if (testimonialsSlidesContainer) {
+              if (currentTestimonialIndex < totalTestimonials - 1) {
+                  currentTestimonialIndex++;
+              } else {
+                  currentTestimonialIndex = 0;
               }
-            }, 7000);
-          }
+              updateTestimonialsCarousel();
+            }
+          }, 7000);
         }
 
         if (chatbotFab) {
@@ -3313,91 +3288,34 @@
      * @returns {boolean} - True si todos los elementos críticos existen, false de lo contrario.
      */
     function checkRequiredElements() {
-        console.log("[checkRequiredElements] Checking critical DOM elements...");
-        const criticalElementsMap = {
-            'loadingScreen': loadingScreen,
-            'authModalOverlay': authModalOverlay,
-            'closeAuthModal': closeAuthModal,
-            'accessButton': accessButton,
-            'logoutTopBarButton': logoutTopBarButton,
-            'hamburgerMenuIcon': hamburgerMenuIcon,
-            'sidebarMenu': sidebarMenu,
-            'closeSidebarMenu': closeSidebarMenu,
-            'loginFormDiv': loginFormDiv,
-            'registerFormDiv': registerFormDiv,
-            'recoverPasswordFormDiv': recoverPasswordFormDiv,
-            'showRegisterFormButton': showRegisterFormButton,
-            'startGuestModeButton': startGuestModeButton,
-            'loginEmailInput': loginEmailInput,
-            'loginPasswordInput': loginPasswordInput,
-            'registerEmailInput': registerEmailInput,
-            'registerPasswordInput': registerPasswordInput,
-            'recoverEmailInput': recoverEmailInput,
-            'userDisplayName': userDisplayName,
-            'customMessage': customMessage,
-            'visualCarousel': visualCarousel,
-            'dailyCuriosityElement': dailyCuriosityElement,
-            'discoverBlogButton': discoverBlogButton,
-            'quizPage': quizPage,
-            'quizContainer': quizContainer,
-            'questionText': questionText,
-            'optionsDiv': optionsDiv,
-            'submitQuizButton': submitQuizButton,
-            'quizResultsDisplayArea': quizResultsDisplayArea,
-            'resultMessage': resultMessage,
-            'tdahWarning': tdahWarning,
-            'studyAdvice': studyAdvice,
-            'backFromQuizButton': backFromQuizButton,
-            'reviewForm': reviewForm,
-            'reviewTextarea': reviewTextarea,
-            'ratingStarsContainer': ratingStarsContainer,
-            'reviewsContainer': reviewsContainer,
-            'toggleReviewFormButton': toggleReviewFormButton,
-            'lessonContentDisplay': lessonContentDisplay,
-            'lessonMaterialDiv': lessonMaterialDiv,
-            'lessonTitleElement': lessonTitleElement,
-            'backToTopicsButton': backToTopicsButton,
-            'askGeminiLessonButton': askGeminiLessonButton,
-            'completeLessonButton': completeLessonButton,
-            'geminiOutputLessonDiv': geminiOutputLessonDiv,
-            'generateTopicTestButton': generateTopicTestButton,
-            'lessonQuizArea': lessonQuizArea,
-            'currentLessonQuestion': currentLessonQuestion,
-            'currentLessonOptions': currentLessonOptions,
-            'submitLessonQuizButton': submitLessonQuizButton,
-            'lessonQuizFeedback': lessonQuizFeedback,
-            'nextLessonQuizQuestionButton': nextLessonQuizQuestionButton,
-            'restartLessonQuizButton': restartLessonQuizButton,
-            'blogPage': blogPage,
-            'blogIdeasOutput': blogIdeasOutput,
-            'generateBlogIdeasButton': generateBlogIdeasButton,
-            'generatedIdeasList': generatedIdeasList,
-            'backFromBlogButton': backFromBlogButton, 
-            'mainContent': mainContent,
-            'homeSections': homeSections,
-            'cursosSection': cursosSection,
-            'reviewsAndContactSection': reviewsAndContactSection,
-            'chatbotFab': chatbotFab,
-            'testimonialsSlidesContainer': testimonialsSlidesContainer,
-            'prevTestimonialBtn': prevTestimonialBtn,
-            'nextTestimonialBtn': nextTestimonialBtn,
-            'searchBarInput': searchBarInput,
-            'searchBarButton': searchBarButton
-        };
+        // Reducir la lista a elementos verdaderamente críticos para la funcionalidad inicial
+        const criticalElements = [
+            authModalOverlay, closeAuthModal, accessButton, hamburgerMenuIcon, sidebarMenu, closeSidebarMenu,
+            authModalOverlay, closeAuthModal, accessButton, logoutTopBarButton, hamburgerMenuIcon, sidebarMenu, closeSidebarMenu, // Added logoutTopBarButton
+            loginFormDiv, registerFormDiv, recoverPasswordFormDiv, showRegisterFormButton, startGuestModeButton,
+            loginEmailInput, loginPasswordInput, registerEmailInput, registerPasswordInput, recoverEmailInput,
+            userDisplayName, customMessage, visualCarousel, dailyCuriosityElement, discoverBlogButton,
+            quizPage, quizContainer, questionText, optionsDiv, submitQuizButton,
+            quizResultsDisplayArea, resultMessage, tdahWarning, studyAdvice, backFromQuizButton,
+            reviewForm, reviewTextarea, ratingStarsContainer, reviewsContainer, toggleReviewFormButton,
+            lessonContentDisplay, lessonMaterialDiv, lessonTitleElement, backToTopicsButton, askGeminiLessonButton,
+            completeLessonButton, geminiOutputLessonDiv, generateTopicTestButton, lessonQuizArea,
+            currentLessonQuestion, currentLessonOptions, submitLessonQuizButton, lessonQuizFeedback,
+            nextLessonQuizQuestionButton, restartLessonQuizButton, blogPage, blogIdeasOutput, generateBlogIdeasButton,
+            generatedIdeasList, backFromBlogButton, // Added backFromBlogButton
+            generatedIdeasList, backFromBlogButton, 
+            mainContent, homeSections, cursosSection, reviewsAndContactSection, chatbotFab,
+            testimonialsSlidesContainer, prevTestimonialBtn, nextTestimonialBtn, searchBarInput, searchBarButton
+        ];
 
         let allPresent = true;
-        for (const key in criticalElementsMap) {
-            const el = criticalElementsMap[key];
+        criticalElements.forEach((el, index) => {
+            // Check for null or undefined. For NodeLists, check if they are not empty.
             if (el === null || typeof el === 'undefined' || (NodeList.prototype.isPrototypeOf(el) && el.length === 0)) {
-                console.error(`[checkRequiredElements] Elemento DOM crítico faltante o vacío: ${key}`);
+                console.error(`Elemento DOM crítico faltante o vacío: ${el}`);
                 allPresent = false;
             }
-        }
-        if (allPresent) {
-            console.log("[checkRequiredElements] All critical DOM elements are present.");
-        } else {
-            console.error("[checkRequiredElements] Some critical DOM elements are missing.");
-        }
+        });
         return allPresent;
     }
 
@@ -3467,9 +3385,8 @@
      * @param {string} [subsectionIdToScroll] - Opcional. ID de una subsección dentro de home-sections o de otra página a la que hacer scroll.
      */
     function showSection(sectionIdToShow, subsectionIdToScroll = null) {
-        console.log(`[showSection] Attempting to show section: ${sectionIdToShow}, subsección: ${subsectionIdToScroll || 'none'}`);
         const allMainPages = [homeSections, quizPage, cursosSection, lessonContentDisplay, blogPage];
-        
+
         allMainPages.forEach(page => {
             if (page) {
                 page.classList.add('hidden');
@@ -3479,14 +3396,13 @@
         const targetPage = document.getElementById(sectionIdToShow);
         if (targetPage) {
             targetPage.classList.remove('hidden');
-            console.log(`[showSection] Sección '${sectionIdToShow}' visibilidad establecida en SHOW.`);
-            
+
             if (sectionIdToShow === 'home-sections') {
-                // Ensure home sections are visible when main home-sections container is shown
                 document.getElementById('visual-presentation').classList.remove('hidden');
                 document.getElementById('subjects-and-ai').classList.remove('hidden');
                 document.getElementById('reviews-and-contact').classList.remove('hidden');
-                updateQuizResultDisplay(); // Ensure quiz results display is correct
+                // Ensure quizResultsDisplayArea's visibility is correct based on quiz completion and user state
+                quizResultsDisplayArea.classList.toggle('hidden', !(currentUser && userQuizCompleted && !currentUser.isAnonymous));
                 if (subsectionIdToScroll) {
                     const subTargetElement = document.getElementById(subsectionIdToScroll);
                     if (subTargetElement) {
@@ -3500,8 +3416,6 @@
             } else {
                 targetPage.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
-        } else {
-            console.error(`[showSection] Error: Elemento de sección de destino con ID '${sectionIdToShow}' no encontrado.`);
         }
     }
 
@@ -3510,17 +3424,13 @@
      * Actualiza la visibilidad de los elementos de navegación y botones según el estado de autenticación.
      */
     function updateNavigationVisibility() {
-      console.log("[updateNavigationVisibility] Actualizando visibilidad de navegación...");
       const isLoggedIn = currentUser !== null && !currentUser.isAnonymous; // Is logged in (non-anonymous)
       const isAnyUserLoggedIn = currentUser !== null; // Is any user logged in (anonymous or non-anonymous)
-
-      console.log(`[updateNavigationVisibility] isLoggedIn: ${isLoggedIn}, isAnyUserLoggedIn: ${isAnyUserLoggedIn}, userQuizCompleted: ${userQuizCompleted}`);
-
 
       // Top bar access/logout buttons
       if (accessButton) accessButton.classList.toggle('hidden', isLoggedIn);
       if (logoutTopBarButton) logoutTopBarButton.classList.toggle('hidden', !isLoggedIn); // Show only if logged in (non-anonymous)
-      
+
       if (userDisplayName) {
         userDisplayName.classList.toggle('hidden', !isAnyUserLoggedIn);
         if (isAnyUserLoggedIn) {
@@ -3531,18 +3441,34 @@
           }
         }
       }
+      // Re-fetch logoutButton here to ensure it's always the latest reference
+      const logoutButton = document.getElementById('logout-button');
+      if (logoutButton) logoutButton.classList.toggle('hidden', !isAnyUserLoggedIn);
       // Sidebar logout button
       const logoutButtonSidebar = document.getElementById('logout-button');
       if (logoutButtonSidebar) logoutButtonSidebar.classList.toggle('hidden', !isAnyUserLoggedIn);
 
       document.querySelectorAll('#sidebar-menu a').forEach(link => {
         const targetSection = link.dataset.targetSection;
+        let shouldBeDisabled = true; // Default to disabled
         const subsectionId = link.dataset.subsection;
         let shouldBeDisabled = false; // Default to accessible, then disable if conditions met
 
+        if (targetSection === 'blog-page') {
+            shouldBeDisabled = false; // Blog page is accessible to all
+        } else if (targetSection === 'quiz-page') {
+            // Quiz page is always accessible if any user is logged in (to potentially complete it)
         if (targetSection === 'quiz-page') {
             // Quiz page is accessible to any logged-in user (including anonymous)
-            shouldBeDisabled = false; // No longer depends on specific login, only if Auth is ready
+            shouldBeDisabled = !isAnyUserLoggedIn;
+        }
+        else if (targetSection === 'home-sections' && link.dataset.subsection === 'quiz-results-display-area') {
+            // Results page is accessible if quiz completed by authenticated user OR if an anonymous user has completed the quiz (though their results aren't saved)
+            shouldBeDisabled = !(isLoggedIn && userQuizCompleted); // Only show for logged in and quiz completed
+        } else if (targetSection === 'cursos' && link.dataset.subsection === 'avances-cursos') {
+            // Courses are accessible if quiz completed by authenticated user.
+            // If anonymous, they can view course structure but progress won't save.
+            shouldBeDisabled = !(isLoggedIn && userQuizCompleted); // Only for logged in and quiz completed
         } else if (targetSection === 'home-sections' && subsectionId === 'quiz-results-display-area') {
             // Results page is accessible only if authenticated AND quiz completed
             shouldBeDisabled = !(isLoggedIn && userQuizCompleted);
@@ -3558,15 +3484,16 @@
             link.classList.add('disabled');
             link.style.pointerEvents = 'none';
             link.style.opacity = '0.6';
-            console.log(`[updateNavigationVisibility] Enlace deshabilitado: ${targetSection} (${subsectionId}), Razón: No ha iniciado sesión o el cuestionario no está completado.`);
         } else {
             link.classList.remove('disabled');
             link.style.pointerEvents = 'auto';
             link.style.opacity = '1';
-            console.log(`[updateNavigationVisibility] Enlace habilitado: ${targetSection} (${subsectionId})`);
         }
       });
 
+      if (discoverBlogButton) { 
+        discoverBlogButton.style.pointerEvents = isAnyUserLoggedIn ? 'auto' : 'none';
+        discoverBlogButton.style.opacity = isAnyUserLoggedIn ? '1' : '0.6';
       // Make sure discoverBlogButton is accessible to all
       if (discoverBlogButton) {
         discoverBlogButton.style.pointerEvents = 'auto'; // Everyone can access blog
@@ -3594,11 +3521,9 @@
           if (isLoggedIn && userQuizCompleted) {
               header.style.pointerEvents = 'auto';
               header.style.opacity = '1';
-              console.log(`[updateNavigationVisibility] Encabezado de materia habilitado: ${header.dataset.subjectId}`);
           } else {
               header.style.pointerEvents = 'none';
               header.style.opacity = '0.6';
-              console.log(`[updateNavigationVisibility] Encabezado de materia deshabilitado: ${header.dataset.subjectId}`);
           }
       });
     }
@@ -3607,78 +3532,66 @@
 
     // Firebase Auth State Listener
     // This is the primary way to manage user state changes
-    // It will be called after initial signInAnonymously or signInWithCustomToken
     if (auth) {
         onAuthStateChanged(auth, async (user) => {
             currentUser = user;
-            console.log("[onAuthStateChanged] Disparado. Usuario:", user ? user.uid : "None", "es anónimo:", user ? user.isAnonymous : "N/A");
-            
             if (user) {
+                console.log("Usuario autenticado:", user.uid, user.email || "Anónimo");
                 // Set persistence for authenticated users (not anonymous)
                 if (!user.isAnonymous) {
                   try {
+                    await setPersistence(auth, browserLocalPersistence);
                     await setPersistence(auth, browserLocalPersistence); // Persist login
-                    console.log("[onAuthStateChanged] Persistencia establecida en local para usuario autenticado.");
+                    console.log("Persistence set to local for authenticated user.");
                   } catch (error) {
-                    console.error("[onAuthStateChanged] Error al establecer la persistencia:", error);
+                    console.error("Error setting persistence:", error);
                   }
-                  // Load preferences only for non-anonymous users
-                  if (db) {
-                    await loadUserPreferences(user.uid); // This sets userQuizCompleted, userLearningStyle, userTDAHStatus
-                    console.log(`[onAuthStateChanged] Después de cargar preferencias de usuario: userQuizCompleted=${userQuizCompleted}`);
-                    await loadProgressAndDisplay(); // Load user's topic progress
-                  }
-                } else { // Handle anonymous user case explicitly
-                  console.log("[onAuthStateChanged] Usuario anónimo detectado. Reiniciando preferencias y progreso locales.");
-                  userLearningStyle = 'visual'; // Reset defaults on anonymous login/state
-                  userTDAHStatus = 'no';
-                  userQuizCompleted = false; // Anonymous users do not have a completed quiz persisted
-                  topicsData = {}; // Clear progress data for anonymous
-                  currentQuizIndex = 0; // Reset quiz state for anonymous
-                  userAnswers = {}; // Reset quiz answers for anonymous
                 }
-                toggleModal(false); // Close modal on successful auth or if already logged in
-            } else { // No user authenticated (logged out)
-                console.log("[onAuthStateChanged] Ningún usuario autenticado (cerró sesión). Reiniciando preferencias y progreso locales.");
+                if (db && !user.isAnonymous) {
+                    await loadUserPreferences(user.uid); // Load user preferences only for non-anonymous users
+                    if (userQuizCompleted) {
+                        // If quiz is completed, and user is logged in, hide quiz page if currently visible
+                        if (quizPage && !quizPage.classList.contains('hidden')) {
+                            showSection('home-sections', 'quiz-results-display-area'); // Redirect to home results
+                        }
+                    }
+                  // Load preferences only for non-anonymous users
+                  if (db) await loadUserPreferences(user.uid);
+                }
+                toggleModal(false); // Close modal on successful auth
+                if (db && !user.isAnonymous) {
+                    loadProgressAndDisplay(); // Load progress if user is logged in and not anonymous
+                }
+            } else {
+                console.log("No hay usuario autenticado.");
                 userLearningStyle = 'visual'; // Reset defaults on logout
                 userTDAHStatus = 'no';
                 userQuizCompleted = false;
                 topicsData = {}; // Clear progress data
+                // Ensure current quiz index and answers are reset on logout
+                currentQuizIndex = 0;
+                userAnswers = {};
                 currentQuizIndex = 0; // Reset quiz state
                 userAnswers = {}; // Reset quiz answers
-                // Ensure any displayed quiz results are hidden on logout
+                // Clear any displayed quiz results on logout
+                if (quizResultsDisplayArea) quizResultsDisplayArea.classList.add('hidden'); // Ensure quiz results disappear
             }
             // These updates should happen after the user state and preferences are fully loaded/reset
             updateNavigationVisibility(); // Update UI based on new user state
             updateReviewFormVisibility(); // Update review form visibility
             updateQuizResultDisplay(); // Update quiz results display
-
-            // Hide loading screen after authentication state is determined and UI is updated
-            if (loadingScreen) {
-              loadingScreen.style.opacity = '0';
-              setTimeout(() => {
-                loadingScreen.classList.add('hidden');
-              }, 500); // Allow fade-out animation
-            }
+            loadProgressAndDisplay(); // Load user progress bars (if logged in)
         });
     } else {
-        console.warn("Firebase Auth no disponible. onAuthStateChanged no se ejecutará. La aplicación funcionará en modo invitado local sin persistencia.");
+        console.warn("Firebase Auth no disponible. onAuthStateChanged no se ejecutará.");
         // If auth is truly not initialized, manually set currentUser for guest-like experience
         currentUser = { uid: 'guest', isAnonymous: true, email: null, displayName: 'Invitado' };
         updateNavigationVisibility(); // Still call to update UI for guest mode
-        if (loadingScreen) {
-            loadingScreen.style.opacity = '0';
-            setTimeout(() => {
-              loadingScreen.classList.add('hidden');
-            }, 500);
-        }
     }
-    
+
     // --- Funcionalidad del Cuestionario (Modificada) ---
 
     function displayQuizQuestion() {
-      console.log(`[displayQuizQuestion] Llamado. currentUser: ${currentUser ? currentUser.uid : 'None'}, es anónimo: ${currentUser ? currentUser.isAnonymous : 'N/A'}, userQuizCompleted: ${userQuizCompleted}`);
-
       if (!currentUser) { // Check if currentUser is null (e.g., Firebase not ready)
           showMessage("Error: No se pudo obtener el estado del usuario. Intenta recargar la página.", 'error');
           return;
@@ -3686,9 +3599,12 @@
       // If user is already authenticated AND quiz completed, show results instead
       if (currentUser && !currentUser.isAnonymous && userQuizCompleted) {
           showMessage('Ya has completado el cuestionario de estilo de aprendizaje. Puedes revisar tus resultados o explorar otras funciones.', 'info', 4000);
+          updateQuizResultDisplay();
+          // Optionally, redirect away from the quiz page if user tries to access it directly
+          showSection('home-sections', 'quiz-results-display-area');
+          return;
           updateQuizResultDisplay(); // Ensure results are displayed
           showSection('home-sections', 'quiz-results-display-area'); // Redirect to home results
-          console.log("[displayQuizQuestion] Cuestionario ya completado y usuario autenticado. Redirigiendo a resultados.");
           return; // Crucial to stop quiz display logic
       }
 
@@ -3703,7 +3619,7 @@
       if (resultMessageQuizPage) resultMessageQuizPage.classList.add('hidden');
       if (tdahWarningQuizPage) tdahWarningQuizPage.classList.add('hidden');
       if (studyAdviceQuizPage) studyAdviceQuizPage.classList.add('hidden');
-      
+
       // Initially hide submit button until last question
       if (submitQuizButton) submitQuizButton.classList.add('hidden');
 
@@ -3753,7 +3669,6 @@
     }
 
     function updateQuizResultDisplay() {
-      console.log("[updateQuizResultDisplay] Actualizando la visualización de resultados del cuestionario. userQuizCompleted:", userQuizCompleted, "currentUser logged in (non-anonymous):", currentUser && !currentUser.isAnonymous);
       const styleNames = {
           visual: "Visual",
           auditivo: "Auditivo",
@@ -3763,10 +3678,10 @@
 
       if (!resultMessage || !tdahWarning || !studyAdvice || !quizResultsDisplayArea || 
           !resultMessageQuizPage || !tdahWarningQuizPage || !studyAdviceQuizPage) {
-        console.warn("[updateQuizResultDisplay] Elementos de visualización de resultados del cuestionario no encontrados. Saltando la actualización.");
+        console.warn("Elementos de visualización de resultados del quiz no encontrados. Saltando la actualización.");
         return;
       }
-      
+
       // Logic for the quiz results section on the homepage
       // Only show if authenticated AND quiz completed
       if (currentUser && !currentUser.isAnonymous && userQuizCompleted) {
@@ -3785,10 +3700,10 @@
           studyAdvice.className = 'result-card'; // Ensure class is applied
           studyAdvice.style.backgroundColor = '#e6ffe6';
           studyAdvice.style.borderLeft = '5px solid var(--secondary-color)';
-          
+
           resultMessage.classList.remove('hidden');
           studyAdvice.classList.remove('hidden');
-          
+
           if (userTDAHStatus === 'tdah') {
               tdahWarning.textContent = `⚠️ Ten en cuenta: Se han detectado indicadores de TDAH. Te recomendamos buscar apoyo profesional y considerar estrategias de estudio especializadas.`;
               tdahWarning.classList.remove('hidden');
@@ -3800,8 +3715,7 @@
           }
 
           quizResultsDisplayArea.classList.remove('hidden'); // Show the results section on homepage
-          console.log("[updateQuizResultDisplay] Área de resultados del cuestionario en la página de inicio MOSTRADA.");
-          
+
           // Also update the hidden quiz page elements in case they become visible
           // These are usually on the quiz page itself after completion, so they mirror the main results
           resultMessageQuizPage.textContent = resultMessage.textContent;
@@ -3828,8 +3742,7 @@
           tdahWarning.classList.add('hidden');
           studyAdvice.classList.add('hidden');
           quizResultsDisplayArea.classList.add('hidden');
-          console.log("[updateQuizResultDisplay] Área de resultados del cuestionario en la página de inicio OCULTA.");
-          
+
           // Also ensure quiz page result elements are hidden if quiz is not completed
           resultMessageQuizPage.classList.add('hidden');
           tdahWarningQuizPage.classList.add('hidden');
@@ -3870,7 +3783,7 @@
       }
       const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
       const reviewsCollectionRef = collection(db, `artifacts/${appId}/public/data/reviews`);
-      
+
       onSnapshot(query(reviewsCollectionRef, orderBy("timestamp", "desc")), (snapshot) => {
         if (reviewsContainer) reviewsContainer.innerHTML = ''; // Clear existing reviews
         if (snapshot.empty) {
@@ -3902,7 +3815,8 @@
 
     async function saveUserPreferences() {
         if (!currentUser || currentUser.isAnonymous || !db) {
-            console.error("[saveUserPreferences] No hay ID de usuario o Firestore no inicializado para guardar preferencias. El usuario no está autenticado o es anónimo.");
+            console.error("No user ID or Firestore not initialized to save preferences. User is not authenticated or is anonymous.");
+            showMessage("Por favor, inicia sesión para guardar tus preferencias.", 3000);
             showMessage("Por favor, inicia sesión para guardar tus preferencias.", 'error', 3000);
             return;
         }
@@ -3916,17 +3830,19 @@
                 lastUpdated: serverTimestamp()
             }, { merge: true });
             userQuizCompleted = true; // Update local state after saving
-            console.log("[saveUserPreferences] Preferencias de usuario guardadas en Firestore.");
+            console.log("User preferences saved to Firestore.");
+            updateNavigationVisibility(); // Update UI after saving preferences
         }
         catch (e) {
-            console.error("[saveUserPreferences] Error al guardar las preferencias de usuario: ", e);
+            console.error("Error saving user preferences: ", e);
+            showMessage("Error al guardar tus preferencias.", 3000);
             showMessage("Error al guardar tus preferencias.", 'error', 3000);
         }
     }
 
     async function loadUserPreferences(uid) {
         if (!db) {
-            console.warn("[loadUserPreferences] Firestore no inicializado. No se pueden cargar las preferencias del usuario.");
+            console.warn("Firestore no inicializado. No se pueden cargar las preferencias del usuario.");
             return;
         }
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -3938,21 +3854,21 @@
                 userLearningStyle = data.learningStyle || 'visual';
                 userTDAHStatus = data.tdahStatus || 'no';
                 userQuizCompleted = data.quizCompleted || false;
-                console.log("[loadUserPreferences] Preferencias de usuario cargadas desde Firestore:", data);
+                console.log("User preferences loaded from Firestore:", data);
             } else {
-                console.log("[loadUserPreferences] No se encontraron preferencias de usuario en Firestore. El usuario es nuevo o el cuestionario no está completado.");
+                console.log("No user preferences found in Firestore. User is new or quiz not completed.");
                 userQuizCompleted = false; // Ensure it's false if no preferences exist
                 userLearningStyle = 'visual'; // Reset to default if no data
                 userTDAHStatus = 'no'; // Reset to default if no data
             }
         } catch (e) {
-            console.error("[loadUserPreferences] Error al cargar las preferencias de usuario: ", e);
+            console.error("Error loading user preferences: ", e);
+            showMessage("Error al cargar tus preferencias.", 3000);
             showMessage("Error al cargar tus preferencias.", 'error', 3000);
         }
     }
 
     async function loadProgressAndDisplay() {
-      console.log("[loadProgressAndDisplay] Cargando progreso y mostrando. Usuario actual:", currentUser ? currentUser.uid : "None", "es anónimo:", currentUser ? currentUser.isAnonymous : "N/A");
       if (currentUser && !currentUser.isAnonymous && db) {
         const userId = currentUser.uid;
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -3963,16 +3879,14 @@
           querySnapshot.forEach((doc) => {
               topicsData[doc.id] = doc.data().percentage;
           });
-          console.log("[loadProgressAndDisplay] Datos de progreso cargados:", topicsData);
           updateAllProgressBars();
         } catch (error) {
-          console.error("[loadProgressAndDisplay] Error cargando datos de progreso:", error);
+          console.error("Error cargando datos de progreso:", error);
           topicsData = {};
           updateAllProgressBars(); // Ensure bars are updated even on error to reset
         }
       } else {
         // If no authenticated user, reset progress bars to 0% and clear local data
-        console.log("[loadProgressAndDisplay] No hay usuario autenticado. Reiniciando las barras de progreso a 0%.");
         topicsData = {};
         updateAllProgressBars();
       }
@@ -3987,14 +3901,12 @@
         try {
           await setDoc(progressDocRef, { percentage: progressPercentage, lastUpdated: serverTimestamp() }, { merge: true });
           updateAllProgressBars();
-          console.log(`[updateProgress] Progreso para ${topicId} actualizado al ${progressPercentage}%.`);
         } catch (error) {
-          console.error("[updateProgress] Error al actualizar el progreso:", error);
+          console.error("Error actualizando progreso:", error);
           showMessage("Error al guardar tu progreso.", 'error');
         }
       } else {
         showMessage("Debes iniciar sesión para guardar tu progreso.", 'error');
-        console.warn("[updateProgress] Se intentó actualizar el progreso sin un usuario autenticado.");
       }
     }
 
@@ -4083,45 +3995,39 @@
 
     function loadChatbaseScript() {
       if (document.querySelector('script[src="https://www.chatbase.co/embed.min.js"]')) {
-          console.log("El script de Chatbase ya está cargado.");
+          console.log("Chatbase script already loaded.");
           return;
       }
       const script = document.createElement('script');
       script.src = "https://www.chatbase.co/embed.min.js";
       script.defer = true;
-      script.onload = () => console.log("Script de Chatbase cargado.");
-      script.onerror = () => console.error("Error al cargar el script de Chatbase.");
+      script.onload = () => console.log("Chatbase script loaded.");
+      script.onerror = () => console.error("Error loading Chatbase script.");
       document.body.appendChild(script);
     }
 
     // --- Inicialización al Cargar la Ventana ---
     window.onload = async function() {
-        console.log("[window.onload] Página cargada. Iniciando inicialización.");
-        // Initially show loading screen
-        if (loadingScreen) {
-          loadingScreen.classList.remove('hidden');
-          loadingScreen.style.opacity = '1';
-        }
-
         try {
             // Assign DOM elements and attach all listeners FIRST
             assignDOMElementsAndAttachListeners();
-            console.log("[window.onload] Elementos DOM asignados y listeners adjuntados.");
 
             // Then, check if critical elements are present
             const elementsReady = checkRequiredElements();
             if (!elementsReady) {
-                console.error("[window.onload] Faltan elementos DOM críticos. La inicialización puede ser incompleta. Algunas funcionalidades no estarán disponibles.");
+                console.error("Faltan elementos DOM críticos. La inicialización puede ser incompleta. Algunas funcionalidades no estarán disponibles.");
                 showMessage("Error crítico al cargar la aplicación. Algunos elementos no están disponibles.", 'error', 10000);
+                // Optionally halt further execution if truly critical elements are missing
+                // return;
             }
 
             // Initialize Firebase services
             try {
                 if (typeof __firebase_config !== 'undefined' && __firebase_config) {
                     firebaseConfig = JSON.parse(__firebase_config);
-                    console.log("[window.onload] Configuración de Firebase cargada desde el entorno Canvas.");
+                    console.log("Firebase config loaded from Canvas environment.");
                 } else {
-                    console.warn("[window.onload] Configuración de Firebase (__firebase_config) no encontrada o vacía. Usando configuración por defecto.");
+                    console.warn("Firebase config (__firebase_config) no encontrada o vacía. Usando configuración por defecto.");
                     firebaseConfig = defaultFirebaseConfig;
                 }
 
@@ -4130,39 +4036,44 @@
                     analytics = getAnalytics(app);
                     auth = getAuth(app);
                     db = getFirestore(app);
-                    console.log("[window.onload] Firebase inicializado correctamente.");
-
-                    // Attempt initial sign-in (anonymous or with custom token)
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        try {
-                            await signInWithCustomToken(auth, __initial_auth_token);
-                            console.log("[window.onload] Sesión iniciada con token personalizado del entorno Canvas.");
-                        } catch (error) {
-                            console.error("[window.onload] Error al iniciar sesión con token personalizado de Canvas:", error);
-                            await signInAnonymously(auth);
-                            console.log("[window.onload] Sesión iniciada anónimamente como respaldo.");
-                        }
-                    } else {
-                        await signInAnonymously(auth);
-                        console.log("[window.onload] Sesión iniciada anónimamente (no se encontró token personalizado).");
-                    }
+                    console.log("Firebase inicializado correctamente.");
                 } else {
-                    console.error("[window.onload] La configuración de Firebase está incompleta o es inválida. Saltando la inicialización de Firebase.");
+                    console.error("La configuración de Firebase está incompleta o es inválida. Saltando la inicialización de Firebase.");
                     showMessage("Configuración de Firebase faltante o inválida. Las funciones de guardado no estarán disponibles.", 'error', 10000);
                 }
             } catch (e) {
-                console.error("[window.onload] Error al inicializar Firebase:", e);
+                console.error("Error al inicializar Firebase:", e);
                 showMessage("Error grave al inicializar Firebase. Consulta la consola para más detalles.", 'error', 10000);
                 app = null; analytics = null; auth = null; db = null;
             }
-            
-            // loadReviews should only be called if db is initialized
+
+            // Attempt initial sign-in (anonymous or with custom token)
+            if (auth) {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    try {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                        console.log("Sesión iniciada con token personalizado del entorno Canvas.");
+                    } catch (error) {
+                        console.error("Error al iniciar sesión con token personalizado de Canvas:", error);
+                        await signInAnonymously(auth);
+                        console.log("Sesión iniciada anónimamente como respaldo.");
+                    }
+                } else {
+                    await signInAnonymously(auth);
+                    console.log("Sesión iniciada anónimamente (no se encontró token personalizado).");
+                }
+            } else {
+                console.warn("Firebase Auth no inicializado. La autenticación será limitada o no disponible.");
+                currentUser = { uid: 'guest', isAnonymous: true, email: null, displayName: 'Invitado' };
+                updateNavigationVisibility(); // Update UI for guest mode if Auth isn't ready
+            }
+
             if (db) {
                 loadReviews(); // Load reviews once Firestore is ready
             } else {
                 console.warn("Firestore no inicializado. Saltando la carga de reseñas.");
             }
-            
+
             showSection('home-sections'); // Show the redesigned home page
 
             // Initialize carousels after content is loaded and element counts are set
@@ -4176,13 +4087,6 @@
             showMessage("Ha ocurrido un error inesperado al cargar la página. Por favor, inténtalo de nuevo o contacta con soporte.", 'error', 10000);
             if (document.body) {
                 document.body.innerHTML = '<div style="text-align: center; padding: 50px; color: #e74c3c; font-size: 1.5em; background-color: #fcecec; border: 1px solid #e74c3c; border-radius: 8px; margin: 20px;">Error crítico al cargar la aplicación. Por favor, recarga la página.</div>';
-            }
-            // Hide loading screen even if there's an error
-            if (loadingScreen) {
-              loadingScreen.style.opacity = '0';
-              setTimeout(() => {
-                loadingScreen.classList.add('hidden');
-              }, 500);
             }
         }
     };
