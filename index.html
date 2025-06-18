@@ -104,7 +104,8 @@
       flex-wrap: wrap;
       gap: 10px;
     }
-    .top-bar button#access-button {
+    .top-bar button#access-button,
+    .top-bar button#logout-top-bar-button { /* Apply styles to both */
       background: var(--primary-color);
       padding: 8px 15px;
       border-radius: var(--border-radius-sm);
@@ -112,7 +113,8 @@
       box-shadow: var(--shadow-sm);
       transition: background 0.3s ease, transform 0.2s ease;
     }
-    .top-bar button#access-button:hover {
+    .top-bar button#access-button:hover,
+    .top-bar button#logout-top-bar-button:hover { /* Apply hover to both */
       background: var(--secondary-color);
       transform: translateY(-2px);
     }
@@ -1680,6 +1682,7 @@
         <a href="#reviews-and-contact" data-subsection="contacto-section">Contacto, Reclamaciones y Sugerencias</a>
         <a href="#">Ayuda</a>
         <button id="access-button">Acceso Personalizado</button>
+        <button id="logout-top-bar-button" class="hidden">Cerrar Sesión</button>
       </div>
     </div>
 
@@ -2261,7 +2264,7 @@
     let db = null;
 
     // Elementos del DOM (declarados con 'let' para asignación posterior)
-    let authModalOverlay, closeAuthModal, accessButton, hamburgerMenuIcon, sidebarMenu, closeSidebarMenu;
+    let authModalOverlay, closeAuthModal, accessButton, logoutTopBarButton, hamburgerMenuIcon, sidebarMenu, closeSidebarMenu;
     let loginFormDiv, registerFormDiv, recoverPasswordFormDiv, showRegisterFormButton, startGuestModeButton;
     let loginEmailInput, loginPasswordInput, registerEmailInput, registerPasswordInput, recoverEmailInput;
     let userDisplayName, customMessage;
@@ -2280,9 +2283,7 @@
     let mainContent, homeSections, cursosSection, reviewsAndContactSection, chatbotFab;
     let testimonialsSlidesContainer, prevTestimonialBtn, nextTestimonialBtn;
     let searchBarInput, searchBarButton;
-    // The reviewFormContactForm was removed as it's not in the HTML structure
-
-
+    
     // Global variables for carousels
     let currentCarouselIndex = 0;
     let totalCarouselImages = 0; // Will be set after DOM load
@@ -2446,6 +2447,7 @@
         authModalOverlay = document.getElementById('auth-modal-overlay');
         closeAuthModal = document.getElementById('close-auth-modal');
         accessButton = document.getElementById('access-button');
+        logoutTopBarButton = document.getElementById('logout-top-bar-button'); // Added new button
         hamburgerMenuIcon = document.getElementById('hamburger-menu-icon');
         sidebarMenu = document.getElementById('sidebar-menu');
         closeSidebarMenu = document.getElementById('close-sidebar-menu');
@@ -2528,9 +2530,25 @@
         if (closeAuthModal) closeAuthModal.addEventListener('click', () => toggleModal(false));
 
         // Use a more robust way to get logoutButton after it's assigned
-        const logoutButton = document.getElementById('logout-button');
+        const logoutButton = document.getElementById('logout-button'); // Sidebar logout button
         if (logoutButton) {
             logoutButton.addEventListener('click', async () => {
+                if (!auth) {
+                    showMessage("Servicio de autenticación no disponible.", 'error');
+                    return;
+                }
+                try {
+                    await signOut(auth);
+                    showMessage("Sesión cerrada correctamente.", 'success');
+                } catch (error) {
+                    console.error("Error al cerrar sesión:", error);
+                    showMessage("Error al cerrar sesión.", 'error');
+                }
+            });
+        }
+        // New: Top bar logout button
+        if (logoutTopBarButton) {
+            logoutTopBarButton.addEventListener('click', async () => {
                 if (!auth) {
                     showMessage("Servicio de autenticación no disponible.", 'error');
                     return;
@@ -2682,7 +2700,8 @@
                         if (style) {
                             learningStyleScores[style]++;
                         }
-                        if (question.tdahOptionIndex && question.tdahOptionIndex.includes(selectedOption)) {
+                        // Check if tdahOptionIndex is an array and includes the selected option
+                        if (Array.isArray(question.tdahOptionIndex) && question.tdahOptionIndex.includes(selectedOption)) {
                             tdahIndicationCount++;
                         }
                     }
@@ -2698,7 +2717,8 @@
                 }
                 userLearningStyle = primaryLearningStyle;
 
-                userTDAHStatus = tdahIndicationCount > 0 ? 'tdah' : 'no';
+                // Threshold for TDAH indication (e.g., more than 2 affirmative answers to TDAH-related questions)
+                userTDAHStatus = tdahIndicationCount >= 2 ? 'tdah' : 'no'; // Adjusted threshold
 
                 if (quizContainer) quizContainer.classList.add('hidden');
                 
@@ -2883,7 +2903,7 @@
                             data.candidates[0].content.parts.length > 0) {
                             const generatedHtml = data.candidates[0].content.parts[0].text;
                             if (lessonMaterialDiv) lessonMaterialDiv.innerHTML = generatedHtml.replace(/```html\n?|\n?```/g, '');
-                            currentLessonContent = lessonMaterialDiv ? lessonMaterialDiv.textContent : ''; // Store raw text for AI questions
+                            currentLessonContent = lessonMaterialDiv ? lessonMaterialDiv.textContent : ''; // Store raw text for AI features like quiz generation
                         } else {
                             console.error("Estructura de respuesta de Gemini inesperada:", data);
                             if (lessonMaterialDiv) lessonMaterialDiv.innerHTML = `<p class="text-center" style="color: red;">Error: La IA no pudo generar el contenido de la lección.</p>`;
@@ -3260,7 +3280,7 @@
     function checkRequiredElements() {
         // Reducir la lista a elementos verdaderamente críticos para la funcionalidad inicial
         const criticalElements = [
-            authModalOverlay, closeAuthModal, accessButton, hamburgerMenuIcon, sidebarMenu, closeSidebarMenu,
+            authModalOverlay, closeAuthModal, accessButton, logoutTopBarButton, hamburgerMenuIcon, sidebarMenu, closeSidebarMenu, // Added logoutTopBarButton
             loginFormDiv, registerFormDiv, recoverPasswordFormDiv, showRegisterFormButton, startGuestModeButton,
             loginEmailInput, loginPasswordInput, registerEmailInput, registerPasswordInput, recoverEmailInput,
             userDisplayName, customMessage, visualCarousel, dailyCuriosityElement, discoverBlogButton,
@@ -3271,7 +3291,7 @@
             completeLessonButton, geminiOutputLessonDiv, generateTopicTestButton, lessonQuizArea,
             currentLessonQuestion, currentLessonOptions, submitLessonQuizButton, lessonQuizFeedback,
             nextLessonQuizQuestionButton, restartLessonQuizButton, blogPage, blogIdeasOutput, generateBlogIdeasButton,
-            generatedIdeasList, backFromBlogButton, // Added backFromBlogButton
+            generatedIdeasList, backFromBlogButton, 
             mainContent, homeSections, cursosSection, reviewsAndContactSection, chatbotFab,
             testimonialsSlidesContainer, prevTestimonialBtn, nextTestimonialBtn, searchBarInput, searchBarButton
         ];
@@ -3395,7 +3415,9 @@
       const isLoggedIn = currentUser !== null && !currentUser.isAnonymous; // Is logged in (non-anonymous)
       const isAnyUserLoggedIn = currentUser !== null; // Is any user logged in (anonymous or non-anonymous)
 
+      // Top bar access/logout buttons
       if (accessButton) accessButton.classList.toggle('hidden', isLoggedIn);
+      if (logoutTopBarButton) logoutTopBarButton.classList.toggle('hidden', !isLoggedIn); // Show only if logged in (non-anonymous)
       
       if (userDisplayName) {
         userDisplayName.classList.toggle('hidden', !isAnyUserLoggedIn);
@@ -3407,27 +3429,27 @@
           }
         }
       }
-      // Re-fetch logoutButton here to ensure it's always the latest reference
-      const logoutButton = document.getElementById('logout-button');
-      if (logoutButton) logoutButton.classList.toggle('hidden', !isAnyUserLoggedIn);
+      // Sidebar logout button
+      const logoutButtonSidebar = document.getElementById('logout-button');
+      if (logoutButtonSidebar) logoutButtonSidebar.classList.toggle('hidden', !isAnyUserLoggedIn);
 
       document.querySelectorAll('#sidebar-menu a').forEach(link => {
         const targetSection = link.dataset.targetSection;
-        let shouldBeDisabled = true; // Default to disabled
+        const subsectionId = link.dataset.subsection;
+        let shouldBeDisabled = false; // Default to accessible, then disable if conditions met
 
-        if (targetSection === 'blog-page') {
-            shouldBeDisabled = false; // Blog page is accessible to all
-        } else if (targetSection === 'quiz-page') {
-            // Quiz page is always accessible if any user is logged in (to potentially complete it)
+        if (targetSection === 'quiz-page') {
+            // Quiz page is accessible to any logged-in user (including anonymous)
             shouldBeDisabled = !isAnyUserLoggedIn;
-        }
-        else if (targetSection === 'home-sections' && link.dataset.subsection === 'quiz-results-display-area') {
-            // Results page is accessible if quiz completed by authenticated user OR if an anonymous user has completed the quiz (though their results aren't saved)
-            shouldBeDisabled = !(isLoggedIn && userQuizCompleted); // Only show for logged in and quiz completed
-        } else if (targetSection === 'cursos' && link.dataset.subsection === 'avances-cursos') {
-            // Courses are accessible if quiz completed by authenticated user.
-            // If anonymous, they can view course structure but progress won't save.
-            shouldBeDisabled = !(isLoggedIn && userQuizCompleted); // Only for logged in and quiz completed
+        } else if (targetSection === 'home-sections' && subsectionId === 'quiz-results-display-area') {
+            // Results page is accessible only if authenticated AND quiz completed
+            shouldBeDisabled = !(isLoggedIn && userQuizCompleted);
+        } else if (targetSection === 'cursos' && subsectionId === 'avances-cursos') {
+            // Courses are accessible only if authenticated AND quiz completed
+            shouldBeDisabled = !(isLoggedIn && userQuizCompleted);
+        } else if (targetSection === 'blog-page') {
+            // Blog is accessible to all (even anonymous or not logged in at all)
+            shouldBeDisabled = false;
         }
 
         if (shouldBeDisabled) {
@@ -3441,9 +3463,10 @@
         }
       });
 
-      if (discoverBlogButton) { 
-        discoverBlogButton.style.pointerEvents = isAnyUserLoggedIn ? 'auto' : 'none';
-        discoverBlogButton.style.opacity = isAnyUserLoggedIn ? '1' : '0.6';
+      // Make sure discoverBlogButton is accessible to all
+      if (discoverBlogButton) {
+        discoverBlogButton.style.pointerEvents = 'auto'; // Everyone can access blog
+        discoverBlogButton.style.opacity = '1';
       }
 
       if (toggleReviewFormButton) {
@@ -3486,38 +3509,31 @@
                 // Set persistence for authenticated users (not anonymous)
                 if (!user.isAnonymous) {
                   try {
-                    await setPersistence(auth, browserLocalPersistence);
+                    await setPersistence(auth, browserLocalPersistence); // Persist login
                     console.log("Persistence set to local for authenticated user.");
                   } catch (error) {
                     console.error("Error setting persistence:", error);
                   }
-                }
-                if (db && !user.isAnonymous) {
-                    await loadUserPreferences(user.uid); // Load user preferences only for non-anonymous users
-                    if (userQuizCompleted) {
-                        // If quiz is completed, and user is logged in, hide quiz page if currently visible
-                        if (quizPage && !quizPage.classList.contains('hidden')) {
-                            showSection('home-sections', 'quiz-results-display-area'); // Redirect to home results
-                        }
-                    }
+                  // Load preferences only for non-anonymous users
+                  if (db) await loadUserPreferences(user.uid);
                 }
                 toggleModal(false); // Close modal on successful auth
-                if (db && !user.isAnonymous) {
-                    loadProgressAndDisplay(); // Load progress if user is logged in and not anonymous
-                }
             } else {
                 console.log("No hay usuario autenticado.");
                 userLearningStyle = 'visual'; // Reset defaults on logout
                 userTDAHStatus = 'no';
                 userQuizCompleted = false;
                 topicsData = {}; // Clear progress data
-                // Ensure current quiz index and answers are reset on logout
-                currentQuizIndex = 0;
-                userAnswers = {};
+                currentQuizIndex = 0; // Reset quiz state
+                userAnswers = {}; // Reset quiz answers
+                // Clear any displayed quiz results on logout
+                if (quizResultsDisplayArea) quizResultsDisplayArea.classList.add('hidden'); // Ensure quiz results disappear
             }
+            // These updates should happen after the user state and preferences are fully loaded/reset
             updateNavigationVisibility(); // Update UI based on new user state
             updateReviewFormVisibility(); // Update review form visibility
             updateQuizResultDisplay(); // Update quiz results display
+            loadProgressAndDisplay(); // Load user progress bars (if logged in)
         });
     } else {
         console.warn("Firebase Auth no disponible. onAuthStateChanged no se ejecutará.");
@@ -3536,10 +3552,9 @@
       // If user is already authenticated AND quiz completed, show results instead
       if (currentUser && !currentUser.isAnonymous && userQuizCompleted) {
           showMessage('Ya has completado el cuestionario de estilo de aprendizaje. Puedes revisar tus resultados o explorar otras funciones.', 'info', 4000);
-          updateQuizResultDisplay();
-          // Optionally, redirect away from the quiz page if user tries to access it directly
-          showSection('home-sections', 'quiz-results-display-area');
-          return;
+          updateQuizResultDisplay(); // Ensure results are displayed
+          showSection('home-sections', 'quiz-results-display-area'); // Redirect to home results
+          return; // Crucial to stop quiz display logic
       }
 
       if (!quizContainer || !questionText || !optionsDiv || !submitQuizButton) {
@@ -3750,7 +3765,7 @@
     async function saveUserPreferences() {
         if (!currentUser || currentUser.isAnonymous || !db) {
             console.error("No user ID or Firestore not initialized to save preferences. User is not authenticated or is anonymous.");
-            showMessage("Por favor, inicia sesión para guardar tus preferencias.", 3000);
+            showMessage("Por favor, inicia sesión para guardar tus preferencias.", 'error', 3000);
             return;
         }
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -3768,7 +3783,7 @@
         }
         catch (e) {
             console.error("Error saving user preferences: ", e);
-            showMessage("Error al guardar tus preferencias.", 3000);
+            showMessage("Error al guardar tus preferencias.", 'error', 3000);
         }
     }
 
@@ -3795,7 +3810,7 @@
             }
         } catch (e) {
             console.error("Error loading user preferences: ", e);
-            showMessage("Error al cargar tus preferencias.", 3000);
+            showMessage("Error al cargar tus preferencias.", 'error', 3000);
         }
     }
 
@@ -3814,6 +3829,11 @@
         } catch (error) {
           console.error("Error cargando datos de progreso:", error);
           topicsData = {};
+          updateAllProgressBars(); // Ensure bars are updated even on error to reset
+        }
+      } else {
+        // If no authenticated user, reset progress bars to 0% and clear local data
+        topicsData = {};
         updateAllProgressBars();
       }
     }
