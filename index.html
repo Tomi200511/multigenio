@@ -2250,7 +2250,7 @@
       apiKey: "AIzaSyDklyhhZOV3c2KbbrvAZOpoUitPBWgRBOQ", // <<--- REEMPLAZA CON TU CLAVE API DE FIREBASE
       authDomain: "multigenio-39890.firebaseapp.com",
       projectId: "multigenio-39890",
-      storageBucket: "multigenio-39890.firebasestorage.app",
+      storageBucket: "multigenio-39890.firebaseapp.com",
       messagingSenderId: "881137429405",
       appId: "1:881137429405:web:9f061138bdf43b00dd5d74",
       measurementId: "G-9SQX18GVH6"
@@ -2725,16 +2725,17 @@
                 // Set userQuizCompleted to true after the quiz is submitted
                 userQuizCompleted = true;
 
-                updateQuizResultDisplay();
-
                 if (currentUser && !currentUser.isAnonymous && db) {
-                    await saveUserPreferences();
+                    await saveUserPreferences(); // This also updates userQuizCompleted local state
                     showMessage("Resultado del test guardado.", 'success');
                 } else if (!currentUser || currentUser.isAnonymous) {
                     showMessage("Tu resultado no se guardará en modo invitado. Inicia sesión para guardar.", 'info');
                 } else {
                     showMessage("Error: Firebase no inicializado. No se pudo guardar el resultado.", 'error');
                 }
+                // Update display AFTER preferences are saved and local state updated
+                updateQuizResultDisplay();
+                updateNavigationVisibility(); // Ensure navigation updates immediately
                 showSection('home-sections', 'quiz-results-display-area');
             });
         }
@@ -3203,6 +3204,7 @@
                 e.preventDefault();
                 const targetSectionId = this.dataset.targetSection;
                 const subsectionId = this.dataset.subsection;
+                console.log(`Navegando a la sección: ${targetSectionId}, subsección: ${subsectionId}`);
                 showSection(targetSectionId, subsectionId);
                 if (sidebarMenu && sidebarMenu.classList.contains('active')) {
                   sidebarMenu.classList.remove('active');
@@ -3237,31 +3239,35 @@
         }
 
         // Auto-play para el carrusel visual
-        if (totalCarouselImages > 1) {
-          setInterval(() => {
-            if (carouselImagesContainer) {
-              if (currentCarouselIndex < totalCarouselImages - 1) {
-                  currentCarouselIndex++;
-              } else {
-                  currentCarouselIndex = 0;
+        if (carouselImagesContainer) { // Check if element exists before setting interval
+          if (totalCarouselImages > 1) {
+            setInterval(() => {
+              if (carouselImagesContainer) {
+                if (currentCarouselIndex < totalCarouselImages - 1) {
+                    currentCarouselIndex++;
+                } else {
+                    currentCarouselIndex = 0;
+                }
+                updateCarousel();
               }
-              updateCarousel();
-            }
-          }, 5000);
+            }, 5000);
+          }
         }
 
         // Auto-play para el carrusel de testimonios
-        if (totalTestimonials > 1) {
-          setInterval(() => {
-            if (testimonialsSlidesContainer) {
-              if (currentTestimonialIndex < totalTestimonials - 1) {
-                  currentTestimonialIndex++;
-              } else {
-                  currentTestimonialIndex = 0;
+        if (testimonialsSlidesContainer) { // Check if element exists before setting interval
+          if (totalTestimonials > 1) {
+            setInterval(() => {
+              if (testimonialsSlidesContainer) {
+                if (currentTestimonialIndex < totalTestimonials - 1) {
+                    currentTestimonialIndex++;
+                } else {
+                    currentTestimonialIndex = 0;
+                }
+                updateTestimonialsCarousel();
               }
-              updateTestimonialsCarousel();
-            }
-          }, 7000);
+            }, 7000);
+          }
         }
 
         if (chatbotFab) {
@@ -3373,6 +3379,7 @@
      * @param {string} [subsectionIdToScroll] - Opcional. ID de una subsección dentro de home-sections o de otra página a la que hacer scroll.
      */
     function showSection(sectionIdToShow, subsectionIdToScroll = null) {
+        console.log(`Attempting to show section: ${sectionIdToShow}, subsection: ${subsectionIdToScroll || 'none'}`);
         const allMainPages = [homeSections, quizPage, cursosSection, lessonContentDisplay, blogPage];
         
         allMainPages.forEach(page => {
@@ -3384,13 +3391,15 @@
         const targetPage = document.getElementById(sectionIdToShow);
         if (targetPage) {
             targetPage.classList.remove('hidden');
+            console.log(`Section '${sectionIdToShow}' visibility set to SHOW.`);
             
             if (sectionIdToShow === 'home-sections') {
                 document.getElementById('visual-presentation').classList.remove('hidden');
                 document.getElementById('subjects-and-ai').classList.remove('hidden');
                 document.getElementById('reviews-and-contact').classList.remove('hidden');
                 // Ensure quizResultsDisplayArea's visibility is correct based on quiz completion and user state
-                quizResultsDisplayArea.classList.toggle('hidden', !(currentUser && userQuizCompleted && !currentUser.isAnonymous));
+                // This is now handled by updateQuizResultDisplay() called from onAuthStateChanged and submitQuizButton
+                // quizResultsDisplayArea.classList.toggle('hidden', !(currentUser && userQuizCompleted && !currentUser.isAnonymous));
                 if (subsectionIdToScroll) {
                     const subTargetElement = document.getElementById(subsectionIdToScroll);
                     if (subTargetElement) {
@@ -3404,6 +3413,8 @@
             } else {
                 targetPage.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
+        } else {
+            console.error(`Error: Target section element with ID '${sectionIdToShow}' not found.`);
         }
     }
 
@@ -3412,6 +3423,7 @@
      * Actualiza la visibilidad de los elementos de navegación y botones según el estado de autenticación.
      */
     function updateNavigationVisibility() {
+      console.log("Updating navigation visibility...");
       const isLoggedIn = currentUser !== null && !currentUser.isAnonymous; // Is logged in (non-anonymous)
       const isAnyUserLoggedIn = currentUser !== null; // Is any user logged in (anonymous or non-anonymous)
 
@@ -3440,7 +3452,7 @@
 
         if (targetSection === 'quiz-page') {
             // Quiz page is accessible to any logged-in user (including anonymous)
-            shouldBeDisabled = !isAnyUserLoggedIn;
+            shouldBeDisabled = false; // No longer depends on specific login, only if Auth is ready
         } else if (targetSection === 'home-sections' && subsectionId === 'quiz-results-display-area') {
             // Results page is accessible only if authenticated AND quiz completed
             shouldBeDisabled = !(isLoggedIn && userQuizCompleted);
@@ -3504,8 +3516,8 @@
     if (auth) {
         onAuthStateChanged(auth, async (user) => {
             currentUser = user;
+            console.log("onAuthStateChanged triggered. User:", user ? user.uid : "None", "isAnonymous:", user ? user.isAnonymous : "N/A");
             if (user) {
-                console.log("Usuario autenticado:", user.uid, user.email || "Anónimo");
                 // Set persistence for authenticated users (not anonymous)
                 if (!user.isAnonymous) {
                   try {
@@ -3515,25 +3527,33 @@
                     console.error("Error setting persistence:", error);
                   }
                   // Load preferences only for non-anonymous users
-                  if (db) await loadUserPreferences(user.uid);
+                  if (db) {
+                    await loadUserPreferences(user.uid); // This sets userQuizCompleted, userLearningStyle, userTDAHStatus
+                    await loadProgressAndDisplay(); // Load user's topic progress
+                  }
+                } else { // Handle anonymous user case explicitly
+                  userLearningStyle = 'visual'; // Reset defaults on anonymous login/state
+                  userTDAHStatus = 'no';
+                  userQuizCompleted = false; // Anonymous users do not have a completed quiz persisted
+                  topicsData = {}; // Clear progress data for anonymous
+                  currentQuizIndex = 0; // Reset quiz state for anonymous
+                  userAnswers = {}; // Reset quiz answers for anonymous
                 }
-                toggleModal(false); // Close modal on successful auth
-            } else {
-                console.log("No hay usuario autenticado.");
+                toggleModal(false); // Close modal on successful auth or if already logged in
+            } else { // No user authenticated (logged out)
+                console.log("No hay usuario autenticado (logged out).");
                 userLearningStyle = 'visual'; // Reset defaults on logout
                 userTDAHStatus = 'no';
                 userQuizCompleted = false;
                 topicsData = {}; // Clear progress data
                 currentQuizIndex = 0; // Reset quiz state
                 userAnswers = {}; // Reset quiz answers
-                // Clear any displayed quiz results on logout
-                if (quizResultsDisplayArea) quizResultsDisplayArea.classList.add('hidden'); // Ensure quiz results disappear
+                // Ensure any displayed quiz results are hidden on logout
             }
             // These updates should happen after the user state and preferences are fully loaded/reset
             updateNavigationVisibility(); // Update UI based on new user state
             updateReviewFormVisibility(); // Update review form visibility
             updateQuizResultDisplay(); // Update quiz results display
-            loadProgressAndDisplay(); // Load user progress bars (if logged in)
         });
     } else {
         console.warn("Firebase Auth no disponible. onAuthStateChanged no se ejecutará.");
@@ -3618,6 +3638,7 @@
     }
 
     function updateQuizResultDisplay() {
+      console.log("Updating quiz result display. userQuizCompleted:", userQuizCompleted, "currentUser logged in:", currentUser && !currentUser.isAnonymous);
       const styleNames = {
           visual: "Visual",
           auditivo: "Auditivo",
@@ -3779,7 +3800,6 @@
             }, { merge: true });
             userQuizCompleted = true; // Update local state after saving
             console.log("User preferences saved to Firestore.");
-            updateNavigationVisibility(); // Update UI after saving preferences
         }
         catch (e) {
             console.error("Error saving user preferences: ", e);
@@ -3815,6 +3835,7 @@
     }
 
     async function loadProgressAndDisplay() {
+      console.log("Loading progress and display. Current user:", currentUser ? currentUser.uid : "None", "isAnonymous:", currentUser ? currentUser.isAnonymous : "N/A");
       if (currentUser && !currentUser.isAnonymous && db) {
         const userId = currentUser.uid;
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -3825,6 +3846,7 @@
           querySnapshot.forEach((doc) => {
               topicsData[doc.id] = doc.data().percentage;
           });
+          console.log("Progress data loaded:", topicsData);
           updateAllProgressBars();
         } catch (error) {
           console.error("Error cargando datos de progreso:", error);
