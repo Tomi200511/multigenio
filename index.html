@@ -2246,7 +2246,7 @@
     import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
     // Default Firebase configuration (replace with your actual Firebase project config if not in Canvas)
-    const defaultFirebaseConfig = {
+    const firebaseConfig = {
       apiKey: "AIzaSyDklyhhZOV3c2KbbrvAZOpoUitPBWgRBOQ", // <<--- REEMPLAZA CON TU CLAVE API DE FIREBASE
       authDomain: "multigenio-39890.firebaseapp.com",
       projectId: "multigenio-39890",
@@ -2257,11 +2257,10 @@
     };
 
     // Use environment provided config if available, otherwise fallback to default
-    let firebaseConfig;
-    let app = null;
-    let analytics = null;
-    let auth = null;
-    let db = null;
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app); // Asegúrate de añadir esta línea para Firebase Auth
+    const db = getFirestore(app); // Asegúrate de añadir esta línea para Firestore
 
     // Elementos del DOM (declarados con 'let' para asignación posterior)
     let authModalOverlay, closeAuthModal, accessButton, logoutTopBarButton, hamburgerMenuIcon, sidebarMenu, closeSidebarMenu;
