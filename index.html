@@ -2256,11 +2256,34 @@
       measurementId: "G-9SQX18GVH6"
     };
 
-    // Use environment provided config if available, otherwise fallback to default
+    // Usa la configuración proporcionada por el entorno si está disponible, de lo contrario, usa la por defecto.
+    // 'firebaseConfig' se declara aquí con 'let' porque su valor va a cambiar.
+    let firebaseConfig;
+
+    // Aquí va la lógica para determinar qué configuración usar.
+    // Asumo que '__firebase_config' es una variable global o una propiedad de 'window'
+    // que podría ser inyectada por tu entorno (como un CMS o plataforma educativa).
+    if (typeof __firebase_config !== 'undefined' && __firebase_config && Object.keys(__firebase_config).length > 0) {
+        // Si __firebase_config existe y no está vacía, úsala.
+        // Podría necesitar JSON.parse() si es una cadena JSON, depende de cómo se inyecte.
+        try {
+            firebaseConfig = JSON.parse(__firebase_config);
+            console.log("Usando configuración de Firebase del entorno.");
+        } catch (e) {
+            console.error("Error al parsear __firebase_config, usando la configuración por defecto.", e);
+            firebaseConfig = defaultFirebaseConfig;
+        }
+    } else {
+        // Si no hay configuración del entorno, usa la que definiste arriba.
+        firebaseConfig = defaultFirebaseConfig;
+        console.log("Usando configuración de Firebase por defecto.");
+    }
+
+    // Inicializa Firebase con la configuración que se haya decidido usar
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
-    const auth = getAuth(app); // Asegúrate de añadir esta línea para Firebase Auth
-    const db = getFirestore(app); // Asegúrate de añadir esta línea para Firestore
+    const auth = getAuth(app); // Añadida para obtener la instancia de Auth
+    const db = getFirestore(app); // Añadida para obtener la instancia de Firestore
 
     // Elementos del DOM (declarados con 'let' para asignación posterior)
     let authModalOverlay, closeAuthModal, accessButton, logoutTopBarButton, hamburgerMenuIcon, sidebarMenu, closeSidebarMenu;
