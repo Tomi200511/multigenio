@@ -2155,10 +2155,10 @@
 
   <!-- Sección de Visualización del Contenido de la Lección (ahora una "página" separada) -->
   <section id="lesson-content-display" class="hidden section">
-    <button class="back-button" id="back-to-topics"><i class="fas fa-arrow-left"></i> Volver a Cursos</button>
-    <h2 id="lesson-title"></h2>
-    <div id="lesson-material">
-      <!-- El contenido de la lección se cargará aquí dinámicamente -->
+    <h2 id="lesson-title"></h2> <div class="lesson-navigation">
+      <button class="back-button" data-target-screen="subject-list"><i class="fas fa-arrow-left"></i> Volver a Asignaturas</button>
+    </div>
+    <div id="lesson-material"></div>
     </div>
     <div class="lesson-actions">
       <button id="ask-gemini-lesson">Preguntar a la IA <i class="fas fa-robot"></i></button>
