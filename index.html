@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -1451,7 +1450,7 @@
     }
     #lesson-content-display h2::after {
       content: '';
-      display: none;
+      display: block;
       width: 70px;
       height: 3px;
       background: var(--secondary-color);
@@ -2155,10 +2154,10 @@
 
   <!-- Sección de Visualización del Contenido de la Lección (ahora una "página" separada) -->
   <section id="lesson-content-display" class="hidden section">
-    <h2 id="lesson-title"></h2> <div class="lesson-navigation">
-      <button class="back-button" data-target-screen="subject-list"><i class="fas fa-arrow-left"></i> Volver a Asignaturas</button>
-    </div>
-    <div id="lesson-material"></div>
+    <button class="back-button" id="back-to-topics"><i class="fas fa-arrow-left"></i> Volver a Cursos</button>
+    <h2 id="lesson-title"></h2>
+    <div id="lesson-material">
+      <!-- El contenido de la lección se cargará aquí dinámicamente -->
     </div>
     <div class="lesson-actions">
       <button id="ask-gemini-lesson">Preguntar a la IA <i class="fas fa-robot"></i></button>
@@ -2520,7 +2519,7 @@
         nextTestimonialBtn = document.querySelector('.testimonial-carousel-nav.next');
         searchBarInput = document.querySelector('.search-bar input');
         searchBarButton = document.querySelector('.search-bar button');
-
+        subjectsAndAISec = document.getElementById('subjects-and-ai');
 
         // Asignar totales para carruseles después de que los elementos estén disponibles
         if (carouselImagesContainer) totalCarouselImages = carouselImagesContainer.children.length;
@@ -3488,7 +3487,7 @@
       document.querySelectorAll('.subject-toggle-header').forEach(header => {
           header.classList.remove('expanded');
           // Subject headers are clickable only if user is logged in AND quiz completed
-          if (isLoggedIn && userQuizCompleted) {
+          if (isLoggedIn) {
               header.style.pointerEvents = 'auto';
               header.style.opacity = '1';
           } else {
@@ -4126,13 +4125,6 @@
     document.getElementById("sidebar-menu")?.classList.remove("active");
   });
 </script>
-
-
-<!-- BLOQUE FUNCIONALIDAD DINÁMICA AÑADIDO -->
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="/scripts/multigenio-funcionalidades.js"></script>
 
 </body>
 </html>
