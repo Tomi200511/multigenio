@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -3411,7 +3412,7 @@
     }
 
 
-    /**
+   /**
      * Función principal para controlar la visualización de las secciones.
      * Oculta todas las secciones principales y muestra solo la deseada.
      * @param {string} sectionIdToShow - El ID de la sección a mostrar ('home-sections', 'quiz-page', 'cursos', 'lesson-content-display', 'blog-page').
@@ -3430,12 +3431,29 @@
         if (targetPage) {
             targetPage.classList.remove('hidden');
 
-            if (sectionIdToShow === 'home-sections') {
+            // NUEVO: Llama a displayQuizQuestion() solo cuando accedes a la página del quiz
+            if (sectionIdToShow === 'quiz-page') {
+                // Reinicia el quiz si el usuario no lo ha completado o es un invitado
+                if (!userQuizCompleted || currentUser.isAnonymous) {
+                    currentQuizIndex = 0; // Reinicia el índice de preguntas
+                    userAnswers = {}; // Borra respuestas anteriores si vuelve a empezar
+                    // Asegúrate de que el contenedor del quiz y las preguntas estén visibles
+                    if (quizContainer) quizContainer.classList.remove('hidden');
+                    if (quizResultsDisplayArea) quizResultsDisplayArea.classList.add('hidden'); // Oculta resultados anteriores
+                }
+                displayQuizQuestion(); // Muestra la pregunta (o redirige si ya está completo)
+            } else if (sectionIdToShow === 'home-sections') {
                 if (document.getElementById('visual-presentation')) document.getElementById('visual-presentation').classList.remove('hidden');
-                if (subjectsAndAISec) subjectsAndAISec.classList.remove('hidden'); // Usa la variable subjectsAndAISec
+                if (subjectsAndAISec) subjectsAndAISec.classList.remove('hidden');
                 if (reviewsAndContactSection) reviewsAndContactSection.classList.remove('hidden');
 
-                quizResultsDisplayArea.classList.toggle('hidden', !(currentUser && userQuizCompleted && !currentUser.isAnonymous));
+                // Asegura que los resultados del quiz se muestren si el usuario está logueado y el quiz completado
+                // y que el quizContainer (formulario de preguntas) se oculte
+                if (quizResultsDisplayArea) {
+                    quizResultsDisplayArea.classList.toggle('hidden', !(currentUser && userQuizCompleted && !currentUser.isAnonymous));
+                }
+                if (quizContainer) quizContainer.classList.add('hidden'); // Oculta el contenedor del quiz si estás en home-sections
+
                 if (subsectionIdToScroll) {
                     const subTargetElement = document.getElementById(subsectionIdToScroll);
                     if (subTargetElement) {
@@ -3448,7 +3466,7 @@
                 }
             } else {
                 targetPage.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+            }   
         }
     }
 
@@ -3538,15 +3556,20 @@
     }
 
     // --- Funcionalidad del Cuestionario (Modificada) ---
-    function displayQuizQuestion() {
+   function displayQuizQuestion() {
+      console.log("DEBUG: Entrando en displayQuizQuestion. userQuizCompleted:", userQuizCompleted, "currentUser:", currentUser); // DEBUG
+
       if (!currentUser) {
           showMessage("Error: No se pudo obtener el estado del usuario. Intenta recargar la página.", 'error');
           return;
       }
+
+      // CAMBIO IMPORTANTE: Solo redirige a resultados si el quiz ya está completado
+      // Y si NO estamos en la primera pregunta (para evitar bucle si se llama al inicio)
       if (currentUser && !currentUser.isAnonymous && userQuizCompleted) {
           showMessage('Ya has completado el cuestionario de estilo de aprendizaje. Puedes revisar tus resultados o explorar otras funciones.', 'info', 4000);
           updateQuizResultDisplay();
-          showSection('home-sections', 'quiz-results-display-area');
+          showSection('home-sections', 'quiz-results-display-area'); // Redirige a resultados
           return;
       }
 
@@ -3556,6 +3579,7 @@
         return;
       }
 
+      // Asegúrate de que el quizContainer sea visible cuando se llama esta función
       quizContainer.classList.remove('hidden');
       if (resultMessageQuizPage) resultMessageQuizPage.classList.add('hidden');
       if (tdahWarningQuizPage) tdahWarningQuizPage.classList.add('hidden');
