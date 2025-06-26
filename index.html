@@ -3412,80 +3412,80 @@
     }
 
 
-/**
- * Función principal para controlar la visualización de las secciones.
- * Oculta todas las secciones principales y muestra solo la deseada.
- * @param {string} sectionIdToShow - El ID de la sección a mostrar ('home-sections', 'quiz-page', 'cursos', 'lesson-content-display', 'blog-page').
- * @param {string} [subsectionIdToScroll] - Opcional. ID de una subsección dentro de home-sections o de otra página a la que hacer scroll.
- */
-function showSection(sectionIdToShow, subsectionIdToScroll = null) {
-    console.log("DEBUG SHOW SECTION: Llamado con sectionIdToShow:", sectionIdToShow, "subsectionIdToScroll:", subsectionIdToScroll);
-    const allMainPages = [homeSections, quizPage, cursosSection, lessonContentDisplay, blogPage];
-
-    allMainPages.forEach(page => {
-        if (page) {
-            page.classList.add('hidden'); // Ocultar todas las páginas principales
-        }
-    });
-
-    const targetPage = document.getElementById(sectionIdToShow);
-    if (targetPage) {
-        targetPage.classList.remove('hidden'); // Mostrar la página objetivo
-        console.log("DEBUG SHOW SECTION: Removida clase 'hidden' de", sectionIdToShow, ". Debería ser visible.");
-
-
-        if (sectionIdToShow === 'quiz-page') {
-            console.log("DEBUG SHOW SECTION: Accediendo a 'quiz-page'. userQuizCompleted ANTES de reset/display:", userQuizCompleted, "currentUser.isAnonymous:", currentUser ? currentUser.isAnonymous : "N/A");
-
-            // Reinicia el quiz si el usuario no lo ha completado O si es un invitado (puede repetir el quiz)
-            // La lógica de redirección para usuarios autenticados que ya completaron el quiz está en displayQuizQuestion()
-            if (!userQuizCompleted || (currentUser && currentUser.isAnonymous)) {
-                currentQuizIndex = 0; // Reinicia el índice de preguntas
-                userAnswers = {}; // Borra respuestas anteriores
-                console.log("DEBUG SHOW SECTION: Quiz reseteado (no completado o anónimo).");
-
-                // Asegúrate de que el contenedor del quiz (que tiene las preguntas) esté visible
-                if (quizContainer) {
-                    quizContainer.classList.remove('hidden');
-                    console.log("DEBUG SHOW SECTION: quizContainer hecho visible.");
-                } else {
-                    console.error("DEBUG SHOW SECTION ERROR: quizContainer no encontrado al intentar mostrarlo.");
-                }
-                // Asegúrate de que el área de resultados se oculte si se va a empezar un nuevo quiz
-                if (quizResultsDisplayArea) quizResultsDisplayArea.classList.add('hidden');
-            }
-            displayQuizQuestion(); // Llama a la función para mostrar la pregunta (o redirigir)
-            console.log("DEBUG SHOW SECTION: Llamada a displayQuizQuestion() después de preparar el quiz.");
-
-        } else if (sectionIdToShow === 'home-sections') {
-            // Lógica para la sección de inicio
-            if (document.getElementById('visual-presentation')) document.getElementById('visual-presentation').classList.remove('hidden');
-            if (subjectsAndAISec) subjectsAndAISec.classList.remove('hidden');
-            if (reviewsAndContactSection) reviewsAnd-contactSection.classList.remove('hidden');
-
-            // Asegura que los resultados del quiz se muestren si el usuario está logueado y el quiz completado
-            // y que el quizContainer (formulario de preguntas) se oculte
-            if (quizResultsDisplayArea) {
-                quizResultsDisplayArea.classList.toggle('hidden', !(currentUser && userQuizCompleted && !currentUser.isAnonymous));
-            }
-            if (quizContainer) quizContainer.classList.add('hidden'); // Oculta el formulario de preguntas si estás en home-sections
-
-            if (subsectionIdToScroll) {
-                const subTargetElement = document.getElementById(subsectionIdToScroll);
-                if (subTargetElement) {
-                    setTimeout(() => {
-                        subTargetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 50);
-                }
-            } else {
+  /**
+   * Función principal para controlar la visualización de las secciones.
+   * Oculta todas las secciones principales y muestra solo la deseada.
+   * @param {string} sectionIdToShow - El ID de la sección a mostrar ('home-sections', 'quiz-page', 'cursos', 'lesson-content-display', 'blog-page').
+   * @param {string} [subsectionIdToScroll] - Opcional. ID de una subsección dentro de home-sections o de otra página a la que hacer scroll.
+   */
+  function showSection(sectionIdToShow, subsectionIdToScroll = null) {
+      console.log("DEBUG SHOW SECTION: Llamado con sectionIdToShow:", sectionIdToShow, "subsectionIdToScroll:", subsectionIdToScroll);
+      const allMainPages = [homeSections, quizPage, cursosSection, lessonContentDisplay, blogPage];
+  
+      allMainPages.forEach(page => {
+          if (page) {
+              page.classList.add('hidden'); // Ocultar todas las páginas principales
+          }
+      });
+  
+      const targetPage = document.getElementById(sectionIdToShow);
+      if (targetPage) {
+          targetPage.classList.remove('hidden'); // Mostrar la página objetivo
+          console.log("DEBUG SHOW SECTION: Removida clase 'hidden' de", sectionIdToShow, ". Debería ser visible.");
+  
+  
+          if (sectionIdToShow === 'quiz-page') {
+              console.log("DEBUG SHOW SECTION: Accediendo a 'quiz-page'. userQuizCompleted ANTES de reset/display:", userQuizCompleted, "currentUser.isAnonymous:", currentUser ? currentUser.isAnonymous : "N/A");
+  
+              // Reinicia el quiz si el usuario no lo ha completado O si es un invitado (puede repetir el quiz)
+              // La lógica de redirección para usuarios autenticados que ya completaron el quiz está en displayQuizQuestion()
+              if (!userQuizCompleted || (currentUser && currentUser.isAnonymous)) {
+                  currentQuizIndex = 0; // Reinicia el índice de preguntas
+                  userAnswers = {}; // Borra respuestas anteriores
+                  console.log("DEBUG SHOW SECTION: Quiz reseteado (no completado o anónimo).");
+  
+                  // Asegúrate de que el contenedor del quiz (que tiene las preguntas) esté visible
+                  if (quizContainer) {
+                      quizContainer.classList.remove('hidden');
+                      console.log("DEBUG SHOW SECTION: quizContainer hecho visible.");
+                  } else {
+                      console.error("DEBUG SHOW SECTION ERROR: quizContainer no encontrado al intentar mostrarlo.");
+                  }
+                  // Asegúrate de que el área de resultados se oculte si se va a empezar un nuevo quiz
+                  if (quizResultsDisplayArea) quizResultsDisplayArea.classList.add('hidden');
+              }
+              displayQuizQuestion(); // Llama a la función para mostrar la pregunta (o redirigir)
+              console.log("DEBUG SHOW SECTION: Llamada a displayQuizQuestion() después de preparar el quiz.");
+  
+          } else if (sectionIdToShow === 'home-sections') {
+              // Lógica para la sección de inicio
+              if (document.getElementById('visual-presentation')) document.getElementById('visual-presentation').classList.remove('hidden');
+              if (subjectsAndAISec) subjectsAndAISec.classList.remove('hidden');
+              if (reviewsAndContactSection) reviewsAnd-contactSection.classList.remove('hidden');
+  
+              // Asegura que los resultados del quiz se muestren si el usuario está logueado y el quiz completado
+              // y que el quizContainer (formulario de preguntas) se oculte
+              if (quizResultsDisplayArea) {
+                  quizResultsDisplayArea.classList.toggle('hidden', !(currentUser && userQuizCompleted && !currentUser.isAnonymous));
+              }
+              if (quizContainer) quizContainer.classList.add('hidden'); // Oculta el formulario de preguntas si estás en home-sections
+  
+              if (subsectionIdToScroll) {
+                  const subTargetElement = document.getElementById(subsectionIdToScroll);
+                  if (subTargetElement) {
+                      setTimeout(() => {
+                          subTargetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }, 50);
+                  }
+              } else {
+                targetPage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+          } else {
+              // Para otras secciones, simplemente desplázate a ellas
               targetPage.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        } else {
-            // Para otras secciones, simplemente desplázate a ellas
-            targetPage.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    }
-
+          }
+      }
+  }
 
     /**
      * Actualiza la visibilidad de los elementos de navegación y botones según el estado de autenticación.
