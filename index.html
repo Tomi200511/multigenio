@@ -4065,6 +4065,7 @@
                 }
 
                 // Listener del estado de autenticación (ahora que auth está disponible y persistencia seteada)
+                // ESTE ES EL ÚNICO LUGAR DONDE showSection('home-sections') DEBE LLAMARSE INICIALMENTE
                 onAuthStateChanged(auth, async (user) => {
                     currentUser = user;
                     if (user) {
@@ -4083,11 +4084,16 @@
                         userAnswers = {};
                         if (quizResultsDisplayArea) quizResultsDisplayArea.classList.add('hidden');
                     }
-                    // Estas actualizaciones deben ocurrir después de que el estado del usuario y las preferencias se carguen/restablezcan
+                    // Estas actualizaciones y la navegación inicial deben ocurrir después de que el estado del usuario
+                    // y las preferencias se carguen/restablezcan
                     updateNavigationVisibility();
                     updateReviewFormVisibility();
                     updateQuizResultDisplay();
                     loadProgressAndDisplay();
+                    
+                    // Llama a showSection('home-sections') aquí para la carga inicial/redirección
+                    // Esto asegura que la página de inicio se muestre después de que todo el estado de auth esté listo.
+                    showSection('home-sections'); 
                 });
 
                 // Intento de inicio de sesión inicial (anónimo o con token personalizado)
@@ -4101,15 +4107,16 @@
                         console.log("DEBUG: Sesión iniciada anónimamente como respaldo.");
                     }
                 } else {
-                    // Si no hay token inicial, intenta iniciar sesión anónimamente.
-                    // Esto solo se hará si onAuthStateChanged no detecta ya una sesión persistente.
-                    // await signInAnonymously(auth); // Descomentar si quieres forzar inicio anónimo siempre al cargar sin token
-                    // console.log("DEBUG: Sesión iniciada anónimamente (no se encontró token personalizado inicial).");
+                    // Si no hay token inicial, intentará iniciar sesión anónimamente.
+                    // onAuthStateChanged se encargará de llamar a showSection('home-sections')
+                    await signInAnonymously(auth); 
+                    console.log("DEBUG: Sesión iniciada anónimamente (no se encontró token personalizado inicial).");
                 }
             } else {
                 console.warn("DEBUG: Firebase Auth no inicializado. La autenticación será limitada o no disponible.");
                 currentUser = { uid: 'guest', isAnonymous: true, email: null, displayName: 'Invitado' };
                 updateNavigationVisibility();
+                showSection('home-sections'); // Si Auth no está disponible, asegura que la home se muestre
             }
 
             if (db) {
@@ -4118,6 +4125,8 @@
                 console.warn("DEBUG: Firestore no inicializado. Saltando la carga de reseñas.");
             }
 
+            // *** ELIMINADO: Esta línea causaba el conflicto y la redirección constante ***
+            // showSection('home-sections'); 
 
             if (visualCarousel) updateCarousel();
             if (testimonialsSlidesContainer) updateTestimonialsCarousel();
