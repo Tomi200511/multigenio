@@ -3454,21 +3454,22 @@
                   // Asegúrate de que el área de resultados se oculte si se va a empezar un nuevo quiz
                   if (quizResultsDisplayArea) quizResultsDisplayArea.classList.add('hidden');
               }
-              displayQuizQuestion(); // Llama a la función para mostrar la pregunta (o redirigir)
+              displayQuizQuestion(); // Llama a la función para mostrar la pregunta (o redirige)
               console.log("DEBUG SHOW SECTION: Llamada a displayQuizQuestion() después de preparar el quiz.");
   
           } else if (sectionIdToShow === 'home-sections') {
               // Lógica para la sección de inicio
               if (document.getElementById('visual-presentation')) document.getElementById('visual-presentation').classList.remove('hidden');
               if (subjectsAndAISec) subjectsAndAISec.classList.remove('hidden');
-              if (reviewsAndContactSection) reviewsAnd-contactSection.classList.remove('hidden');
+              // CORREGIDO: reviewsAndContactSection sin guion en el nombre de la variable
+              if (reviewsAndContactSection) reviewsAndContactSection.classList.remove('hidden'); 
   
               // Asegura que los resultados del quiz se muestren si el usuario está logueado y el quiz completado
               // y que el quizContainer (formulario de preguntas) se oculte
               if (quizResultsDisplayArea) {
                   quizResultsDisplayArea.classList.toggle('hidden', !(currentUser && userQuizCompleted && !currentUser.isAnonymous));
               }
-              if (quizContainer) quizContainer.classList.add('hidden'); // Oculta el formulario de preguntas si estás en home-sections
+              if (quizContainer) quizContainer.classList.add('hidden'); // Oculta el contenedor del quiz si estás en home-sections
   
               if (subsectionIdToScroll) {
                   const subTargetElement = document.getElementById(subsectionIdToScroll);
@@ -3571,7 +3572,7 @@
       });
     }
 
-    // --- Funcionalidad del Cuestionario (Modificada) ---
+        // --- Funcionalidad del Cuestionario (Modificada) ---
     function displayQuizQuestion() {
       console.log("DEBUG QUIZ: *** Iniciando displayQuizQuestion ***");
       console.log("DEBUG QUIZ: userQuizCompleted (al inicio de la función):", userQuizCompleted);
@@ -3651,6 +3652,7 @@
           }
       }
     }
+    
     function selectAnswer(optionIndex) {
       if (!optionsDiv) return;
       userAnswers[currentQuizIndex] = parseInt(optionIndex);
