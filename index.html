@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,7 +6,7 @@
   <title>MultiGenio - Tu aliado en el aprendizaje</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <!-- Font Awesome para iconos -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlalH6s38fG/c4Jz4fV1t1p9r0nC1Fw/s4M6C1zW6Jz0f2bW9Z7a8+z5o5y5p5t5a5t5f5d5e5f5g5h5i5j5k5l5m5n5o5p5q5r5s5t5u5v5w5x5y5z==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     :root {
       /* Paleta de colores moderna y vibrante */
@@ -1352,7 +1351,7 @@
         max-width: 700px;
         margin-left: auto;
         margin-right: auto;
-        display: none; /* Hidden by default */
+        /* display: none; */ /* Keep it visible for now to test the button */
     }
     #quiz-results-display-area h3 {
         font-size: 1.8em;
@@ -1364,6 +1363,27 @@
         padding: var(--spacing-unit);
         border-radius: var(--border-radius-sm);
         box-shadow: var(--shadow-sm);
+    }
+    /* Style for the new restart quiz button */
+    #restart-main-quiz-button {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: var(--border-radius-sm);
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: block;
+      width: fit-content;
+      margin: 20px auto 0; /* Center the button */
+      box-shadow: var(--shadow-md);
+    }
+    #restart-main-quiz-button:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
     }
 
 
@@ -1759,6 +1779,8 @@
           <div id="tdah-warning" class="result-card"></div>
           <div id="study-advice" class="result-card"></div>
         </div>
+        <!-- Nuevo botón para repetir el cuestionario principal -->
+        <button id="restart-main-quiz-button">Repetir Cuestionario</button>
       </section>
 
       <!-- Sección 4: Temarios, Funcionamiento y Materias -->
@@ -2286,6 +2308,7 @@
     let testimonialsSlidesContainer, prevTestimonialBtn, nextTestimonialBtn;
     let searchBarInput, searchBarButton;
     let subjectsAndAISec; // ¡Importante: declararla aquí también!
+    let restartMainQuizButton; // Nuevo botón para reiniciar el quiz principal
 
     // Global variables for carousels
     let currentCarouselIndex = 0;
@@ -2523,6 +2546,7 @@
         searchBarInput = document.querySelector('.search-bar input');
         searchBarButton = document.querySelector('.search-bar button');
         subjectsAndAISec = document.getElementById('subjects-and-ai'); // ¡Asegúrate de que esta línea esté aquí!
+        restartMainQuizButton = document.getElementById('restart-main-quiz-button'); // Asignar el nuevo botón
 
         // Asignar totales para carruseles después de que los elementos estén disponibles
         if (carouselImagesContainer) totalCarouselImages = carouselImagesContainer.children.length;
@@ -2733,6 +2757,17 @@
                     showMessage("Error: Firebase no inicializado. No se pudo guardar el resultado.", 'error');
                 }
                 showSection('home-sections', 'quiz-results-display-area');
+            });
+        }
+
+        // Event listener for the new restart quiz button
+        if (restartMainQuizButton) {
+            restartMainQuizButton.addEventListener('click', () => {
+                userQuizCompleted = false; // Force reset quiz completion status
+                currentQuizIndex = 0;      // Reset quiz question index
+                userAnswers = {};          // Clear previous answers
+                showMessage("Reiniciando el cuestionario...", 'info', 2000);
+                showSection('quiz-page');  // Navigate back to the quiz page
             });
         }
 
@@ -3299,7 +3334,8 @@
             generatedIdeasList, backFromBlogButton,
             mainContent, homeSections, cursosSection, reviewsAndContactSection, chatbotFab,
             testimonialsSlidesContainer, prevTestimonialBtn, nextTestimonialBtn, searchBarInput, searchBarButton,
-            subjectsAndAISec // Incluir la variable aquí
+            subjectsAndAISec, // Incluir la variable aquí
+            restartMainQuizButton // Incluir el nuevo botón
         ];
 
         let allPresent = true;
@@ -3435,27 +3471,27 @@
   
   
           if (sectionIdToShow === 'quiz-page') {
-              console.log("DEBUG SHOW SECTION: Accediendo a 'quiz-page'. userQuizCompleted ANTES de reset/display:", userQuizCompleted, "currentUser.isAnonymous:", currentUser ? currentUser.isAnonymous : "N/A");
+              console.log("DEBUG QUIZ: Accediendo a 'quiz-page'. userQuizCompleted ANTES de reset/display:", userQuizCompleted, "currentUser.isAnonymous:", currentUser ? currentUser.isAnonymous : "N/A");
   
               // Reinicia el quiz si el usuario no lo ha completado O si es un invitado (puede repetir el quiz)
               // La lógica de redirección para usuarios autenticados que ya completaron el quiz está en displayQuizQuestion()
               if (!userQuizCompleted || (currentUser && currentUser.isAnonymous)) {
                   currentQuizIndex = 0; // Reinicia el índice de preguntas
                   userAnswers = {}; // Borra respuestas anteriores
-                  console.log("DEBUG SHOW SECTION: Quiz reseteado (no completado o anónimo).");
+                  console.log("DEBUG QUIZ: Quiz reseteado (no completado o anónimo).");
   
                   // Asegúrate de que el contenedor del quiz (que tiene las preguntas) esté visible
                   if (quizContainer) {
                       quizContainer.classList.remove('hidden');
-                      console.log("DEBUG SHOW SECTION: quizContainer hecho visible.");
+                      console.log("DEBUG QUIZ: quizContainer hecho visible.");
                   } else {
-                      console.error("DEBUG SHOW SECTION ERROR: quizContainer no encontrado al intentar mostrarlo.");
+                      console.error("DEBUG QUIZ ERROR: quizContainer no encontrado al intentar mostrarlo.");
                   }
                   // Asegúrate de que el área de resultados se oculte si se va a empezar un nuevo quiz
                   if (quizResultsDisplayArea) quizResultsDisplayArea.classList.add('hidden');
               }
               displayQuizQuestion(); // Llama a la función para mostrar la pregunta (o redirige)
-              console.log("DEBUG SHOW SECTION: Llamada a displayQuizQuestion() después de preparar el quiz.");
+              console.log("DEBUG QUIZ: Llamada a displayQuizQuestion() después de preparar el quiz.");
   
           } else if (sectionIdToShow === 'home-sections') {
               // Lógica para la sección de inicio
@@ -3716,6 +3752,7 @@
           }
 
           quizResultsDisplayArea.classList.remove('hidden');
+          if (restartMainQuizButton) restartMainQuizButton.classList.remove('hidden'); // Show restart button
 
           resultMessageQuizPage.textContent = resultMessage.textContent;
           resultMessageQuizPage.className = resultMessage.className;
@@ -3740,6 +3777,7 @@
           tdahWarning.classList.add('hidden');
           studyAdvice.classList.add('hidden');
           quizResultsDisplayArea.classList.add('hidden');
+          if (restartMainQuizButton) restartMainQuizButton.classList.add('hidden'); // Hide restart button
 
           resultMessageQuizPage.classList.add('hidden');
           tdahWarningQuizPage.classList.add('hidden');
